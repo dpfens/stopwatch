@@ -1,0 +1,36 @@
+.digital-display {
+    font-size: 30px;
+}
+
+.digital-display > .digit-container {
+    display: inline-block;
+}
+
+.digital-display.localization-en-us > .digit-container::after {
+    content: ":";
+}
+
+.digital-display.localization-en-us > .digit-container.seconds::after {
+    content: ".";
+}
+
+.digital-display.localization-en-us > .digit-container.milliseconds::after {
+    content: "";
+}
+
+
+.digital-display.localization-en-uk > .digit-container.hours::after {
+    content: "h";
+}
+
+.digital-display.localization-en-uk > .digit-container.minutes::after {
+    content: 'm';
+}
+
+.digital-display.localization-en-uk > .digit-container.seconds::after {
+    content: ".";
+}
+
+.digital-display.localization-en-uk > .digit-container.milliseconds::after {
+    content: "s";
+}
