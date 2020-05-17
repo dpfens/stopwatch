@@ -43,7 +43,7 @@ StopWatch.prototype.start = function(timestamp) {
 }
 
 
-StopWatch.prototype.duration = function() {
+StopWatch.prototype.totalDuration = function() {
     var stopValue = Date.now();
     if (this.stopValue) {
         stopValue = this.stopValue;
@@ -52,11 +52,15 @@ StopWatch.prototype.duration = function() {
 }
 
 
+StopWatch.prototype.splitDuration = function() {
+    var now = Date.now(),
+    splitStart = this.lastSplit + this.localGap;
+    return this.difference(splitStart, now);
+}
+
+
 StopWatch.prototype.split = function() {
     var splitEnd = Date.now(),
-    splitStart,
-    value,
-    splitCount = this.splits.length,
     splitStart = this.lastSplit + this.localGap,
     value = this.difference(splitStart, splitEnd);
     this.splits.push(value);
