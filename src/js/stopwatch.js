@@ -90,3 +90,13 @@ StopWatch.prototype.reset = function() {
     this.localGap = null;
     this.totalGap = null;
 }
+
+
+StopWatch.prototype.isRunning = function() {
+    return this.startValue && !this.stopValue;
+}
+
+
+StopWatch.prototype.isActive = function() {
+    return this.startValue;
+}
