@@ -263,6 +263,6 @@ div.display.lcd-display {
 }
 
 
-.lcd-display div.days, div.hours, div.minutes, div.seconds, div.milliseconds, div.colon {
+.lcd-display div.days, .lcd-display div.hours, .lcd-display div.minutes, .lcd-display div.seconds, .lcd-display div.milliseconds, .lcd-display div.colon {
   float: left;
 }
