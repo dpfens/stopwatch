@@ -6,31 +6,31 @@
     display: inline-block;
 }
 
-.digital-display.localization-en-us > .digit-container::after {
+.localization-en-us .years::after, .localization-en-us .days::after, .localization-en-us .hours::after, .localization-en-us .minutes::after {
     content: ":";
 }
 
-.digital-display.localization-en-us > .digit-container.seconds::after {
+.localization-en-us .seconds::after {
     content: ".";
 }
 
-.digital-display.localization-en-us > .digit-container.milliseconds::after {
+.localization-en-us .milliseconds::after {
     content: "";
 }
 
 
-.digital-display.localization-en-uk > .digit-container.hours::after {
+.localization-en-uk .hours::after {
     content: "h";
 }
 
-.digital-display.localization-en-uk > .digit-container.minutes::after {
+.localization-en-uk .minutes::after {
     content: 'm';
 }
 
-.digital-display.localization-en-uk > .digit-container.seconds::after {
+.localization-en-uk .seconds::after {
     content: ".";
 }
 
-.digital-display.localization-en-uk > .digit-container.milliseconds::after {
+.localization-en-uk .milliseconds::after {
     content: "s";
 }
