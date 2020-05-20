@@ -12,19 +12,22 @@ StopWatch.prototype.breakdown = function(rawMilliseconds) {
     var totalSeconds = parseInt(Math.floor(rawMilliseconds / 1000)),
     totalMinutes = parseInt(Math.floor(totalSeconds / 60)),
     totalHours = parseInt(Math.floor(totalMinutes / 60)),
+    totalDays = parseInt(Math.floor(totalHours / 24)),
 
     milliseconds = parseInt(rawMilliseconds % 1000),
     seconds = parseInt(totalSeconds % 60),
     minutes = parseInt(totalMinutes % 60),
     hours = parseInt(totalHours % 24),
-    days = parseInt(Math.floor(totalHours / 24));
+    days = parseInt(Math.floor(totalHours / 24)),
+    years = parseInt(Math.floor(totalDays / 365));
 
     return {
         'milliseconds': milliseconds,
         'seconds': seconds,
         'minutes': minutes,
         'hours': hours,
-        'days': days
+        'days': days,
+        'years': years
     };
 }
 
