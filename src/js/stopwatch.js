@@ -8,6 +8,23 @@ function StopWatch() {
 }
 
 
+StopWatch.prototype.nextNearestSplit = function(value) {
+  var nearestSplitIndex = 0,
+      nearestSplitValue = 0.0,
+      runningDuration = 0.0;
+  for (var i = 0; i < this.splits.length; i++) {
+    var splitValue = this.splits[i]
+    runningDuration += splitValue;
+    if (runningDuration > value) {
+      nearestSplitIndex = i;
+      nearestSplitValue = splitValue;
+      break;
+    }
+  }
+  return {index: nearestSplitIndex, value: nearestSplitValue, difference: runningDuration - value};
+}
+
+
 StopWatch.prototype.breakdown = function(rawMilliseconds) {
     var totalSeconds = parseInt(Math.floor(rawMilliseconds / 1000)),
     totalMinutes = parseInt(Math.floor(totalSeconds / 60)),
@@ -62,8 +79,49 @@ StopWatch.prototype.splitDuration = function(timestamp) {
 }
 
 
-StopWatch.prototype.split = function() {
-    var splitEnd = Date.now(),
+StopWatch.prototype.merge = function(startIndex, endIndex) {
+  // this needs to be tested
+  var originalSplitLength = this.splits.length;
+  if (startIndex < 0) {
+    startIndex = originalSplitLength + startIndex;
+  }
+  var endIndex = endIndex || originalSplitLength - 1;
+  if (endIndex < 0) {
+    endIndex = originalSplitLength + endIndex;
+  }
+  var mergedSplitValue = 0.0;
+  for (var i = endIndex; i > startIndex + 1; i--) {
+    var split = this.splits[i];
+    this.splits.splice(i, 1);
+    mergedSplitValue += split;
+  }
+  this.splits[startIndex] += mergedSplitValue;
+  if (endIndex === originalSplitLength - 1) {
+    this.lastSplit = this.lastSplit - this.splits[startIndex];
+  }
+}
+
+
+StopWatch.prototype.addSplit = function(value) {
+    // Adds a split at the specified duration
+    // throw error when split has not occurred yet
+    var originalSplitsLength = this.splits.length,
+        newSplitsLength = originalSplitsLength + 1,
+        nextNearestSplit = this.nextNearestSplit(value),
+        newNextNearestSplitValue = nextNearestSplit.difference,
+        newSplitValue = this.splits[nextNearestSplit.index] - newNextNearestSplitValue;
+    this.splits[nextNearestSplit.index] = newNextNearestSplitValue;
+    this.splits.splice(nextNearestSplit.index, 0, newSplitValue);
+    if (nextNearestSplit.index === originalSplitsLength - 1) {
+      this.lastSplit = Date.now() - value;
+      this.localGap = 0.0;
+    }
+    return value;
+}
+
+
+StopWatch.prototype.takeSplit = function(timestamp) {
+    var splitEnd = timestamp || Date.now(),
     splitStart = this.lastSplit + this.localGap,
     value = this.difference(splitStart, splitEnd);
     this.splits.push(value);
@@ -106,4 +164,8 @@ StopWatch.prototype.isRunning = function() {
 
 StopWatch.prototype.isActive = function() {
     return this.startValue;
+}
+
+if (module !== undefined) {
+  module.exports = StopWatch;
 }
