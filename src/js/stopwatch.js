@@ -172,6 +172,22 @@ StopWatch.prototype.addSplit = function(timestamp) {
 }
 
 
+StopWatch.prototype.update = function(index, value) {
+    var splitCount = this.splits.length;
+    if (index < 0) {
+        index = splitCount + index;
+    }
+    var oldValue = this.splits[index],
+        difference = oldValue - value;
+    this.splits[index] = value;
+    if (index === splitCount - 1) {
+        this.lastSplit -= difference;
+    } else {
+        this.splits[index + 1] += difference;
+    }
+}
+
+
 StopWatch.prototype.stop = function(timestamp) {
     /*
     Stop the stopwatch at a given timestamp
@@ -233,6 +249,6 @@ StopWatch.prototype.isActive = function() {
     return this.startValue;
 }
 
-if (module !== undefined) {
-  module.exports = StopWatch;
-}
+try{
+    module.exports = StopWatch;
+} catch {}
