@@ -157,11 +157,12 @@ StopWatch.prototype.addSplit = function(timestamp) {
     defaults to the current date-time
     where timestamp is the unix timestamp in milliseconds
     */
-    var isTimestamp = timestamp > this.startValue;
+    var timestamp = timestamp || Date.now(),
+    isTimestamp = timestamp > this.startValue;
     if (!isTimestamp) {
         return this.addRelativeSplit(timestamp);
     }
-    var splitEnd = timestamp || Date.now(),
+    var splitEnd = timestamp,
     splitStart = this.lastSplit + this.localGap,
     value = this.difference(splitStart, splitEnd);
     this.splits.push(value);
