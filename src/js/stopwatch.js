@@ -8,7 +8,7 @@ function StopWatch() {
 }
 
 
-StopWatch.prototype.nextNearestSplit = function(value) {
+StopWatch.prototype.nextNearest = function(value) {
     /*
     A helper method for finding the split containing the given value
     Also calculates the difference between the total duration up until that split
@@ -133,7 +133,7 @@ StopWatch.prototype.addRelativeSplit = function(value) {
     Value is given in milliseconds since the stopwatch started
     */
     var splitCount = this.splits.length,
-        nextNearestSplit = this.nextNearestSplit(value),
+        nextNearestSplit = this.nextNearest(value, this.splits),
         index,
         difference;
     if (nextNearestSplit.index < 0) { // adding a new last split
@@ -172,7 +172,7 @@ StopWatch.prototype.addSplit = function(timestamp) {
 }
 
 
-StopWatch.prototype.update = function(index, value) {
+StopWatch.prototype.updateSplit = function(index, value) {
     var splitCount = this.splits.length;
     if (index < 0) {
         index = splitCount + index;
@@ -248,6 +248,140 @@ StopWatch.prototype.isActive = function() {
     */
     return this.startValue;
 }
+
+
+function RacingStopWatch(lapDistance) {
+    StopWatch.call(this);
+    this.lapDistance = lapDistance;
+    this.laps = [];
+    this.lapGap = null;
+    this.lastLap = null;
+}
+
+RacingStopWatch.prototype = Object.create(StopWatch.prototype);
+
+
+RacingStopWatch.prototype.lapDuration = function(timestamp) {
+    if (!this.startValue) {
+        return 0;
+    }
+    var now = timestamp || Date.now(),
+    splitStart = this.lastLap + this.lapGap;
+    return this.difference(splitStart, now);
+}
+
+
+RacingStopWatch.prototype.removeLap = function(index) {
+    /*
+    Removes the split at a given index.
+    Recalculates the split after the removed split to ensure no information is lost
+    If the last split, reverts the lastSplit property to ensure the
+        splitDuration method still returns accurate values
+    */
+    var originalLapsLength = this.laps.length;
+    if(index >= originalLapsLength) {
+        throw RangeError('index ' + index + ' does not exists in laps');
+    }
+    if (index < 0) {
+        index = originalLapsLength + index;
+    }
+    var isLastLap = index === originalLapsLength - 1,
+    lap = this.laps[index];
+    this.laps.splice(index, 1);
+    if(isLastLap) {
+        this.lastLap -= lap;
+    } else {
+        this.laps[index] += lap;
+    }
+}
+
+
+RacingStopWatch.prototype.addRelativeLap = function(value) {
+    /*  Adds a split at the specified duration
+    Value is given in milliseconds since the stopwatch started
+    */
+    var lapCount = this.laps.length,
+        nextNearestLap = this.nextNearest(value, this.laps),
+        index,
+        difference;
+    if (nextNearestLap.index < 0) { // adding a new last split
+        index = this.laps.length;
+        difference = Math.abs(nextNearestLap.difference);
+        this.lastLap += difference;
+        this.lapGap = 0.0;
+    } else {
+        index = nextNearestLap.index;
+        difference = this.laps[index] - nextNearestLap.difference;
+        this.laps[index] = nextNearestLap.difference;
+    }
+    this.laps.splice(index, 0, difference);
+    return value;
+}
+
+
+RacingStopWatch.prototype.addLap = function(timestamp) {
+    var timestamp = timestamp || Date.now(),
+    isTimestamp = timestamp > this.startValue;
+    if (!isTimestamp) {
+        return this.addRelativeLap(timestamp);
+    }
+    var timestamp = timestamp || Date.now(),
+        split = this.addSplit(timestamp),
+        splitEnd = timestamp,
+        splitStart = this.lastLap + this.lapGap,
+        value = this.difference(splitStart, splitEnd);
+    this.laps.push(value);
+    this.lastLap = splitEnd;
+    this.lapGap = 0.0;
+    return value;
+}
+
+RacingStopWatch.prototype.updateLap = function(index, value) {
+    var lapCount = this.laps.length;
+    if (index < 0) {
+        index = lapCount + index;
+    }
+    var oldValue = this.laps[index],
+        difference = oldValue - value;
+    this.laps[index] = value;
+    if (index === splitCount - 1) {
+        this.lastLap-= difference;
+    } else {
+        this.laps[index + 1] += difference;
+    }
+}
+
+RacingStopWatch.prototype.resume = function(timestamp) {
+    var timestamp = timestamp || Date.now(),
+        stopValue = this.stopValue,
+        gap = this.difference(startValue, stopValue),
+        duration = StopWatch.prototype.resume.call(this, timestamp);
+    this.lapGap += gap;
+    return duration;
+}
+
+
+RacingStopWatch.prototype.reset = function() {
+    StopWatch.prototype.reset.call(this);
+    this.laps = [];
+    this.lapGap = null;
+    this.lastLap = null;
+}
+
+
+RacingStopWatch.prototype.pace = function(index) {
+    var lapCount = this.laps.length;
+    if (index == null) {
+        // find pace most recent lap
+        index = lapCount - 1;
+    } else if (index < 0) {
+        index = lapCount + index;
+    } else if (index > lapCount - 1) {
+        throw RangeError('Index ' + index + ' does not exist');
+    }
+    return this.laps[index] / this.lapDistance;
+}
+
 
 try{
     module.exports = StopWatch;
