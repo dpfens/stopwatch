@@ -237,7 +237,7 @@ StopWatch.prototype.isRunning = function() {
     /*
     indicates if the stopwatch is currently running (started but not stopped)
     */
-    return this.startValue && !this.stopValue;
+    return !!this.startValue && !this.stopValue;
 }
 
 
@@ -246,7 +246,7 @@ StopWatch.prototype.isActive = function() {
     indicates if the stopwatch has been used.
     If the stopwatch has been reset since being used, will return false
     */
-    return this.startValue;
+    return !!this.startValue;
 }
 
 try{
