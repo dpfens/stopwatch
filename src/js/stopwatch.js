@@ -249,6 +249,15 @@ StopWatch.prototype.isActive = function() {
     return !!this.startValue;
 }
 
+
+StopWatch.from = function(data) {
+    var instance = new StopWatch();
+    for (var key in data) {
+        instance[key] = data[key];
+    }
+    return instance;
+}
+
 try{
     module.exports = StopWatch;
 } catch {}
