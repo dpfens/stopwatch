@@ -97,7 +97,7 @@ StopWatch.prototype.splitDuration = function(timestamp) {
     if (!this.startValue) {
         return 0;
     }
-    var now = timestamp || Date.now(),
+    var now = this.stopValue || timestamp || Date.now(),
     splitStart = this.lastSplit + this.localGap;
     return this.difference(splitStart, now);
 }
