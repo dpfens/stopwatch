@@ -4,11 +4,11 @@ var instance = new StopWatch();
 instance.start();
 
 setTimeout(function() {
-  var split = instance.takeSplit();
+  var split = instance.addSplit();
 }, 25);
 
 setTimeout(function() {
-  var split = instance.takeSplit();
+  var split = instance.addSplit();
   console.log(instance.splits);
   //console.log('testing addSplit');
   instance.addSplit(10);

@@ -5,8 +5,16 @@ function StopWatch() {
     this.lastSplit = null;
     this.localGap = null;
     this.totalGap = null;
+    var now = new Date;
+    this.metadata = {
+        createdAt: now,
+        startedAt: null,
+        stoppedAt: null,
+        resetAt: null,
+        lastModified: null,
+        timezone: now.getTimezoneOffset()
+    };
 }
-
 
 StopWatch.prototype.nextNearestSplit = function(value) {
     /*
@@ -17,7 +25,7 @@ StopWatch.prototype.nextNearestSplit = function(value) {
   var nearestSplitIndex = -1,
       runningDuration = 0.0;
   for (var i = 0; i < this.splits.length; i++) {
-    var splitValue = this.splits[i]
+    var splitValue = this.splits[i].value;
     runningDuration += splitValue;
     if (runningDuration > value) {
       nearestSplitIndex = i;
@@ -75,6 +83,9 @@ StopWatch.prototype.start = function(timestamp) {
     this.lastSplit = this.startValue;
     this.localGap = 0.0;
     this.totalGap = 0.0;
+    var now = new Date();
+    this.metadata.startedAt = now;
+    this.metadata.lastModified = now;
 }
 
 
@@ -118,12 +129,13 @@ StopWatch.prototype.removeSplit = function(index) {
         index = originalSplitsLength + index;
     }
     var isLastSplit = index === originalSplitsLength - 1,
-    split = this.splits[index];
+    split = this.splits[index].value;
     this.splits.splice(index, 1);
     if(isLastSplit) {
         this.lastSplit -= split;
     } else {
-        this.splits[index] += split;
+        this.splits[index].value += split;
+        this.splits[index].metadata.lastModified = new Date();
     }
 }
 
@@ -143,11 +155,19 @@ StopWatch.prototype.addRelativeSplit = function(value) {
         this.localGap = 0.0;
     } else {
         index = nextNearestSplit.index;
-        difference = this.splits[index] - nextNearestSplit.difference;
-        this.splits[index] = nextNearestSplit.difference;
+        difference = this.splits[index].value - nextNearestSplit.difference;
+        this.splits[index].value = nextNearestSplit.difference;
+        this.splits[index].metadata.lastModified = new Date();
     }
-    this.splits.splice(index, 0, difference);
-    return value;
+    var data = {
+        value: difference,
+        metadata: {
+            createdAt: new Date(),
+            lastModified: null,
+        }
+    };
+    this.splits.splice(index, 0, data);
+    return data;
 }
 
 
@@ -164,26 +184,36 @@ StopWatch.prototype.addSplit = function(timestamp) {
     }
     var splitEnd = timestamp,
     splitStart = this.lastSplit + this.localGap,
-    value = this.difference(splitStart, splitEnd);
-    this.splits.push(value);
+    value = this.difference(splitStart, splitEnd),
+    data = {
+        value: value,
+        metadata: {
+            createdAt: new Date(),
+            lastModified: null,
+        }
+    };
+    this.splits.push(data);
     this.lastSplit = splitEnd;
     this.localGap = 0.0;
-    return value;
+    return data;
 }
 
 
 StopWatch.prototype.update = function(index, value) {
-    var splitCount = this.splits.length;
+    var splitCount = this.splits.length,
+        now = new Date();
     if (index < 0) {
         index = splitCount + index;
     }
-    var oldValue = this.splits[index],
+    var oldValue = this.splits[index].value,
         difference = oldValue - value;
-    this.splits[index] = value;
+    this.splits[index].value = value;
+    this.splits[index].metadata.lastModified = now;
     if (index === splitCount - 1) {
         this.lastSplit -= difference;
     } else {
-        this.splits[index + 1] += difference;
+        this.splits[index + 1].value += difference;
+        this.splits[index + 1].metadata.lastModified = now;
     }
 }
 
@@ -198,6 +228,9 @@ StopWatch.prototype.stop = function(timestamp) {
         throw Error('Stopwatch has already been stopped');
     }
     this.stopValue = timestamp || Date.now();
+    var now = new Date();
+    this.metadata.stoppedAt = now;
+    this.metadata.lastModified = now;
     return this.difference(this.startValue + this.totalGap, this.stopValue);
 }
 
@@ -217,6 +250,8 @@ StopWatch.prototype.resume = function(timestamp) {
     this.localGap += gap;
     this.totalGap += gap;
     this.stopValue = null;
+    this.metadata.stoppedAt = null;
+    this.metadata.lastModified = new Date();
 }
 
 
@@ -230,6 +265,10 @@ StopWatch.prototype.reset = function() {
     this.lastSplit = null;
     this.localGap = null;
     this.totalGap = null;
+
+    this.metadata.startedAt = null;
+    this.metadata.stoppedAt = null;
+    this.metadata.resetAt = new Date();
 }
 
 
@@ -258,6 +297,6 @@ StopWatch.from = function(data) {
     return instance;
 }
 
-try{
+try {
     module.exports = StopWatch;
 } catch {}
