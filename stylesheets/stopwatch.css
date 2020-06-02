@@ -7,6 +7,13 @@ button {
     cursor: pointer;
 }
 
+*:focus {
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
+
 button span, a span {
     display: block;
     margin: 0.2em;
@@ -21,6 +28,10 @@ div.tab-controls a, div.stopwatches button.add {
     background: #DDD;
     cursor: pointer;
     flex-grow: 1;
+}
+
+div.tab-controls a:active {
+  background: #BBB;
 }
 
 div.tab-controls {
@@ -89,11 +100,6 @@ div.stopwatch div.controls {
 
 div.stopwatch div.controls button {
     flex-grow: 1;
-}
-
-
-div.stopwatches button.add {
-    background: #DDD;
 }
 
 div.stopwatch h2 {
