@@ -67,7 +67,7 @@
         this.splitDuration.fontSize = this.splitDuration.fontSize || { value: 0.4, unit: 'em' };
         this.render = render || {};
         this.render.showControls = this.render.showControls || true;
-        this.render.showSplits = this.render.showSplits || false;
+        this.render.showSplits = this.render.showSplits || true;
         this.locale = locale || 'en-us';
     }
 
