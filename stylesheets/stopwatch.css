@@ -1,0 +1,155 @@
+button {
+    background: rgba(255, 255, 255, 0.5);
+    border: none;
+    outline: none;
+    margin: 0.1em;
+    padding: 0.25em 0.5em;
+    cursor: pointer;
+}
+
+button span, a span {
+    display: block;
+    margin: 0.2em;
+}
+
+div.tab-controls {
+    text-align: center;
+    display: flex;
+}
+
+div.tab-controls a, div.stopwatches button.add {
+    background: #DDD;
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+div.tab-controls {
+    background: #DDD;
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+div.tab-controls a:not(:last-child) {
+    border-right: 1px solid white;
+}
+
+div.time-display {
+    font-size: 45px;
+    text-align: center;
+    cursor: pointer;
+}
+
+div.time-display time {
+    display: block;
+    font-family: 'Roboto Mono';
+}
+
+div.years, div.days, div.hours, div.minutes, div.seconds {
+    margin-right: -0.6em;
+}
+
+span.years, span.days, span.hours, span.minutes, span.seconds {
+    margin-right: -0.02em;
+}
+
+table.splits {
+    font-size: 18px;
+}
+
+div.stopwatch h2 table.splits thead {
+    letter-spacing: 0.02em;
+}
+
+/* Forms */
+form.time-display input {
+    width: 3em;
+}
+
+form.time-display input.years, form.time-display input.days, form.time-display input.hours {
+    width: 2em;
+}
+
+div.stopwatches, div.archives {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+div.stopwatch {
+    border: 1px solid #FFF;
+    align-items: center;
+    flex-grow: 1;
+    flex-shrink: 0;
+    padding: 0.5rem;
+}
+
+div.stopwatch div.controls {
+    display: flex;
+}
+
+div.stopwatch div.controls button {
+    flex-grow: 1;
+}
+
+
+div.stopwatches button.add {
+    background: #DDD;
+}
+
+div.stopwatch h2 {
+    text-align: center;
+}
+
+div.stopwatch * {
+    color: currentColor;
+}
+
+div.stopwatch input {
+    color: #000;
+}
+
+div.tab-controls a:hover, div.stopwatches button.add:hover {
+    background: #CCC;
+}
+
+div.stopwatch div.controls {
+    text-align: center;
+}
+
+div.stopwatch table.splits {
+    margin: 1em auto;
+}
+
+@media only screen and (min-width: 800px) {
+    div.stopwatch {
+      flex-basis: 50%;
+    }
+
+
+    div.stopwatch:nth-last-child(n+3):first-child,
+    div.stopwatch:nth-last-child(n+3):first-child ~ *,
+    div.stopwatch:nth-last-child(n+3):first-child,
+    div.stopwatch:nth-last-child(n+3):first-child ~ * {
+      flex-basis: 33%;
+    }
+
+    div.stopwatch:nth-last-child(n+2):first-child,
+    div.stopwatch:nth-last-child(n+2):first-child ~ *,
+    div.stopwatch:nth-last-child(n+2):first-child,
+    div.stopwatch:nth-last-child(n+2):first-child ~ * {
+      flex-basis: 25%;
+    }
+
+
+    div.stopwatch:nth-child(5):last-child {
+        margin-right: auto;
+    }
+
+}
+
+@media only screen and (max-width: 799px) {
+
+    div.stopwatch div.controls button {
+        height: 4em;
+    }
+}
