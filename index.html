@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
    <head>
+       <!-- Google Tag Manager -->
+       <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NCXJXW');</script>
+       <!-- End Google Tag Manager -->
       <title>Stopwatch</title>
       <link rel="canonical" href=""/>
       <script type="application/ld+json"></script>
@@ -18,6 +21,9 @@
       <link rel="stylesheet" href="libs/fontawesome-pro/css/duotone.css">
    </head>
    <body>
+       <!-- Google Tag Manager (noscript) -->
+       <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NCXJXW"height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+       <!-- End Google Tag Manager (noscript) -->
       <main>
          <div id="app">
             <div class="tab-controls"><a id="toggle-stopwatch" v-on:click="currentTab = 'stopwatch'"><i class="fad fa-stopwatch"></i><span>Stopwatches</span></a><a id="toggle-archive" v-if="archive.data.length &gt; 0" v-on:click="currentTab = 'archive'"><i class="fad fa-archive"></i><span>Archives</span></a><a id="toggle-settings" v-on:click="currentTab = 'settings'"><i class="fad fa-sliders-h"></i><span>Settings</span></a><a id="toggle-settings" v-on:click="currentTab = 'about'"><i class="fad fa-address-card"></i><span>About</span></a></div>
