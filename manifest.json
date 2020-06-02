@@ -1,0 +1,15 @@
+{
+  "short_name": "Multi-Stopwatch",
+  "name": "Multi-Stopwatch",
+  "icons": [
+    {
+      "src":"assets/icon.png",
+      "sizes": "189x192",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "https://dpfens.github.io/stopwatch?utm_source=homescreen",
+  "background_color": "#FFFFFF",
+  "Theme_color": "#AE3B27",
+  "display": "standalone"
+}
