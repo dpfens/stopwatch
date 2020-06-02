@@ -216,7 +216,7 @@
             'removeSplit': function() {
                 this.$parent.deleteSplit(this.index);
                 dataLayer.push({
-                    'event': '',
+                    'event': 'stopwatchEvent',
                     'eventCategory': 'Split',
                     'eventAction': 'Delete',
                     'eventLabel': 'Stopwatch #' + this.$parent.index
@@ -226,7 +226,7 @@
                 this.$parent.edittingSplit = this.split;
                 this.$parent.edittingSplitIndex = this.index;
                 dataLayer.push({
-                    'event': '',
+                    'event': 'stopwatchEvent',
                     'eventCategory': 'Split',
                     'eventAction': 'Edit',
                     'eventLabel': 'Stopwatch #' + this.$parent.index
@@ -279,7 +279,7 @@
                 this.$parent.edittingSplitIndex = null;
 
                 dataLayer.push({
-                    'event': '',
+                    'event': 'stopwatchEvent',
                     'eventCategory': 'Split',
                     'eventAction': 'Update',
                     'eventLabel': 'StopWatch #' + this.$parent.index
@@ -288,7 +288,7 @@
             deleteSplit: function(index) {
                 this.$parent.deleteSplit(index);
                 dataLayer.push({
-                    'event': '',
+                    'event': 'stopwatchEvent',
                     'eventCategory': 'Split',
                     'eventAction': 'Delete',
                     'eventLabel': 'Stopwatch #' + this.$parent.index
@@ -442,7 +442,7 @@
             startStopWatch: function() {
                 this.stopwatch.start();
                 dataLayer.push({
-                    'event': '',
+                    'event': 'stopwatchEvent',
                     'eventCategory': 'Stopwatch',
                     'eventAction': 'Start',
                     'eventLabel': 'Stopwatch #' + this.index
@@ -456,7 +456,7 @@
                     splitDuration = this.stopwatch.splitDuration(this.stopwatch.stopValue),
                     splitDurationBreakdown = this.stopwatch.breakdown(splitDuration);
                 dataLayer.push({
-                    'event': '',
+                    'event': 'stopwatchEvent',
                     'eventCategory': 'Stopwatch',
                     'eventAction': 'Stop',
                     'eventLabel': 'Stopwatch #' + this.index
@@ -471,7 +471,7 @@
             resumeStopwatch: function() {
                 this.stopwatch.resume();
                 dataLayer.push({
-                    'event': '',
+                    'event': 'stopwatchEvent',
                     'eventCategory': 'Stopwatch',
                     'eventAction': 'Resume',
                     'eventLabel': 'Stopwatch #' + this.index
@@ -482,7 +482,7 @@
             resetStopwatch: function() {
                 this.stopwatch.reset();
                 dataLayer.push({
-                    'event': '',
+                    'event': 'stopwatchEvent',
                     'eventCategory': 'Stopwatch',
                     'eventAction': 'Reset',
                     'eventLabel': 'Stopwatch #' + this.index
@@ -505,7 +505,7 @@
                     split.metadata.annotations = [];
                     split.breakdown = breakdown;
                 dataLayer.push({
-                    'event': '',
+                    'event': 'stopwatchEvent',
                     'eventCategory': 'Split',
                     'eventAction': 'Create',
                     'eventLabel': 'Stopwatch #' + this.index
@@ -598,7 +598,7 @@
             saveSettings: function(event) {
                 this.settings.save();
                 dataLayer.push({
-                    'event': '',
+                    'event': 'stopwatchEvent',
                     'eventCategory': 'Settings',
                     'eventAction': 'Update',
                     'eventLabel': 'Global'
@@ -614,7 +614,7 @@
                     stopwatchCount = this.stopwatches.data.length;
                 this.stopwatches.push(newStopwatch, localSettings);
                 dataLayer.push({
-                    'event': '',
+                    'event': 'stopwatchEvent',
                     'eventCategory': 'Stopwatch',
                     'eventAction': 'Create',
                     'eventLabel': 'Stopwatch #' + stopwatchCount
@@ -627,7 +627,7 @@
             removeStopWatch: function(index) {
                 this.stopwatches.data.splice(index, 1);
                 dataLayer.push({
-                    'event': '',
+                    'event': 'stopwatchEvent',
                     'eventCategory': 'Stopwatch',
                     'eventAction': 'Delete',
                     'eventLabel': 'Stopwatch #' + index
@@ -642,7 +642,7 @@
                     newSettings = newInstanceData.settings;
                 this.stopwatches.push(newStopwatch, newSettings);
                 dataLayer.push({
-                    'event': '',
+                    'event': 'stopwatchEvent',
                     'eventCategory': 'Stopwatch',
                     'eventAction': 'Clone',
                     'eventLabel': 'Stopwatch #' + index
@@ -654,7 +654,7 @@
                 this.archive.push(stopwatch, localSettings);
                 this.archive.save();
                 dataLayer.push({
-                    'event': '',
+                    'event': 'stopwatchEvent',
                     'eventCategory': 'Stopwatch',
                     'eventAction': 'Archive',
                     'eventLabel': 'Stopwatch #' + stopwatchCount
@@ -668,7 +668,7 @@
                 this.stopwatches.push(stopwatch, settings);
                 this.saveStopwatches();
                 dataLayer.push({
-                    'event': '',
+                    'event': 'stopwatchEvent',
                     'eventCategory': 'Stopwatch',
                     'eventAction': 'Unarchive',
                     'eventLabel': 'Stopwatch #' + index
