@@ -4,9 +4,7 @@
         window.dataLayer = window.dataLayer || [];
 
     if (connection != null) {
-        function updateConnectionStatus() {
-            console.log(connection);
-        }
+        function updateConnectionStatus() {}
 
         updateConnectionStatus();
         connection.addEventListener('change', updateConnectionStatus);
