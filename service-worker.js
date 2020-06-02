@@ -1,5 +1,10 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
+workbox.routing.registerRoute(
+  new RegExp('stopwatch(/)?$'),
+  new workbox.strategies.NetworkFirst()
+);
+
 // Cache Google Fonts with a stale-while-revalidate strategy, with
 // a maximum number of entries.
 workbox.routing.registerRoute(function(request) {
@@ -16,21 +21,8 @@ workbox.routing.registerRoute(function(request) {
 );
 
 
-workbox.routing.registerRoute(function(request) {
-    return request.url.origin === 'https://fonts.googleapis.com' || request.url.origin === 'https://fonts.gstatic.com';
-  },
-  new workbox.strategies.StaleWhileRevalidate({
-    cacheName: 'google-fonts',
-    plugins: [
-      new workbox.expiration.ExpirationPlugin({
-        maxEntries: 20,
-      })
-    ]
-  })
-);
-
 workbox.routing.registerRoute(function (request) {
-        return request.request.destination === 'image';
+        return request.request.destination === 'image' && request.url.origin !== 'https://google-analytics.com';
     },
     new workbox.strategies.CacheFirst({
       cacheName: 'images',
