@@ -494,8 +494,7 @@
                 this.splits = [];
             },
             archiveStopwatch: function () {
-                this.$parent.archiveStopwatch(this.stopwatch, this.localSettings);
-                this.$parent.removeStopWatch(this.index);
+                this.$parent.archiveStopwatch(this.index, this.stopwatch, this.localSettings);
             },
             recordSplit: function() {
                 var splitCount = this.stopwatch.splits.length,
@@ -649,16 +648,17 @@
                 });
                 this.saveStopwatches();
             },
-            archiveStopwatch: function (stopwatch, localSettings) {
-                var stopwatchCount = this.stopwatch.data.length;
+            archiveStopwatch: function (index, stopwatch, localSettings) {
                 this.archive.push(stopwatch, localSettings);
                 this.archive.save();
                 dataLayer.push({
                     'event': 'stopwatchEvent',
                     'eventCategory': 'Stopwatch',
                     'eventAction': 'Archive',
-                    'eventLabel': 'Stopwatch #' + stopwatchCount
+                    'eventLabel': 'Stopwatch #' + index
                 });
+                this.stopwatches.data.splice(index, 1);
+                this.saveStopwatches();
             },
             unarchiveStopwatch: function(index) {
                 var instance = this.archive.data[index],
