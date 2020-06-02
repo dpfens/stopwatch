@@ -1,0 +1,268 @@
+div.display.lcd-display {
+  font-size: 16px;
+  -webkit-transition: font-size 0.5s linear;
+  -moz-transition: font-size 0.5s linear;
+  transition: font-size 0.5s linear;
+}
+
+.lcd-display.localization-en-us > .digit-container::after {
+    font-size: 5em;
+    line-height: 0;
+}
+
+.lcd-display.localization-en-uk > .digit-container::after {
+    font-size: 2em;
+    line-height: 0;
+}
+
+.lcd-display div.colon:before {
+  top: 0.875em;
+}
+
+.lcd-display div.colon:after{
+	top: 2.125em;
+}
+
+
+.lcd-display div.digit, div.colon{
+	text-align:left;
+	position:relative;
+	width: 1.75em;
+	height: 3.3em;
+	display:inline-block;
+	margin: 0 0.25em;
+}
+
+.lcd-display div.colon {
+  width: 0.3125em;
+}
+
+.lcd-display div.digit span {
+	opacity:0;
+	position:absolute;
+
+	/*-webkit-transition:0.05s;
+	-moz-transition:0.0.5s;
+	transition:0.05s;*/
+}
+
+.lcd-display div.digit span:before,
+.lcd-display div.digit span:after{
+	content:'';
+	position:absolute;
+	width:0;
+	height:0;
+	border: .3125em solid transparent;
+}
+
+.lcd-display div.digit .d1,
+.lcd-display div.digit .d2,
+.lcd-display div.digit .d3,
+.lcd-display div.digit .d4,
+.lcd-display div.digit .d5,
+.lcd-display div.digit .d6,
+.lcd-display div.digit .d7,
+.lcd-display div.colon:before,
+.lcd-display div.colon:after {
+  background: black;
+}
+
+.lcd-display div.digit .d1, .lcd-display div.digit .d2, .lcd-display div.digit .d3 {
+  height: .3125em;
+  width: 1em;
+  left: .375em;
+}
+
+.lcd-display div.digit .d4, .lcd-display div.digit .d5, .lcd-display div.digit .d6, .lcd-display div.digit .d7 {
+  width: .3125em;
+  height: .875em;
+}
+
+.lcd-display div.digit .d4, .lcd-display div.digit .d5 {
+  top: 0.4375em;
+}
+.lcd-display div.digit .d6, .lcd-display div.digit .d7 {
+  top: 2em;
+}
+
+.lcd-display div.digit .d1{
+  top: 0;
+}
+
+.lcd-display div.digit .d1:before{
+  border-width:0 .3125em .3125em 0;
+  border-right-color:inherit;
+  left:-.3125em;
+}
+
+.lcd-display div.digit .d1:after{
+  border-width:0 0 .3125em .3125em;
+  border-left-color:inherit;
+  right:-.3125em;
+}
+
+.lcd-display div.digit .d2{
+  top: 1.5em;
+}
+.lcd-display div.digit .d2:before {
+  border-width:.1875em .25em .125em;
+  border-right-color:inherit;
+  left: -.5em;
+}
+.lcd-display div.digit .d2:after {
+  border-width:.1875em .25em .125em;
+  border-left-color:inherit;
+  right: -.5em;
+}
+
+.lcd-display div.digit .d3{
+  top: 3em;
+}
+.lcd-display div.digit .d3:before {
+  border-width:.3125em .3125em 0 0;
+  border-right-color:inherit;
+  left: -.3125em;
+}
+.lcd-display div.digit .d3:after{
+  border-width:.3125em 0 0 .3125em;
+  border-left-color:inherit;
+  right:-.3125em;
+}
+
+.lcd-display div.digit .d4, .lcd-display div.digit .d6 {
+  left:0;
+}
+
+.lcd-display div.digit .d4:before, .lcd-display div.digit .d6:before {
+  border-width:0 .3125em .3125em 0;
+  border-bottom-color:inherit;
+  top:-.3125em;
+}
+
+.lcd-display div.digit .d4:after, .lcd-display div.digit .d6:after {
+  border-width:0 0 .3125em .3125em;
+  border-left-color:inherit;
+  bottom:-.3125em;
+}
+
+.lcd-display div.digit .d5, .lcd-display div.digit .d7 {
+  right:0;
+}
+
+.lcd-display div.digit .d5:before, .lcd-display div.digit .d7:before {
+  border-width:0 0 .3125em .3125em;
+  border-bottom-color:inherit;
+  top:-.3125em;
+}
+
+.lcd-display div.digit .d5:after, .lcd-display div.digit .d7:after {
+  border-width:.3125em 0 0 .3125em;
+  border-top-color:inherit;
+  bottom:-.3125em;
+}
+
+
+/* 1 */
+
+.lcd-display div.digit.one .d5,
+.lcd-display div.digit.one .d7 {
+	opacity:1;
+}
+
+/* 2 */
+
+.lcd-display div.digit.two .d1,
+.lcd-display div.digit.two .d5,
+.lcd-display div.digit.two .d2,
+.lcd-display div.digit.two .d6,
+.lcd-display div.digit.two .d3 {
+	opacity:1;
+}
+
+/* 3 */
+
+.lcd-display div.digit.three .d1,
+.lcd-display div.digit.three .d5,
+.lcd-display div.digit.three .d2,
+.lcd-display div.digit.three .d7,
+.lcd-display div.digit.three .d3 {
+	opacity:1;
+}
+
+/* 4 */
+
+.lcd-display div.digit.four .d5,
+.lcd-display div.digit.four .d2,
+.lcd-display div.digit.four .d4,
+.lcd-display div.digit.four .d7 {
+	opacity:1;
+}
+
+/* 5 */
+
+.lcd-display div.digit.five .d1,
+.lcd-display div.digit.five .d2,
+.lcd-display div.digit.five .d4,
+.lcd-display div.digit.five .d3,
+.lcd-display div.digit.five .d7 {
+	opacity:1;
+}
+
+/* 6 */
+
+.lcd-display div.digit.six .d1,
+.lcd-display div.digit.six .d2,
+.lcd-display div.digit.six .d4,
+.lcd-display div.digit.six .d3,
+.lcd-display div.digit.six .d6,
+.lcd-display div.digit.six .d7 {
+	opacity:1;
+}
+
+
+/* 7 */
+
+.lcd-display div.digit.seven .d1,
+.lcd-display div.digit.seven .d5,
+.lcd-display div.digit.seven .d7 {
+	opacity:1;
+}
+
+/* 8 */
+
+.lcd-display div.digit.eight .d1,
+.lcd-display div.digit.eight .d2,
+.lcd-display div.digit.eight .d3,
+.lcd-display div.digit.eight .d4,
+.lcd-display div.digit.eight .d5,
+.lcd-display div.digit.eight .d6,
+.lcd-display div.digit.eight .d7 {
+	opacity:1;
+}
+
+/* 9 */
+
+.lcd-display div.digit.nine .d1,
+.lcd-display div.digit.nine .d2,
+.lcd-display div.digit.nine .d3,
+.lcd-display div.digit.nine .d4,
+.lcd-display div.digit.nine .d5,
+.lcd-display div.digit.nine .d7 {
+	opacity:1;
+}
+
+/* 0 */
+
+.lcd-display div.digit.zero .d1,
+.lcd-display div.digit.zero .d3,
+.lcd-display div.digit.zero .d4,
+.lcd-display div.digit.zero .d5,
+.lcd-display div.digit.zero .d6,
+.lcd-display div.digit.zero .d7 {
+	opacity:1;
+}
+
+
+.lcd-display div.days, .lcd-display div.hours, .lcd-display div.minutes, .lcd-display div.seconds, .lcd-display div.milliseconds, .lcd-display div.colon {
+  float: left;
+}
