@@ -538,7 +538,7 @@
             <slot></slot>\
             <button class="float-right"  v-show="!showSettings" v-on:click="showSettings = true"><i class="fad fa-cogs"></i><span>Customize</span></button>\
             <button class="float-right" v-show="showSettings" v-on:click="showSettings = false"><i class="fad fa-times"></i><span>Close</span></button>\
-            <div class="clear" v-if="showSettings">\
+            <div class="clear settings" v-if="showSettings">\
                 <p><label for="name">Name:</label>\
                 <input type="text" placeholder="name" name="name" v-model="localSettings.name" v-on:change="save" /></p>\
                 <p><label>Primary: </label>\

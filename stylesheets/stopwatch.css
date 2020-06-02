@@ -152,4 +152,12 @@ div.stopwatch table.splits {
     div.stopwatch div.controls button {
         height: 4em;
     }
+
+}
+
+
+@media only screen and (max-width: 450px) {
+    div.stopwatch div.settings input {
+      max-width: 8em;
+    }
 }
