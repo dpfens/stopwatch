@@ -16,6 +16,17 @@
       <meta name="apple-mobile-web-app-capable" content="yes"/>
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
       <link rel="manifest" href="manifest.json">
+
+      <link rel="dns-prefetch" href="https://storage.googleapis.com"/>
+      <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
+      <link rel="dns-prefetch" href="https://fonts.googleapis.com"/>
+      <link rel="dns-prefetch" href="https://www.googletagmanager.com"/>
+
+      <link rel="preconnect" href="https://storage.googleapis.com" crossorigin/>
+      <link rel="preconnect" href="https://www.google-analytics.com" crossorigin/>
+      <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin/>
+      <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin/>
+
       <link rel="stylesheet" href="libs/stopwatch/css/display.css">
       <link rel="stylesheet" href="stylesheets/base.css">
       <link rel="stylesheet" href="stylesheets/stopwatch.css">
@@ -28,7 +39,24 @@
        <!-- End Google Tag Manager (noscript) -->
       <main>
          <div id="app">
-            <div class="tab-controls"><a id="toggle-stopwatch" v-on:click="currentTab = 'stopwatch'"><i class="fad fa-stopwatch"></i><span>Stopwatches</span></a><a id="toggle-archive" v-if="archive.data.length &gt; 0" v-on:click="currentTab = 'archive'"><i class="fad fa-archive"></i><span>Archives</span></a><a id="toggle-settings" v-on:click="currentTab = 'settings'"><i class="fad fa-sliders-h"></i><span>Settings</span></a><a id="toggle-settings" v-on:click="currentTab = 'about'"><i class="fad fa-address-card"></i><span>About</span></a></div>
+            <div class="tab-controls">
+              <a id="toggle-stopwatch" v-on:click="currentTab = 'stopwatch'">
+                <i class="fad fa-stopwatch"></i>
+                <span>Stopwatches</span>
+              </a>
+              <a id="toggle-archive" v-if="archive.data.length &gt; 0" v-on:click="currentTab = 'archive'">
+                <i class="fad fa-archive"></i>
+                <span>Archives</span>
+              </a>
+              <a id="toggle-settings" v-on:click="currentTab = 'settings'">
+                <i class="fad fa-sliders-h"></i>
+                <span>Settings</span>
+              </a>
+              <a id="toggle-settings" v-on:click="currentTab = 'about'">
+                <i class="fad fa-address-card"></i>
+                <span>About</span>
+              </a>
+            </div>
             <div class="tab stopwatches-tab" v-show="currentTab === 'stopwatch'">
                <div class="stopwatches">
                   <div class="stopwatch" v-for="(instance, index) in stopwatches.data" is="stopwatch" v-bind:index="index" v-bind:settings="settings" v-bind:local-settings="instance.settings" v-bind:stopwatch="instance.stopwatch" display="textdisplay" v-bind:show-controls="settings.render.showControls" v-bind:show-splits="settings.render.showSplits" v-bind:mutable="true"><button class="float-left" v-on:click="removeStopWatch(index)"><i class="fad fa-trash"></i><span>Delete</span></button><button class="float-left" v-on:click="cloneStopwatch(index)"><i class="fad fa-clone"></i><span>Clone</span></button></div>
