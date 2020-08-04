@@ -129,6 +129,7 @@ div.stopwatch div.controls {
 
 div.stopwatch table.splits {
     margin: 1em auto;
+    border-spacing: 5px 2px;
 }
 
 @media only screen and (min-width: 800px) {

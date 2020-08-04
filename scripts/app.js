@@ -71,7 +71,7 @@
         this.locale = locale || 'en-us';
     }
 
-    if (localStorage) {
+    if ('localStorage' in window && window['localStorage'] !== null) {
         Archive.prototype.save = function() {
             LocalStorageAdapter.prototype.save.call(this, this.data);
         }
@@ -236,6 +236,7 @@
 
         template: '<tr>\
             <td>{{ index + 1 }}</td>\
+            <td>{{ split.label }}</td>\
             <td>\
                 <time :class="\'localization-\' + locale" v-bind:datetime="formatDateTime(split.breakdown)">\
                 <span class="years" v-if="split.breakdown.years > 0">{{ formattedValue.years }}</span>\
@@ -246,8 +247,8 @@
                 <span class="milliseconds">{{ formattedValue.milliseconds }}</span>\
                 </time>\
             </td>\
-            <td v-if="split.metadata.labels">\
-                <span v-for="label in split.metadata.labels">{{ label }}</span>\
+            <td>\
+                <span v-for="label in split.metadata.tags">{{ label }}</span>\
             </td>\
             <td v-if="mutable">\
                 <button v-on:click="edit"><i class="fad fa-edit"></i><span>Edit</span></button>\
@@ -304,16 +305,17 @@
             return output;
         },
         template: '<form :class="\'localization-\' + locale + \' time-display\'">\
-            <span class="years"><input type="tel" class="years" name="years" min="0" v-model.number="years" /></span>\
+            <p><label>Label:</label><input type="text" v-model="split.label" /></p>\
+            <p>Split: <span class="years"><input type="tel" class="years" name="years" min="0" v-model.number="years" /></span>\
             <span class="days"><input type="tel" class="days" name="days" min="0" v-model.number="days" /></span>\
             <span class="hours"><input type="tel" class="hours" name="hours" min="0" v-model.number="hours" /></span>\
             <span class="minutes"><input type="tel" class="minutes" name="minutes" min="0" v-model.number="minutes" /></span>\
             <span class="seconds"><input type="tel" class="seconds" name="seconds" min="0" v-model.number="seconds" /></span>\
-            <span class="milliseconds"><input type="text" class="milliseconds" name="milliseconds" v-model.number="milliseconds" /></span>\
-            <div v-if="split.metadata.labels.length > 0">\
-                <h3 >Labels</h3>\
-                <select v-model="split.metadata.labels" multiple>\
-                    <option v-for="label in split.metadata.labels" value="{{value}}">{{ name }}</option>\
+            <span class="milliseconds"><input type="text" class="milliseconds" name="milliseconds" v-model.number="milliseconds" /></span></p>\
+            <div v-if="split.metadata.tags">\
+                <h3 >Tags</h3>\
+                <select v-model="split.metadata.tags" multiple>\
+                    <option v-for="label in split.metadata.tags" value="{{value}}">{{ name }}</option>\
                 </select>\
             </div>\
             <button v-on:click.prevent="deleteSplit(index)"><i class="fad fa-trash"></i><span>Delete</span></button>\
@@ -499,10 +501,12 @@
             recordSplit: function() {
                 var splitCount = this.stopwatch.splits.length,
                     split = this.stopwatch.addSplit(),
-                    breakdown = this.stopwatch.breakdown(split.value);
-                    split.metadata.labels = [];
+                    breakdown = this.stopwatch.breakdown(split.value),
+                    splitNumber = splitCount + 1;
+                    split.metadata.tags = [];
                     split.metadata.annotations = [];
                     split.breakdown = breakdown;
+                    split.label = 'Split #' + splitNumber;
                 dataLayer.push({
                     'event': 'stopwatchEvent',
                     'eventCategory': 'Split',
@@ -564,6 +568,7 @@
                     <thead>\
                         <tr>\
                             <th>Split</th>\
+                            <th>Label</th>\
                             <th>Value</th>\
                         </tr>\
                     </thead>\
