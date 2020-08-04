@@ -124,6 +124,7 @@
     } else {
         Archive.prototype.save = function() {}
         Archive.prototype.load = function() { return [];}
+        StopWatchArchive.prototype.load = function() { return [];}
 
         Settings.prototype.save = function() {}
 
@@ -133,8 +134,8 @@
                 unit: 'em'
             };
             this.locale = 'en-us';
-            this.totalDuration.fontSize = fontSize;
-            this.splitDuration.fontSize = fontSize;
+            this.totalDuration.fontSize = defaultFontSize;
+            this.splitDuration.fontSize = defaultFontSize;
         }
     }
 
