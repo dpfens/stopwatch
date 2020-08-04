@@ -41,19 +41,19 @@
       <main>
          <div id="app">
             <div class="tab-controls">
-              <a id="toggle-stopwatch" v-on:click="currentTab = 'stopwatch'">
+              <a id="toggle-stopwatch" v-on:click="currentTab = 'stopwatch'" :class="currentTab === 'stopwatch' ? 'active' : ''">
                 <i class="fad fa-stopwatch"></i>
                 <span>Stopwatches</span>
               </a>
-              <a id="toggle-archive" v-if="archive.data.length &gt; 0" v-on:click="currentTab = 'archive'">
+              <a id="toggle-archive" v-if="archive.data.length &gt; 0" v-on:click="currentTab = 'archive'" :class="currentTab === 'archive' ? 'active' : ''">
                 <i class="fad fa-archive"></i>
                 <span>Archives</span>
               </a>
-              <a id="toggle-settings" v-on:click="currentTab = 'settings'">
+              <a id="toggle-settings" v-on:click="currentTab = 'settings'" :class="currentTab === 'settings' ? 'active' : ''">
                 <i class="fad fa-sliders-h"></i>
                 <span>Settings</span>
               </a>
-              <a id="toggle-settings" v-on:click="currentTab = 'about'">
+              <a id="toggle-settings" v-on:click="currentTab = 'about'" :class="currentTab === 'about' ? 'active' : ''">
                 <i class="fad fa-address-card"></i>
                 <span>About</span>
               </a>
@@ -70,7 +70,7 @@
                </div>
             </div>
             <div class="tab" id="settings" v-show="currentTab === 'settings'">
-               <h2>Settings</h2>
+               <h2>Stopwatch Settings</h2>
                <h3>Formatting</h3>
                <select v-model="settings.locale" v-on:change="saveSettings">
                   <option value="en-us">US</option>

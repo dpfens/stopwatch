@@ -28,10 +28,12 @@ div.tab-controls a, div.stopwatches button.add {
     background: #DDD;
     cursor: pointer;
     flex-grow: 1;
-}
-
-div.tab-controls a:active {
-  background: #BBB;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 div.tab-controls {
@@ -114,7 +116,8 @@ div.stopwatch input {
     color: #000;
 }
 
-div.tab-controls a:hover, div.stopwatches button.add:hover {
+div.tab-controls a:hover, div.stopwatches button.add:hover, div.tab-controls a.active {
+    -webkit-tap-highlight-color: transparent;
     background: #CCC;
 }
 
