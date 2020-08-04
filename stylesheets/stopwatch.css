@@ -1,3 +1,53 @@
+main, div#app {
+  height: 100vh;
+}
+
+div.container {
+  width: 100%;
+  height: calc(100vh - 44px);
+  overflow: hidden;
+  position: relative;
+}
+
+div.tab {
+  width: 100%;
+  height: inherit;
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow-y: scroll;
+  will-change: transform;
+  transition: transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+}
+
+div.tab.visible {
+  transform: translateX(0%);
+}
+
+div.tab.invisible#stopwatches {
+  transform: translateX(-100%);
+}
+
+div.tab.visible + div.tab.invisible#archive {
+  transform: translateX(100%);
+}
+
+div.tab.invisible + div.tab.invisible#archive {
+  transform: translateX(-100%);
+}
+
+div.tab.visible ~ div.tab.invisible#settings {
+  transform: translateX(100%) !important;
+}
+
+div.tab.invisible + div.tab.invisible#settings {
+  transform: translateX(-100%);
+}
+
+div.tab.invisible#about {
+  transform: translateX(100%);
+}
+
 button {
     background: rgba(255, 255, 255, 0.5);
     border: none;

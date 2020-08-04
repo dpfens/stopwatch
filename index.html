@@ -58,65 +58,67 @@
                 <span>About</span>
               </a>
             </div>
-            <div class="tab stopwatches-tab" v-show="currentTab === 'stopwatch'">
-               <div class="stopwatches">
-                  <div class="stopwatch" v-for="(instance, index) in stopwatches.data" is="stopwatch" v-bind:index="index" v-bind:settings="settings" v-bind:local-settings="instance.settings" v-bind:stopwatch="instance.stopwatch" display="textdisplay" v-bind:show-controls="settings.render.showControls" v-bind:show-splits="settings.render.showSplits" v-bind:mutable="true"><button class="float-left" v-on:click="removeStopWatch(index)"><i class="fad fa-trash"></i><span>Delete</span></button><button class="float-left" v-on:click="cloneStopwatch(index)"><i class="fad fa-clone"></i><span>Clone</span></button></div>
-                  <button class="add" v-if="stopwatches.data.length &lt; 9" v-on:click="addStopWatch()"><i class="fad fa-plus fa-5x"></i><span>Add Stopwatch</span></button>
-               </div>
-            </div>
-            <div class="tab" id="archive" v-show="currentTab === 'archive'">
-               <div class="archives">
-                  <div class="stopwatch" v-for="(instance, index) in archive.data" is="stopwatch" v-bind:index="index" v-bind:settings="settings" v-bind:local-settings="instance.settings" v-bind:stopwatch="instance.stopwatch" display="textdisplay" v-bind:show-splits="settings.render.showSplits" v-bind:mutable="false"><button v-on:click="removeArchivedStopwatch(index)"><i class="fad fa-trash"></i><span>Delete</span></button><button v-on:click="unarchiveStopwatch(index)">Unarchive</button></div>
-               </div>
-            </div>
-            <div class="tab" id="settings" v-show="currentTab === 'settings'">
-               <h2>Stopwatch Settings</h2>
-               <h3>Formatting</h3>
-               <select v-model="settings.locale" v-on:change="saveSettings">
-                  <option value="en-us">US</option>
-                  <option value="en-uk">EU</option>
-               </select>
-               <h3>Font Size</h3>
-               <p><label for="totalDurationFontSize">Total Duration Font Size:</label>
-                   <input type="range" name="totalDurationFontSize" min="0.2" max="1" step="0.2" v-model="settings.totalDuration.fontSize.value" v-on:change="saveSettings">
-                   <span v-if="debug">{{ settings.totalDuration.fontSize.value }}{{ settings.totalDuration.fontSize.unit }}</span>
-               </p>
-               <p>
-                   <label for="splitDurationFontSize">Split Duration Font Size:</label>
-                   <input type="range" name="splitDurationFontSize" min="0.2" max="1" step="0.2" v-model="settings.splitDuration.fontSize.value" v-on:change="saveSettings">
-                   <span v-if="debug"> {{ settings.splitDuration.fontSize.value }}{{ settings.splitDuration.fontSize.unit }}</span>
-               </p>
-               <h3>View</h3>
-               <p><input type="checkbox" v-model="settings.render.showSplits" v-on:change="saveSettings"><span>Show Splits on each Stopwatch</span></p>
-               <p><input type="checkbox" v-model="settings.render.showControls" v-on:change="saveSettings"><span>Show Controls for each Stopwatch</span></p>
-            </div>
-            <div class="about" v-show="currentTab == 'about'">
-               <h2>What is it?</h2>
-               <p>This is a tool made for managing multiple stopwatches and handling various scenarios that other stopwatch tools cannot handle.  This stopwatch is stores stopwarch information in the localStorage of the browser, so it can work/store executions without any internet access on a device.</p>
-               <h3>Naming stopwatches / color coding</h3>
-               <p>During a track & field race, I don't want to have to keep track of which stopwatch corresponds to which competitor.  By color coding stopwatches according to team colors, and naming stopwatches I can quickly determine which stopwatch corresponds to which team and which competitor.</p>
-               <h3>Cloning another Stopwatch</h3>
-               <p>If you want another copy of an existing stopwatch, you can clone an existing stopwatch, so that you can reuse when the stopwatch was started, as well as the splits that have been measured up until that point.</p>
-               <p>This was written with the intent of track & field races.  Sometimes during a race I decide I want to measure the splits of more athletes, but I only had one stopwatch, or had no way of retaining the original start time on the new stopwatch.  This way, I could clone my existing stopwatch to keep the original start time of the race as well as optionally keeping the splits from the original stopwatch.</p>
-               <h3>Modifying splits</h3>
-               <p>Sometimes during track & field meets, my splits would be off because I could not see exactly where a distance marker was.  This caused the subsequent split to be wrong because my recorded split was too early/late.  By being able to edit splits after they are taken, I can later cross-reference my splits with the official splits so that they are all accurate.</p>
+            <div class="container">
+              <div id="stopwatches" class="tab" :class="currentTab === 'stopwatch' ? 'visible' : 'invisible'">
+                 <div class="stopwatches">
+                    <div class="stopwatch" v-for="(instance, index) in stopwatches.data" is="stopwatch" v-bind:index="index" v-bind:settings="settings" v-bind:local-settings="instance.settings" v-bind:stopwatch="instance.stopwatch" display="textdisplay" v-bind:show-controls="settings.render.showControls" v-bind:show-splits="settings.render.showSplits" v-bind:mutable="true"><button class="float-left" v-on:click="removeStopWatch(index)"><i class="fad fa-trash"></i><span>Delete</span></button><button class="float-left" v-on:click="cloneStopwatch(index)"><i class="fad fa-clone"></i><span>Clone</span></button></div>
+                    <button class="add" v-if="stopwatches.data.length &lt; 9" v-on:click="addStopWatch()"><i class="fad fa-plus fa-5x"></i><span>Add Stopwatch</span></button>
+                 </div>
+              </div>
+              <div id="archive" class="tab" v-if="archive.data.length > 0" :class="currentTab === 'archive' ? 'visible' : 'invisible'">
+                 <div class="archives">
+                    <div class="stopwatch" v-for="(instance, index) in archive.data" is="stopwatch" v-bind:index="index" v-bind:settings="settings" v-bind:local-settings="instance.settings" v-bind:stopwatch="instance.stopwatch" display="textdisplay" v-bind:show-splits="settings.render.showSplits" v-bind:mutable="false"><button v-on:click="removeArchivedStopwatch(index)"><i class="fad fa-trash"></i><span>Delete</span></button><button v-on:click="unarchiveStopwatch(index)">Unarchive</button></div>
+                 </div>
+              </div>
+              <div id="settings" class="tab" :class="currentTab === 'settings' ? 'visible' : 'invisible'">
+                 <h2>Stopwatch Settings</h2>
+                 <h3>Formatting</h3>
+                 <select v-model="settings.locale" v-on:change="saveSettings">
+                    <option value="en-us">US</option>
+                    <option value="en-uk">EU</option>
+                 </select>
+                 <h3>Font Size</h3>
+                 <p><label for="totalDurationFontSize">Total Duration Font Size:</label>
+                     <input type="range" name="totalDurationFontSize" min="0.2" max="1" step="0.2" v-model="settings.totalDuration.fontSize.value" v-on:change="saveSettings">
+                     <span v-if="debug">{{ settings.totalDuration.fontSize.value }}{{ settings.totalDuration.fontSize.unit }}</span>
+                 </p>
+                 <p>
+                     <label for="splitDurationFontSize">Split Duration Font Size:</label>
+                     <input type="range" name="splitDurationFontSize" min="0.2" max="1" step="0.2" v-model="settings.splitDuration.fontSize.value" v-on:change="saveSettings">
+                     <span v-if="debug"> {{ settings.splitDuration.fontSize.value }}{{ settings.splitDuration.fontSize.unit }}</span>
+                 </p>
+                 <h3>View</h3>
+                 <p><input type="checkbox" v-model="settings.render.showSplits" v-on:change="saveSettings"><span>Show Splits on each Stopwatch</span></p>
+                 <p><input type="checkbox" v-model="settings.render.showControls" v-on:change="saveSettings"><span>Show Controls for each Stopwatch</span></p>
+              </div>
+              <div id="about" class="tab" :class="currentTab === 'about' ? 'visible' : 'invisible'">
+                 <h2>What is it?</h2>
+                 <p>This is a tool made for managing multiple stopwatches and handling various scenarios that other stopwatch tools cannot handle.  This stopwatch is stores stopwarch information in the localStorage of the browser, so it can work/store executions without any internet access on a device.</p>
+                 <h3>Naming stopwatches / color coding</h3>
+                 <p>During a track & field race, I don't want to have to keep track of which stopwatch corresponds to which competitor.  By color coding stopwatches according to team colors, and naming stopwatches I can quickly determine which stopwatch corresponds to which team and which competitor.</p>
+                 <h3>Cloning another Stopwatch</h3>
+                 <p>If you want another copy of an existing stopwatch, you can clone an existing stopwatch, so that you can reuse when the stopwatch was started, as well as the splits that have been measured up until that point.</p>
+                 <p>This was written with the intent of track & field races.  Sometimes during a race I decide I want to measure the splits of more athletes, but I only had one stopwatch, or had no way of retaining the original start time on the new stopwatch.  This way, I could clone my existing stopwatch to keep the original start time of the race as well as optionally keeping the splits from the original stopwatch.</p>
+                 <h3>Modifying splits</h3>
+                 <p>Sometimes during track & field meets, my splits would be off because I could not see exactly where a distance marker was.  This caused the subsequent split to be wrong because my recorded split was too early/late.  By being able to edit splits after they are taken, I can later cross-reference my splits with the official splits so that they are all accurate.</p>
 
-               <h3>Privacy</h3>
-               <p>This tool does have standard Google Analytics tracking on it, which does record information about the device, but no personal information is recorded.  The following actions are recorded in Google Analytics:</p>
-               <ul>
-                   <li>Stopwatch starts</li>
-                   <li>Stopwatch stops</li>
-                   <li>Stopwatch resumes</li>
-                   <li>Stopwatch resets</li>
-                   <li>Stopwatch clones</li>
-                   <li>Stopwatch deletes</li>
-                   <li>Stopwatch settings changes</li>
-                   <li>Stopwatch splits</li>
-                   <li>Stopwatch split edits</li>
-                   <li>Stopwatch split deletes</li>
-               </ul>
-               <p>No specific information from/about the stopwatch is sent to Google Analytics.  This information is recorded for the developer to understand how the tool is used, and which features are used.</p>
-            </div>
+                 <h3>Privacy</h3>
+                 <p>This tool does have standard Google Analytics tracking on it, which does record information about the device, but no personal information is recorded.  The following actions are recorded in Google Analytics:</p>
+                 <ul>
+                     <li>Stopwatch starts</li>
+                     <li>Stopwatch stops</li>
+                     <li>Stopwatch resumes</li>
+                     <li>Stopwatch resets</li>
+                     <li>Stopwatch clones</li>
+                     <li>Stopwatch deletes</li>
+                     <li>Stopwatch settings changes</li>
+                     <li>Stopwatch splits</li>
+                     <li>Stopwatch split edits</li>
+                     <li>Stopwatch split deletes</li>
+                 </ul>
+                 <p>No specific information from/about the stopwatch is sent to Google Analytics.  This information is recorded for the developer to understand how the tool is used, and which features are used.</p>
+              </div>
+          </div>
          </div>
       </main>
       <footer></footer>
