@@ -22,18 +22,20 @@ button span, a span {
 div.tab-controls {
     text-align: center;
     display: flex;
-}
-
-div.tab-controls a, div.stopwatches button.add {
-    background: #DDD;
-    cursor: pointer;
-    flex-grow: 1;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+div.tab-controls a, div.stopwatches button.add {
+    background: #DDD;
+    cursor: pointer;
+    flex-grow: 1;
 }
 
 div.tab-controls {
