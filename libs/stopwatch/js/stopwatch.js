@@ -299,4 +299,4 @@ StopWatch.from = function(data) {
 
 try {
     module.exports = StopWatch;
-} catch {}
+} catch (){}
