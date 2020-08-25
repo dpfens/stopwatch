@@ -71,7 +71,13 @@
         this.locale = locale || 'en-us';
     }
 
-    if ('localStorage' in window && window['localStorage'] !== null) {
+    try {
+      var hasLocalStorage = 'localStorage' in window && window['localStorage'] !== null;
+    } catch {
+      var hasLocalStorage = false;
+    }
+
+    if (hasLocalStorage) {
         Archive.prototype.save = function() {
             LocalStorageAdapter.prototype.save.call(this, this.data);
         }
@@ -124,6 +130,7 @@
     } else {
         Archive.prototype.save = function() {}
         Archive.prototype.load = function() { return [];}
+        StopWatchArchive.prototype.save = function() {}
         StopWatchArchive.prototype.load = function() { return [];}
 
         Settings.prototype.save = function() {}
@@ -364,6 +371,7 @@
                 startSplitDuration = Object.create(defaultDuration)
             }
             return {
+                index: this.index,
                 display: display,
                 showControls: showControls,
                 primaryColor: primaryColor,
@@ -374,6 +382,28 @@
                 showSettings: false,
                 edittingSplit: null,
             };
+        },
+        watch: {
+          stopwatch: function(newStopwatch, oldStopwatch) {
+            if (newStopwatch.isRunning() && !oldStopwatch.isRunning()){
+              this.startAnimation();
+            }
+            else if (oldStopwatch.isRunning() && !newStopwatch.isRunning()) {
+              this.stopAnimation();
+            }
+
+            if(!newStopwatch.isRunning()) {
+              var totalDuration = newStopwatch.totalDuration(),
+                  totalDurationBreakdown = newStopwatch.breakdown(totalDuration),
+                  splitDuration = newStopwatch.splitDuration(newStopwatch.stopValue),
+                  splitDurationBreakdown = newStopwatch.breakdown(splitDuration);
+              this.currentDuration = totalDurationBreakdown;
+              if (totalDuration !== splitDuration) {
+                this.splitDuration = splitDurationBreakdown;
+              }
+            }
+
+          }
         },
         methods: {
             save: function() {
@@ -450,14 +480,19 @@
                     'eventAction': 'Start',
                     'eventLabel': 'Stopwatch #' + this.index
                 });
+                if (stopwatchChannel) {
+                  var data = {
+                    'action': 'update',
+                    'stopwatch': this.stopwatch,
+                    'index': this.index
+                  }
+                  stopwatchChannel.postMessage(data);
+                }
                 this.$parent.saveStopwatches();
                 this.startAnimation();
             },
             stopStopwatch: function() {
-                var totalDuration = this.stopwatch.stop(),
-                    totalDurationBreakdown = this.stopwatch.breakdown(totalDuration),
-                    splitDuration = this.stopwatch.splitDuration(this.stopwatch.stopValue),
-                    splitDurationBreakdown = this.stopwatch.breakdown(splitDuration);
+                this.stopwatch.stop(),
                 dataLayer.push({
                     'event': 'stopwatchEvent',
                     'eventCategory': 'Stopwatch',
@@ -466,9 +501,13 @@
                 });
                 this.$parent.saveStopwatches();
                 this.stopAnimation();
-                this.currentDuration = totalDurationBreakdown;
-                if (totalDuration !== splitDuration) {
-                    this.splitDuration = splitDurationBreakdown;
+                if (stopwatchChannel) {
+                  var data = {
+                    'action': 'update',
+                    'stopwatch': this.stopwatch,
+                    'index': this.index
+                  }
+                  stopwatchChannel.postMessage(data);
                 }
             },
             resumeStopwatch: function() {
@@ -480,6 +519,14 @@
                     'eventLabel': 'Stopwatch #' + this.index
                 });
                 this.$parent.saveStopwatches();
+                if (stopwatchChannel) {
+                  var data = {
+                    'action': 'update',
+                    'stopwatch': this.stopwatch,
+                    'index': this.index
+                  }
+                  stopwatchChannel.postMessage(data);
+                }
                 this.startAnimation();
             },
             resetStopwatch: function() {
@@ -589,6 +636,22 @@
     current.load();
     archive.load();
 
+    if ('BroadcastChannel' in window) {
+        var settingsChannel = new BroadcastChannel('settings'),
+            stopwatchChannel = new BroadcastChannel('stopwatch');
+
+        settingsChannel.onmessage = function(event) {
+          settings.load();
+        }
+
+        stopwatchChannel.onmessage = function(event) {
+          current.load();
+          archive.load();
+        }
+    } else {
+      splitChannel = settingsChannel = stopwatchChannel = null;
+    }
+
     var app = new Vue({
         el: 'div#app',
         data: {
@@ -608,8 +671,11 @@
                     'eventAction': 'Update',
                     'eventLabel': 'Global'
                 });
+                if(settingsChannel) {
+                  settingsChannel.postMessage(this.settings);
+                }
             },
-            addStopWatch: function() {
+            _addStopWatch: function() {
                 var newStopwatch = new StopWatch(),
                     localSettings = {
                         name: '',
@@ -618,41 +684,60 @@
                     },
                     stopwatchCount = this.stopwatches.data.length;
                 this.stopwatches.push(newStopwatch, localSettings);
+                this.saveStopwatches();
+                return {
+                  'stopwatch': newStopwatch,
+                  'settings': localSettings
+                };
+            },
+            addStopWatch: function() {
+                var stopwatchData = this._addStopWatch();
                 dataLayer.push({
                     'event': 'stopwatchEvent',
                     'eventCategory': 'Stopwatch',
                     'eventAction': 'Create',
-                    'eventLabel': 'Stopwatch #' + stopwatchCount
+                    'eventLabel': 'Stopwatch #' + (this.stopwatches.length - 1)
                 });
-                this.saveStopwatches();
             },
             saveStopwatches: function() {
                 this.stopwatches.save();
+                if(stopwatchChannel) {
+                  stopwatchChannel.postMessage({});
+                }
+            },
+            _removeStopWatch: function(index) {
+              this.stopwatches.data.splice(index, 1);
+              this.saveStopwatches();
             },
             removeStopWatch: function(index) {
-                this.stopwatches.data.splice(index, 1);
+                this._removeStopWatch(index);
                 dataLayer.push({
                     'event': 'stopwatchEvent',
                     'eventCategory': 'Stopwatch',
                     'eventAction': 'Delete',
                     'eventLabel': 'Stopwatch #' + index
                 });
-                this.saveStopwatches();
             },
-            cloneStopwatch: function(index) {
-
+            _cloneStopwatch: function(index) {
                 var instance = this.stopwatches.data[index],
                     newInstanceData = JSON.parse(JSON.stringify(instance)),
                     newStopwatch = StopWatch.from(newInstanceData.stopwatch),
                     newSettings = newInstanceData.settings;
                 this.stopwatches.push(newStopwatch, newSettings);
+                this.saveStopwatches();
+            },
+            cloneStopwatch: function(index) {
+                this._cloneStopwatch(index);
                 dataLayer.push({
                     'event': 'stopwatchEvent',
                     'eventCategory': 'Stopwatch',
                     'eventAction': 'Clone',
                     'eventLabel': 'Stopwatch #' + index
                 });
-                this.saveStopwatches();
+            },
+            updateStopwatch: function(index, data) {
+                var stopwatch = this.stopwatches.data[index];
+                this.stopwatches.data[index] = StopWatch.from(data);
             },
             archiveStopwatch: function (index, stopwatch, localSettings) {
                 this.archive.push(stopwatch, localSettings);
@@ -679,10 +764,16 @@
                     'eventAction': 'Unarchive',
                     'eventLabel': 'Stopwatch #' + index
                 });
+                if(stopwatchChannel) {
+                  stopwatchChannel.postMessage({});
+                }
             },
             removeArchivedStopwatch: function(index) {
                 this.archive.data.splice(index, 1);
                 this.archive.save();
+                if(stopwatchChannel) {
+                  stopwatchChannel.postMessage({});
+                }
             },
             formatDuration: formatDuration
         }
