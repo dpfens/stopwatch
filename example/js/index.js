@@ -13,6 +13,7 @@ if (window.Worker) {
         if (action === 'display' || action == 'stop') {
             var render = function() {
                 var currentTime = data.data;
+                console.log(currentTime);
                 display.render(currentTime.days, currentTime.hours, currentTime.minutes, currentTime.seconds, currentTime.milliseconds);
             };
             requestAnimationFrame(render);

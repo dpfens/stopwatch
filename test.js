@@ -1,6 +1,6 @@
-var StopWatch = require('./src/js/stopwatch.js');
+var stopwatch = require('./dist/basic.js');
 
-var instance = new StopWatch();
+var instance = new stopwatch.SplitStopwatch();
 instance.start();
 
 setTimeout(function() {
@@ -10,7 +10,7 @@ setTimeout(function() {
 setTimeout(function() {
   var split = instance.addSplit();
   console.log(instance.splits);
-  //console.log('testing addSplit');
+  console.log('testing addSplit');
   instance.addSplit(10);
   console.log(instance.splits);
   instance.addSplit(40);
@@ -25,11 +25,11 @@ setTimeout(function() {
     instance.removeSplit(-1);
     var totalDuration = instance.totalDuration();
     console.log(instance.splits);
-    console.log('totalDuration: ' + totalDuration);
+    console.log('Total Duration: ' + totalDuration);
     instance.addSplit(totalDuration);
     console.log(instance.splits);
-    console.log(instance.totalDuration());
-    console.log(instance.splitDuration());
+    console.log('Total Duration: ' + instance.totalDuration());
+    console.log('Split Duration: ' + instance.splitDuration());
     instance.stop();
 }, 2000);
 
@@ -43,6 +43,6 @@ setTimeout(function() {
     console.log('testing stop/resume');
     var totalDuration = instance.totalDuration();
     console.log(instance.splits);
-    console.log('totalDuration: ' + totalDuration);
-    console.log(instance.splitDuration())
+    console.log('Total Duration: ' + totalDuration);
+    console.log('Split Duration: ' + instance.splitDuration())
 }, 3100);

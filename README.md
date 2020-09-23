@@ -7,7 +7,7 @@ The stopwatch records metadata about the stopwatch execution, such as when the s
 
 ### Basic usage
 ```javascript
-var stopwatchInstance  = new StopWatch();
+var stopwatchInstance  = new BasicStopWatch();
 
 stopwatchInstance.start();
 ```
@@ -33,6 +33,10 @@ stopwatchInstance.reset();
 ```
 
 ### Splits
+To use a stopwatch that support splits, using the `SplitStopwatch`:
+```javascript
+var stopwatchInstance = new SplitStopwatch();
+```
 
 To take a split for the current time use the `addSplit` method:
 ```javascript
@@ -74,6 +78,23 @@ var index = 2;
 stopwatchInstance.removeSplit(index);
 ```
 
+### Laps
+To record laps, use the `LapStopwatch`:
+```javascript
+var lapDistance = 400,
+    lapUnits = 'Meters',
+    stopwatchInstance = new LapStopwatch(lapDistance, lapUnits);
+```
+
+To record a lap, use the `addLap` method:
+```javascript
+var lap = stopwatchInstance.addLap();
+```
+
+to get the current lap duration, use the `lapDuration` method:
+```javascript
+var currentLapDuration = stopwatchInstance.lapDuration();
+```
 
 ### State
 To find out if the stopwatch is currently being used to time something, use the `isRunning` method:

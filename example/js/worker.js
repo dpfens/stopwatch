@@ -1,4 +1,4 @@
-self.importScripts('../../src/js/stopwatch.js');
+self.importScripts('../../dist/stopwatch.js');
 
 var stopwatch = new StopWatch(),
 interval = null;
@@ -17,7 +17,7 @@ onmessage = function(e) {
         }
     }
     else if (action == 'split') {
-        var split = stopwatch.split(data.timestamp),
+        var split = stopwatch.addSplit(data.timestamp),
         brokenDownSplit = stopwatch.breakdown(split),
         data = { action: 'split', data: brokenDownSplit};
         postMessage(JSON.stringify(data));
@@ -26,8 +26,8 @@ onmessage = function(e) {
         stopwatch.stop(data.timestamp);
         clearInterval(interval);
         interval = null;
-        var endTime = stopwatch.duration(),
-        endTimeBreakdown = stopwatch.breakdown(endTime),
+        var endTime = stopwatch.totalDuration(),
+        endTimeBreakdown = StopWatch.breakdown(endTime),
         outgoingData = {action: 'stop', data: endTimeBreakdown};
         postMessage(JSON.stringify(outgoingData));
     }
@@ -35,8 +35,8 @@ onmessage = function(e) {
 
 
 function postCurrentDuration() {
-    var duration = stopwatch.duration(),
-    currentTime = stopwatch.breakdown(duration),
+    var duration = stopwatch.totalDuration(),
+    currentTime = StopWatch.breakdown(duration),
     data = {action: 'display', data: currentTime},
     serializedData = JSON.stringify(data);
     postMessage(serializedData);

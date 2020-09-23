@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "target": "ES3",
+      "lib": ["ES5", ],
+      "declaration": true,
+      "noImplicitAny": true,
+      "removeComments": true,
+      "preserveConstEnums": true,
+      "noFallthroughCasesInSwitch": true,
+      "noImplicitReturns": true,
+      "noUnusedLocals": true,
+      "sourceMap": true,
+      "strict": true,
+      "outFile": "dist/stopwatch.web.js"
+    },
+    "include": ["src/*.ts"]
+}
