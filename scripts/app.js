@@ -73,7 +73,7 @@
 
     try {
       var hasLocalStorage = 'localStorage' in window && window['localStorage'] !== null;
-    } catch {
+    } catch(error) {
       var hasLocalStorage = false;
     }
 
