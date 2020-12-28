@@ -1,5 +1,5 @@
 interface StopWatchMetadata {
-  createdAt: Date;
+  readonly createdAt: Date;
   startedAt: Date | null;
   stoppedAt: Date | null;
   resetAt: Date | null;
@@ -8,7 +8,7 @@ interface StopWatchMetadata {
 }
 
 interface CreationModificationDates {
-  createdAt: Date;
+  readonly createdAt: Date;
   lastModified: Date | null;
 }
 
@@ -130,10 +130,14 @@ class BasicStopwatch {
 
 }
 
+class Split {
+  public value: number;
+  public metadata: CreationModificationDates;
 
-interface Split {
-  value: number;
-  metadata: CreationModificationDates
+  constructor(value: number, metadata: CreationModificationDates) {
+    this.value = value;
+    this.metadata = metadata;
+  }
 }
 
 interface SplitDifference {
@@ -255,10 +259,7 @@ class SplitStopwatch extends BasicStopwatch {
           createdAt: new Date(),
           lastModified: null,
       },
-      data: Split = {
-          value: value,
-          metadata: metadata
-      };
+      data: Split = new Split(value, metadata);
       this.splits.push(data);
       this.lastSplit = splitEnd;
       this.splitGap = 0.0;
@@ -307,11 +308,23 @@ class SplitStopwatch extends BasicStopwatch {
 }
 
 
-interface Lap {
-    value: number;
-    metadata: CreationModificationDates;
-    distance: number;
-    unit: string;
+class Lap extends Split {
+  public readonly distance: number;
+  public readonly distanceUnit: string;
+
+  constructor(value: number, distance: number, distanceUnit: string, metadata: CreationModificationDates) {
+    super(value, metadata);
+    this.distance = distance;
+    this.distanceUnit = distanceUnit;
+  }
+
+  pace(): number {
+    return this.value / this.distance;
+  }
+
+  speed(): number {
+    return this.distance / this.value;
+  }
 }
 
 class LapStopwatch extends SplitStopwatch {
@@ -359,12 +372,7 @@ class LapStopwatch extends SplitStopwatch {
             createdAt: new Date(),
             lastModified: null,
         },
-        lap: Lap = {
-            value: value,
-            metadata: metadata,
-            distance: this.lapDistance,
-            unit: this.lapUnit
-        };
+        lap: Lap = new Lap(value, this.lapDistance, this.lapUnit, metadata);
     this.laps.push(lap);
     this.lastLap = timestamp;
     this.lapGap = 0.0;
