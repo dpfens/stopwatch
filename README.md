@@ -32,6 +32,23 @@ To reset a stopwatch, use the `reset` method:
 stopwatchInstance.reset();
 ```
 
+But, let's say that you (or an end-user) hit the `start` button too early/late.  Use the `setStartValue` with the correct unix-timestamp of when the stopwatch should have started to correct the stopwatch.
+```javascript
+var correctStart = new Date(2020, 13, 18),
+    correctStartTimestamp = correctStart.getTime();
+stopwatchInstance.setStartValue(correctStartTimestamp);
+```
+**NOTE**:  `setStartValue` will modify the first `split` and `lap` to account for the difference between the old `startValue` and the new one.  The modification will be reflected in the `metadata.lastModified` date.
+
+This can also be done for the stop using `setStopValue` function:
+```javascript
+var correctStop = new Date(2020, 13, 22),
+    correctStopTimestamp = correctStart.getTime();
+stopwatchInstance.setStopValue(correctStopTimestamp);
+```
+
+**NOTE**:  `setStopValue` will modify the last `split` and `lap` to account for the difference between the old `stopValue` and the new one.  The modification will be reflected in the `metadata.lastModified` date.
+
 ### Splits
 To use a stopwatch that support splits, using the `SplitStopwatch`:
 ```javascript

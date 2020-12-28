@@ -34,6 +34,28 @@ class BasicStopwatch {
     };
   }
 
+  setStartValue(newStartValue: number | null) {
+    var now: Date = new Date();
+    if (!this.startValue && newStartValue) {
+      this.metadata.startedAt = now;
+    }
+    this.startValue = newStartValue;
+    this.metadata.lastModified = now;
+  }
+
+
+  setStopValue(newStopValue: number | null) {
+    var now: Date = new Date();
+    if (newStopValue) {
+      if (!this.startValue) {
+        throw Error('Cannot set a stopValue on a timer that has not started');
+      }
+      this.metadata.stoppedAt = now;
+    }
+    this.stopValue = newStopValue;
+    this.metadata.lastModified = now;
+  }
+
   start(timestamp: number): void {
     this.startValue = timestamp || Date.now();
     this.stopValue = null;
@@ -156,6 +178,33 @@ class SplitStopwatch extends BasicStopwatch {
     this.splits = [];
     this.lastSplit = null;
     this.splitGap = 0.0;
+  }
+
+  setStartValue(newStartValue: number | null) {
+    var now: Date = new Date(),
+        hasSplits: boolean = this.splits.length > 0;
+    if (!newStartValue && (hasSplits || this.stopValue)) {
+      throw Error('An active stopwatch must have a startValue');
+    }
+    else if(newStartValue && this.startValue && hasSplits) {
+        var oldStartValue: number = this.startValue,
+            difference: number = newStartValue - oldStartValue;
+        this.splits[0].value += difference;
+        this.splits[0].metadata.lastModified = now;
+      }
+    super.setStartValue(newStartValue);
+  }
+
+  setStopValue(newStopValue: number) {
+    var now: Date = new Date();
+    if (this.stopValue && this.splits.length > 0) {
+      var oldStopValue: number = this.stopValue,
+          difference: number = newStopValue - oldStopValue,
+          lastIndex: number = this.splits.length - 1;
+      this.splits[lastIndex].value += difference;
+      this.splits[lastIndex].metadata.lastModified = now;
+    }
+    super.setStopValue(newStopValue);
   }
 
   start(timestamp: number): void {
@@ -341,6 +390,42 @@ class LapStopwatch extends SplitStopwatch {
     this.lapDistance = lapDistance;
     this.lapUnit = lapUnit;
     this.lapGap = 0.0;
+  }
+
+  setStartValue(newStartValue: number) {
+    var now: Date = new Date();
+    if (!this.startValue) {
+      this.metadata.startedAt = now;
+    }
+    var hasSplits: boolean = this.splits.length > 0,
+        hasLaps: boolean = this.laps.length > 0;
+    if(this.startValue && (hasSplits || hasLaps) ) {
+      var oldStartValue: number = this.startValue,
+          difference: number = newStartValue - oldStartValue;
+      if (hasSplits) {
+        this.splits[0].value += difference;
+        this.splits[0].metadata.lastModified = now;
+      }
+      if (hasLaps) {
+        this.laps[0].value += difference;
+        this.laps[0].metadata.lastModified = now;
+      }
+    }
+    this.startValue = newStartValue;
+    this.metadata.lastModified = now;
+  }
+
+  setStopValue(newStopValue: number) {
+    var now: Date = new Date();
+    var hasLaps: boolean = this.laps.length > 0;
+    if (this.stopValue && hasLaps) {
+      var oldStopValue: number = this.stopValue,
+          difference: number = newStopValue - oldStopValue,
+          lastIndex: number = this.laps.length - 1;
+      this.laps[lastIndex].value += difference;
+      this.laps[lastIndex].metadata.lastModified = now;
+    }
+    super.setStopValue(newStopValue);
   }
 
   start(timestamp: number): void {
