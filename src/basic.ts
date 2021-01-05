@@ -262,8 +262,8 @@ class SplitStopwatch extends BasicStopwatch {
         throw Error('Stopwatch is not currently running');
       }
       var nextNearestSplit: SplitDifference = this.nextNearestSplit(value),
-          index,
-          difference;
+          index: number,
+          difference: number;
       if (nextNearestSplit.index < 0) { // adding a new last split
           index = this.splits.length;
           difference = Math.abs(nextNearestSplit.difference);
