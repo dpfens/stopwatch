@@ -18,7 +18,6 @@ workbox.navigationPreload.enable();
 
 const networkOnly = new workbox.strategies.NetworkOnly();
 const navigationHandler = async (params) => {
-  console.log(params)
   try {
     // Attempt a network request.
     return await networkOnly.handle(params);
