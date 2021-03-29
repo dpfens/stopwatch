@@ -43,12 +43,7 @@
             'formatDateTime': formatDateTime
         },
         template: '<time :class="\'display digital-display localization-\' + locale + \' text-display\'" v-bind:datetime="formatDateTime(value)" v-bind:style="{fontSize: fontsize.value + fontsize.unit }">\
-            <div v-if="value.years && value.years !== \'00\'" class="years digit-container">{{ value.years }}</div>\
-            <div v-if="value.days && value.days !== \'00\'" class="days digit-container">{{ value.days }}</div>\
-            <div v-if="value.hours && value.hours !== \'00\'" class="hours digit-container">{{ value.hours }}</div>\
-            <div v-if="value.minutes !== \'00\'" class="minutes digit-container">{{ value.minutes }}</div>\
-            <div class="seconds digit-container">{{ value.seconds }}</div>\
-            <div class="milliseconds digit-container">{{ value.milliseconds }}</div>\
+            <span v-if="value.years && value.years !== \'00\'" class="years digit-container">{{ value.years }}</span><span v-if="value.days && value.days !== \'00\'" class="days digit-container">{{ value.days }}</span><span v-if="value.hours && value.hours !== \'00\'" class="hours digit-container">{{ value.hours }}</span><span v-if="value.minutes !== \'00\'" class="minutes digit-container">{{ value.minutes }}</span><span class="seconds digit-container">{{ value.seconds }}</span>\<span class="milliseconds digit-container">{{ value.milliseconds }}</span>\
         </time>'
     });
 
@@ -95,20 +90,15 @@
             <td>{{ split.label }}</td>\
             <td>\
                 <time :class="\'localization-\' + locale" v-bind:datetime="formatDateTime(split.breakdown)">\
-                <span class="years" v-if="split.breakdown.years > 0">{{ formattedValue.years }}</span>\
-                <span class="days" v-if="split.breakdown.years > 0 || split.breakdown.days > 0">{{ formattedValue.days }}</span>\
-                <span class="hours" v-if="split.breakdown.years > 0 || split.breakdown.days > 0 || split.breakdown.hours > 0">{{ formattedValue.hours }}</span>\
-                <span class="minutes" v-if="split.breakdown.years > 0 || split.breakdown.days > 0 || split.breakdown.hours > 0 || split.breakdown.minutes > 0">{{ formattedValue.minutes }}</span>\
-                <span class="seconds">{{ formattedValue.seconds }}</span>\
-                <span class="milliseconds">{{ formattedValue.milliseconds }}</span>\
+                <span class="years" v-if="split.breakdown.years > 0">{{ formattedValue.years }}</span><span class="days" v-if="split.breakdown.years > 0 || split.breakdown.days > 0">{{ formattedValue.days }}</span><span class="hours" v-if="split.breakdown.years > 0 || split.breakdown.days > 0 || split.breakdown.hours > 0">{{ formattedValue.hours }}</span><span class="minutes" v-if="split.breakdown.years > 0 || split.breakdown.days > 0 || split.breakdown.hours > 0 || split.breakdown.minutes > 0">{{ formattedValue.minutes }}</span><span class="seconds">{{ formattedValue.seconds }}</span><span class="milliseconds">{{ formattedValue.milliseconds }}</span>\
                 </time>\
             </td>\
             <td>\
                 <span v-for="label in split.metadata.tags">{{ label }}</span>\
             </td>\
             <td v-if="mutable">\
-                <button v-on:click="edit"><i class="fad fa-edit"></i><span>Edit</span></button>\
-                <button v-on:click="removeSplit"><i class="fad fa-trash"></i><span>Delete</span></button>\
+                <button class="stacked" v-on:click="edit"><i class="fad fa-edit"></i><span>Edit</span></button>\
+                <button class="stacked" v-on:click="removeSplit"><i class="fad fa-trash"></i><span>Delete</span></button>\
             </td>\
         </tr>'
     });
@@ -167,15 +157,15 @@
             <span class="hours"><input type="tel" class="hours" name="hours" min="0" v-model.number="hours" /></span>\
             <span class="minutes"><input type="tel" class="minutes" name="minutes" min="0" v-model.number="minutes" /></span>\
             <span class="seconds"><input type="tel" class="seconds" name="seconds" min="0" v-model.number="seconds" /></span>\
-            <span class="milliseconds"><input type="text" class="milliseconds" name="milliseconds" v-model.number="milliseconds" /></span></p>\
+            <span class="milliseconds"><input type="tel" class="milliseconds" name="milliseconds" v-model.number="milliseconds" /></span></p>\
             <div v-if="split.metadata.tags">\
                 <h3 >Tags</h3>\
                 <select v-model="split.metadata.tags" multiple>\
                     <option v-for="label in split.metadata.tags" value="{{value}}">{{ name }}</option>\
                 </select>\
             </div>\
-            <button v-on:click.prevent="deleteSplit(index)"><i class="fad fa-trash"></i><span>Delete</span></button>\
-            <button v-on:click.prevent="save"><i class="fad fa-save"></i><span>Save</span></button>\
+            <button class="stacked" v-on:click.prevent="deleteSplit(index)"><i class="fad fa-trash"></i><span>Delete</span></button>\
+            <button class="stacked" v-on:click.prevent="save"><i class="fad fa-save"></i><span>Save</span></button>\
         </form>'
     });
 
@@ -435,30 +425,30 @@
         },
         template: '<div v-bind:style="{ color: localSettings.secondaryColor, background: localSettings.primaryColor }">\
             <slot></slot>\
-            <button class="float-right"  v-show="!showSettings" v-on:click="showSettings = true"><i class="fad fa-cogs"></i><span>Customize</span></button>\
-            <button class="float-right" v-show="showSettings" v-on:click="showSettings = false"><i class="fad fa-times"></i><span>Close</span></button>\
-            <div class="clear settings" v-if="showSettings">\
+            <button class="float-right stacked"  v-show="!showSettings" v-on:click="showSettings = true"><i class="fad fa-cogs"></i><span>Customize</span></button>\
+            <button class="float-right stacked" v-show="showSettings" v-on:click="showSettings = false"><i class="fad fa-times"></i><span>Close</span></button>\
+            <form class="clear settings" v-if="showSettings">\
                 <p><label for="name">Name:</label>\
                 <input type="text" placeholder="name" name="name" v-model="localSettings.name" v-on:change="save" /></p>\
-                <p><label>Primary: </label>\
+                <p><label>Primary Color: </label>\
                 <input type="color" v-model="localSettings.primaryColor" v-on:change="save" /></p>\
                 \
-                <p><label>Secondary:</label>\
+                <p><label>Secondary Color:</label>\
                 <input type="color" v-model="localSettings.secondaryColor" v-on:change="save" /></p>\
-            </div>\
+            </form>\
             <div class="clear" v-else>\
-                <h2>{{ localSettings.name }}</h2>\
+                <h2 class="text-center">{{ localSettings.name }}</h2>\
                 <div class="time-display" @click="toggleStopWatch">\
                     <textdisplay v-bind:locale="settings.locale" v-bind:value="formatDuration(currentDuration)" v-bind:fontsize="settings.totalDuration.fontSize"></textdisplay>\
                     <textdisplay v-show="stopwatch.splits.length > 0" class="split" v-bind:locale="settings.locale" v-bind:value="formatDuration(splitDuration)" v-bind:fontsize="settings.splitDuration.fontSize"></textdisplay>\
                 </div>\
                 <div class="controls" v-if="showControls && mutable">\
-                    <button v-show="!stopwatch.isActive()" v-on:click="startStopWatch()"><i class="fad fa-play"></i><span>Start</span></button>\
-                    <button v-show="stopwatch.isRunning()" v-on:click="stopStopwatch()"><i class="fad fa-hand-paper"></i><span>Stop</span></button>\
-                    <button v-show="stopwatch.isRunning()" v-on:click="recordSplit()">Split</button>\
-                    <button v-show="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="resumeStopwatch()"><i class="fad fa-redo"></i><span>Resume</span></button>\
-                    <button v-show="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="resetStopwatch()"><i class="fad fa-undo"></i><span>Reset</span></button>\
-                    <button v-show="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="archiveStopwatch()"><i class="fad fa-archive"></i><span>Archive</span></button>\
+                    <button class="stacked" v-show="!stopwatch.isActive()" v-on:click="startStopWatch()"><i class="fad fa-play"></i><span>Start</span></button>\
+                    <button class="stacked" v-show="stopwatch.isRunning()" v-on:click="stopStopwatch()"><i class="fad fa-hand-paper"></i><span>Stop</span></button>\
+                    <button class="stacked" v-show="stopwatch.isRunning()" v-on:click="recordSplit()">Split</button>\
+                    <button class="stacked" v-show="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="resumeStopwatch()"><i class="fad fa-redo"></i><span>Resume</span></button>\
+                    <button class="stacked" v-show="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="resetStopwatch()"><i class="fad fa-undo"></i><span>Reset</span></button>\
+                    <button class="stacked" v-show="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="archiveStopwatch()"><i class="fad fa-archive"></i><span>Archive</span></button>\
                 </div>\
                 <table class="splits" v-show="showSplits && stopwatch.splits.length > 0 && !edittingSplit">\
                     <thead>\

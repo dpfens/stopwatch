@@ -2,7 +2,8 @@ main, div#app {
   height: 100vh;
 }
 
-div.container {
+/* tabs */
+div.tab-container {
   width: 100%;
   height: calc(100vh - 44px);
   overflow: hidden;
@@ -16,12 +17,17 @@ div.tab {
   left: 0;
   top: 0;
   overflow-y: scroll;
-  will-change: transform;
-  transition: transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+  will-change: transform, opacity;
+  transition: transform 0.2s cubic-bezier(0.465, 0.183, 0.153, 0.946), opacity 0.1s;
 }
 
 div.tab.visible {
   transform: translateX(0%);
+  opacity: 1;
+}
+
+div.tab.invisible {
+  opacity: 0;
 }
 
 div.tab.invisible#stopwatches {
@@ -48,30 +54,12 @@ div.tab.invisible#about {
   transform: translateX(100%);
 }
 
-button {
-    background: rgba(255, 255, 255, 0.5);
-    border: none;
-    outline: none;
-    margin: 0.1em;
-    padding: 0.25em 0.5em;
-    cursor: pointer;
-}
-
-*:focus {
-    -webkit-tap-highlight-color: transparent;
-    outline: none;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-}
-
-button span, a span {
-    display: block;
-    margin: 0.2em;
-}
-
 div.tab-controls {
     text-align: center;
     display: flex;
+    background: #DDD;
+    cursor: pointer;
+    flex-grow: 1;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
@@ -82,144 +70,139 @@ div.tab-controls {
     user-select: none;
 }
 
-div.tab-controls a, div.stopwatches button.add {
-    background: #DDD;
-    cursor: pointer;
-    flex-grow: 1;
+div.tab-controls .active {
+  background: #BBB;
 }
 
-div.tab-controls {
+div.tab-controls a {
     background: #DDD;
     cursor: pointer;
     flex-grow: 1;
+    padding: 1em 0;
+    line-height: 0;
 }
 
 div.tab-controls a:not(:last-child) {
     border-right: 1px solid white;
 }
 
+div.tab#about, div.tab#settings {
+  box-sizing: border-box;
+  padding: 0.5em;
+}
+
+/* stopwatch grid */
+.stopwatch-grid {
+  display: grid;
+  gap: 10px;
+}
+
+@media only screen and (min-width: 1200px) {
+  .stopwatch-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
+@media only screen and (min-width: 900px) and (max-width: 1199px) {
+  .stopwatch-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+@media only screen and (min-width: 600px) and (max-width: 899px) {
+  .stopwatch-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media only screen and (max-width: 599px) {
+  .stopwatch-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+/* stopwatch */
+h2 {
+  text-align: center;
+  margin: 0;
+}
+
+div.time-display, div.controls {
+  text-align: center;
+}
+
 div.time-display {
-    font-size: 45px;
-    text-align: center;
-    cursor: pointer;
+  font-size: 3em;
+  font-family: 'Roboto Mono';
+  text-align: center;
 }
 
-div.time-display time {
-    display: block;
-    font-family: 'Roboto Mono';
+.split.display {
+  display: block;
+  width: 100%;
 }
 
-div.years, div.days, div.hours, div.minutes, div.seconds {
-    margin-right: -0.6em;
+div.controls {
+  text-align: center;
 }
 
-span.years, span.days, span.hours, span.minutes, span.seconds {
-    margin-right: -0.02em;
+.stopwatch button {
+  border: 0;
+}
+
+.stopwatch button:focus {
+  outline: none;
+  background: #CCC;
+}
+
+button {
+  padding: 0.5em;
+}
+
+button.stacked span {
+  display: block;
+  width: 100%;
+  margin: 0.2em 0;
 }
 
 table.splits {
-    font-size: 18px;
+  margin: 0 auto;
 }
 
-div.stopwatch h2 table.splits thead {
-    letter-spacing: 0.02em;
+button.add {
+  display:block;
+  border: 0;
+  position: relative;
+  min-height: 5em;
+
+  text-align:center;
 }
 
-/* Forms */
-form.time-display input {
-    width: 3em;
+button.add * {
+  vertical-align: middle;
 }
 
-form.time-display input.years, form.time-display input.days, form.time-display input.hours {
-    width: 2em;
+button.add span {
+  font-size: 1.5em;
+  margin: 0 0 0 1em;
 }
 
-div.stopwatches, div.archives {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+form.settings {
+  margin-top: 4em;
 }
 
-div.stopwatch {
-    border: 1px solid #FFF;
-    align-items: center;
-    flex-grow: 1;
-    flex-shrink: 0;
-    padding: 0.5rem;
+input[type="text"], input[type="tel"] {
+  border: 1px solid #DDD;
+  color: black;
+  font-size: 1em;
+  padding: 0.25em;
 }
 
-div.stopwatch div.controls {
-    display: flex;
+form.time-display input[type="tel"] {
+  width: 2em;
 }
+input[type="tel"] {
 
-div.stopwatch div.controls button {
-    flex-grow: 1;
-}
-
-div.stopwatch h2 {
-    text-align: center;
-}
-
-div.stopwatch * {
-    color: currentColor;
-}
-
-div.stopwatch input {
-    color: #000;
-}
-
-div.tab-controls a:hover, div.stopwatches button.add:hover, div.tab-controls a.active {
-    -webkit-tap-highlight-color: transparent;
-    background: #CCC;
-}
-
-div.stopwatch div.controls {
-    text-align: center;
-}
-
-div.stopwatch table.splits {
-    margin: 1em auto;
-    border-spacing: 5px 2px;
-}
-
-@media only screen and (min-width: 800px) {
-    div.stopwatch {
-      flex-basis: 50%;
-    }
-
-
-    div.stopwatch:nth-last-child(n+3):first-child,
-    div.stopwatch:nth-last-child(n+3):first-child ~ *,
-    div.stopwatch:nth-last-child(n+3):first-child,
-    div.stopwatch:nth-last-child(n+3):first-child ~ * {
-      flex-basis: 33%;
-    }
-
-    div.stopwatch:nth-last-child(n+2):first-child,
-    div.stopwatch:nth-last-child(n+2):first-child ~ *,
-    div.stopwatch:nth-last-child(n+2):first-child,
-    div.stopwatch:nth-last-child(n+2):first-child ~ * {
-      flex-basis: 25%;
-    }
-
-
-    div.stopwatch:nth-child(5):last-child {
-        margin-right: auto;
-    }
-
-}
-
-@media only screen and (max-width: 799px) {
-
-    div.stopwatch div.controls button {
-        height: 4em;
-    }
-
-}
-
-
-@media only screen and (max-width: 450px) {
-    div.stopwatch div.settings input {
-      max-width: 8em;
-    }
 }

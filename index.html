@@ -58,17 +58,16 @@
                 <span>About</span>
               </a>
             </div>
-            <div class="container">
+            <div class="tab-container">
               <div id="stopwatches" class="tab" :class="currentTab === 'stopwatch' ? 'visible' : 'invisible'">
-                 <div class="stopwatches">
-                    <div class="stopwatch" v-for="(instance, index) in stopwatches" is="stopwatch" v-if="!instance.isArchived" v-bind:index="index" v-bind:settings="settings" v-bind:local-settings="instance.settings" v-bind:stopwatch="instance.stopwatch" display="textdisplay" v-bind:show-controls="settings.render.showControls" v-bind:show-splits="settings.render.showSplits" v-bind:mutable="true"><button class="float-left" v-on:click="removeStopWatch(index)"><i class="fad fa-trash"></i><span>Delete</span></button><button class="float-left" v-on:click="cloneStopwatch(index)"><i class="fad fa-clone"></i><span>Clone</span></button></div>
-                    <button class="add" v-on:click="addStopWatch()"><i class="fad fa-plus fa-5x"></i><span>Add Stopwatch</span></button>
+                 <div class="stopwatch-grid">
+                    <div class="stopwatch" v-for="(instance, index) in stopwatches" is="stopwatch" v-if="!instance.isArchived" v-bind:index="index" v-bind:settings="settings" v-bind:local-settings="instance.settings" v-bind:stopwatch="instance.stopwatch" display="textdisplay" v-bind:show-controls="settings.render.showControls" v-bind:show-splits="settings.render.showSplits" v-bind:mutable="true"><button class="float-left stacked" v-on:click="removeStopWatch(index)"><i class="fad fa-trash"></i><span>Delete</span></button><button class="float-left stacked" v-on:click="cloneStopwatch(index)"><i class="fad fa-clone"></i><span>Clone</span></button></div>
+                    <button class="add" v-on:click="addStopWatch()"><i class="fad fa-plus fa-4x"></i><span>Add Stopwatch</span></button>
                  </div>
               </div>
               <div id="archive" class="tab" :class="currentTab === 'archive' ? 'visible' : 'invisible'">
-                 <div class="archives">
+                 <div class="stopwatch-grid">
                     <div class="stopwatch" v-for="(instance, index) in stopwatches" is="stopwatch" v-if="instance.isArchived" v-bind:index="index" v-bind:settings="settings" v-bind:local-settings="instance.settings" v-bind:stopwatch="instance.stopwatch" display="textdisplay" v-bind:show-splits="settings.render.showSplits" v-bind:mutable="false"><button v-on:click="removeArchivedStopwatch(index)"><i class="fad fa-trash"></i><span>Delete</span></button><button v-on:click="unarchiveStopwatch(index)">Unarchive</button></div>
-                    <p v-else>No archived stopwatches</p>
                  </div>
 
               </div>
