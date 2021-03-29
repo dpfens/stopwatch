@@ -523,6 +523,10 @@
             stopwatches: [],
             currentTab: 'stopwatch',
             edittingSplit: null,
+            storage: {
+              quota: 0.0,
+              usage: 0.0
+            },
             debug: false
         },
         methods: {
@@ -742,4 +746,10 @@
       }
       app.stopwatches = instances;
     });
+
+    if (navigator.storage && navigator.storage.estimate) {
+      navigator.storage.estimate().then(function(estimation) {
+        app.storage = estimation;
+      });
+    }
 })();
