@@ -1,181 +1,29 @@
 (function() {
-    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame,
-        connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
         window.dataLayer = window.dataLayer || [];
 
-    if (connection != null) {
-        function updateConnectionStatus() {}
+    var databaseName = 'stopwatch',
+        stopwatchStoreName = 'stopwatch',
+        stopwatchAdapter;
+    if ('indexedDB' in window) {
+      class StopwatchStorageAdapter extends IndexedDBStorageAdapter {
+          upgrade(event) {
+              let db = event.target.result,
+                  store = 'stopwatch',
+                  options = {
+                    keyPath: 'id',
+                    autoIncrement: true
+              };
+              db.createObjectStore(store, options);
+          }
+      }
 
-        updateConnectionStatus();
-        connection.addEventListener('change', updateConnectionStatus);
-    }
+      var databaseVersion = 1;
+      stopwatchAdapter = new StopwatchStorageAdapter(databaseName, databaseVersion);
 
-    function LocalStorageAdapter(key) {
-        this.key = key
-    }
-
-    LocalStorageAdapter.prototype.save = function(data) {
-        var rawData = JSON.stringify(data);
-        localStorage.setItem(this.key, rawData);
-    }
-
-
-    LocalStorageAdapter.prototype.load = function() {
-        var rawData = localStorage.getItem(this.key);
-        return JSON.parse(rawData);
-    }
-
-
-    function Archive(key) {
-        LocalStorageAdapter.call(this, key);
-        this.data = [];
-    }
-
-    function StopWatchArchive(key) {
-        LocalStorageAdapter.call(this, key);
-        this.data = [];
-    }
-
-    StopWatchArchive.prototype.push = function(stopwatch, settings) {
-        var data = {
-            stopwatch : stopwatch,
-            settings: settings,
-        };
-        this.data.push(data);
-    }
-
-
-    StopWatchArchive.prototype.deserialize = function() {
-        var data = [];
-        for (var i = 0; i < this.data.length; i++) {
-            var rawStopwatchData = this.data[i].stopwatch,
-                stopwatchInstance = StopWatch.from(rawStopwatchData),
-                settings = this.data[i].settings;
-            data.push({
-                stopwatch: stopwatchInstance,
-                settings: settings
-            });
-        }
-        return data;
-    }
-
-    function Settings(key, totalDuration, splitDuration, render, locale) {
-        LocalStorageAdapter.call(this, key);
-        this.totalDuration = totalDuration || {};
-        this.totalDuration.fontSize = this.totalDuration.fontSize || { value: 0.8, unit: 'em' };
-        this.splitDuration = splitDuration || {};
-        this.splitDuration.fontSize = this.splitDuration.fontSize || { value: 0.4, unit: 'em' };
-        this.render = render || {};
-        this.render.showControls = this.render.showControls || true;
-        this.render.showSplits = this.render.showSplits || true;
-        this.locale = locale || 'en-us';
-    }
-
-    try {
-      var hasLocalStorage = 'localStorage' in window && window['localStorage'] !== null;
-    } catch(error) {
-      var hasLocalStorage = false;
-    }
-
-    if (hasLocalStorage) {
-        Archive.prototype.save = function() {
-            LocalStorageAdapter.prototype.save.call(this, this.data);
-        }
-
-        Archive.prototype.load = function() {
-            var data = LocalStorageAdapter.prototype.load.call(this);
-            if (data == null) {
-                data = [];
-            }
-            this.data = data;
-        }
-
-
-        StopWatchArchive.prototype.save = function() {
-            LocalStorageAdapter.prototype.save.call(this, this.data);
-        }
-
-        StopWatchArchive.prototype.load = function() {
-            var data = LocalStorageAdapter.prototype.load.call(this);
-            if (data == null) {
-                data = [];
-            }
-            this.data = data;
-            this.data = this.deserialize();
-        }
-
-        Settings.prototype.save = function() {
-            var data = {},
-            properties = ['totalDuration', 'splitDuration', 'render', 'locale'];
-            for (var i = 0; i < properties.length; i++) {
-                var property = properties[i];
-                data[property] = this[property];
-            }
-            LocalStorageAdapter.prototype.save.call(this, data);
-        }
-
-        Settings.prototype.load = function() {
-            var data = LocalStorageAdapter.prototype.load.call(this),
-                properties = ['totalDuration', 'splitDuration', 'render', 'locale'];
-            if (data == null) {
-                return;
-            }
-            for (var i = 0; i < properties.length; i++) {
-                var property = properties[i];
-                if (property in data) {
-                    this[property] = data[property];
-                }
-            }
-        }
     } else {
-        Archive.prototype.save = function() {}
-        Archive.prototype.load = function() { return [];}
-        StopWatchArchive.prototype.save = function() {}
-        StopWatchArchive.prototype.load = function() { return [];}
-
-        Settings.prototype.save = function() {}
-
-        Settings.prototype.load = function() {
-            var defaultFontSize = {
-                value: 1.5,
-                unit: 'em'
-            };
-            this.locale = 'en-us';
-            this.totalDuration.fontSize = defaultFontSize;
-            this.splitDuration.fontSize = defaultFontSize;
-        }
+      stopwatchAdapter = new AsynchronousStorageAdapter(window.localStorage, databaseName);
     }
-
-    function updateOnlineStatus(event) {
-        var isOnline = navigator.onLine,
-            icon = navigator.onLine ? "fa-signal" : "fa-signal-slash";
-
-        status.className = condition;
-        status.innerHTML = condition.toUpperCase();
-
-        log.insertAdjacentHTML("beforeend", "Event: " + event.type + "; Status: " + condition);
-    }
-
-    window.addEventListener('load', function() {
-        var statusElement = document.getElementById("status"),
-            logElement = document.getElementById("log");
-
-        function updateOnlineStatus(event) {
-            var condition = navigator.onLine ? "online" : "offline";
-
-            if (statusElement) {
-                statusElement.className = condition;
-                statusElement.innerHTML = condition.toUpperCase();
-            }
-
-            if (logElement) {
-                log.insertAdjacentHTML("beforeend", "Event: " + event.type + "; Status: " + condition);
-            }
-        }
-
-        window.addEventListener('online',  updateOnlineStatus);
-        window.addEventListener('offline', updateOnlineStatus);
-    });
 
     var defaultDuration = {
         days: 0,
@@ -407,7 +255,7 @@
         },
         methods: {
             save: function() {
-                this.$parent.saveStopwatches();
+              this.$parent.updateStopwatch(this.index);
             },
             toggleStopWatch: function(event) {
                 var isRunning = this.stopwatch.isRunning(),
@@ -488,7 +336,7 @@
                   }
                   stopwatchChannel.postMessage(data);
                 }
-                this.$parent.saveStopwatches();
+                this.save();
                 this.startAnimation();
             },
             stopStopwatch: function() {
@@ -499,7 +347,7 @@
                     'eventAction': 'Stop',
                     'eventLabel': 'Stopwatch #' + this.index
                 });
-                this.$parent.saveStopwatches();
+                this.save();
                 this.stopAnimation();
                 if (stopwatchChannel) {
                   var data = {
@@ -518,7 +366,7 @@
                     'eventAction': 'Resume',
                     'eventLabel': 'Stopwatch #' + this.index
                 });
-                this.$parent.saveStopwatches();
+                this.save();
                 if (stopwatchChannel) {
                   var data = {
                     'action': 'update',
@@ -537,14 +385,14 @@
                     'eventAction': 'Reset',
                     'eventLabel': 'Stopwatch #' + this.index
                 });
-                this.$parent.saveStopwatches();
+                this.save();
                 var breakdown = this.stopwatch.breakdown(0);
                 this.currentDuration = breakdown;
                 this.splitDuration = breakdown;
                 this.splits = [];
             },
             archiveStopwatch: function () {
-                this.$parent.archiveStopwatch(this.index, this.stopwatch, this.localSettings);
+                this.$parent.archiveStopwatch(this.index);
             },
             recordSplit: function() {
                 var splitCount = this.stopwatch.splits.length,
@@ -561,19 +409,19 @@
                     'eventAction': 'Create',
                     'eventLabel': 'Stopwatch #' + this.index
                 });
-                this.$parent.saveStopwatches();
+                this.save();
             },
             updateSplit: function(index, data) {
                 this.stopwatch.update(index, data.value);
-                this.$parent.saveStopwatches();
+                this.save();
             },
             deleteSplit: function(index) {
                 this.stopwatch.removeSplit(index);
-                this.$parent.saveStopwatches();
+                this.save();
             },
             formatDuration: formatDuration,
             clone: function(index) {
-                var instance = this.$parent.stopwatches.data[index];
+                var instance = this.$parent.stopwatches[index];
                 this.$parent.cloneStopwatch(instance);
             },
             deleteStopwatch: function(index) {
@@ -629,42 +477,57 @@
         </div>'
     });
 
-    var settings = new Settings('settings'),
-        current = new StopWatchArchive('current'),
-        archive = new StopWatchArchive('archive');
-    settings.load();
-    current.load();
-    archive.load();
-
     if ('BroadcastChannel' in window) {
         var settingsChannel = new BroadcastChannel('settings'),
             stopwatchChannel = new BroadcastChannel('stopwatch');
 
         settingsChannel.onmessage = function(event) {
-          settings.load();
         }
 
         stopwatchChannel.onmessage = function(event) {
-          current.load();
-          archive.load();
         }
     } else {
       splitChannel = settingsChannel = stopwatchChannel = null;
     }
 
+    var defaultSettings = {
+      totalDuration:
+        {fontSize: {
+          value:"0.6",
+          unit:"em"
+        }
+      },
+      splitDuration: {
+        fontSize: {
+          value: 0.4,
+          unit:"em"
+        }
+      },
+      render: {
+        showControls:true,
+        showSplits:true
+      },
+      locale:"en-us"
+    },
+    appSettings = localStorage.getItem('settings');
+    if (appSettings) {
+      appSettings = JSON.parse(appSettings);
+    } else {
+      appSettings = defaultSettings;
+    }
+
     var app = new Vue({
         el: 'div#app',
         data: {
-            settings: settings,
-            archive: archive,
-            stopwatches: current,
+            settings: defaultSettings,
+            stopwatches: [],
             currentTab: 'stopwatch',
             edittingSplit: null,
             debug: false
         },
         methods: {
             saveSettings: function(event) {
-                this.settings.save();
+                localStorage.setItem('settings', JSON.stringify(this.settings));
                 dataLayer.push({
                     'event': 'stopwatchEvent',
                     'eventCategory': 'Settings',
@@ -682,82 +545,104 @@
                         primaryColor: null,
                         secondaryColor: null
                     },
-                    stopwatchCount = this.stopwatches.data.length;
-                this.stopwatches.push(newStopwatch, localSettings);
-                this.saveStopwatches();
-                return {
-                  'stopwatch': newStopwatch,
-                  'settings': localSettings
-                };
+                    obj = {stopwatch: newStopwatch, settings: localSettings};
+                return stopwatchAdapter.add(stopwatchStoreName, obj);
             },
             addStopWatch: function() {
-                var stopwatchData = this._addStopWatch();
-                dataLayer.push({
-                    'event': 'stopwatchEvent',
-                    'eventCategory': 'Stopwatch',
-                    'eventAction': 'Create',
-                    'eventLabel': 'Stopwatch #' + (this.stopwatches.length - 1)
+                var addStopwatchPromise = this._addStopWatch(),
+                    self = this;
+                addStopwatchPromise.then(function(events) {
+                  for (var i = 0; i < events.length; i++) {
+                    var event = events[i],
+                        id = event.target.result;
+                    stopwatchAdapter.get(stopwatchStoreName, id)
+                    .then(function (getEvents) {
+                      var getEvent = getEvents[0],
+                          data = getEvent.target.result;
+                          data.stopwatch = StopWatch.from(data.stopwatch);
+                          self.stopwatches.push(data);
+
+                          dataLayer.push({
+                              'event': 'stopwatchEvent',
+                              'eventCategory': 'Stopwatch',
+                              'eventAction': 'Create',
+                              'eventLabel': 'Stopwatch #' + data.id
+                          });
+                    });
+
+                  }
                 });
-            },
-            saveStopwatches: function() {
-                this.stopwatches.save();
-                if(stopwatchChannel) {
-                  stopwatchChannel.postMessage({});
-                }
             },
             _removeStopWatch: function(index) {
-              this.stopwatches.data.splice(index, 1);
-              this.saveStopwatches();
+              var instance = this.stopwatches[index];
+              this.stopwatches.splice(index, 1);
+              return stopwatchAdapter.delete(stopwatchStoreName, instance.id);
             },
             removeStopWatch: function(index) {
-                this._removeStopWatch(index);
-                dataLayer.push({
-                    'event': 'stopwatchEvent',
-                    'eventCategory': 'Stopwatch',
-                    'eventAction': 'Delete',
-                    'eventLabel': 'Stopwatch #' + index
-                });
+              var instance = this.stopwatches[index];
+              this._removeStopWatch(index).then(function() {
+                  dataLayer.push({
+                      'event': 'stopwatchEvent',
+                      'eventCategory': 'Stopwatch',
+                      'eventAction': 'Delete',
+                      'eventLabel': 'Stopwatch #' + instance.id
+                  });
+              });
             },
             _cloneStopwatch: function(index) {
-                var instance = this.stopwatches.data[index],
+                var instance = this.stopwatches[index],
                     newInstanceData = JSON.parse(JSON.stringify(instance)),
                     newStopwatch = StopWatch.from(newInstanceData.stopwatch),
-                    newSettings = newInstanceData.settings;
-                this.stopwatches.push(newStopwatch, newSettings);
-                this.saveStopwatches();
+                    newSettings = newInstanceData.settings,
+                    obj = {stopwatch: newStopwatch, settings: newSettings};
+                return stopwatchAdapter.add(stopwatchStoreName, obj);
             },
             cloneStopwatch: function(index) {
-                this._cloneStopwatch(index);
-                dataLayer.push({
-                    'event': 'stopwatchEvent',
-                    'eventCategory': 'Stopwatch',
-                    'eventAction': 'Clone',
-                    'eventLabel': 'Stopwatch #' + index
+                var self = this;
+                this._cloneStopwatch(index)
+                .then(function(events) {
+                  for (var i = 0 ; i < events.length; i++) {
+                    var event = events[i],
+                        id = event.target.result;
+                    stopwatchAdapter.get(stopwatchStoreName, id)
+                    .then(function(getEvents) {
+                      var getEvent = getEvents[0],
+                          data = getEvent.target.result;
+                          data.stopwatch = StopWatch.from(data.stopwatch);
+                      self.stopwatches.push(data);
+                    });
+                  }
+
+                  dataLayer.push({
+                      'event': 'stopwatchEvent',
+                      'eventCategory': 'Stopwatch',
+                      'eventAction': 'Clone',
+                      'eventLabel': 'Stopwatch #' + index
+                  });
                 });
             },
-            updateStopwatch: function(index, data) {
-                var stopwatch = this.stopwatches.data[index];
-                this.stopwatches.data[index] = StopWatch.from(data);
+            updateStopwatch: function(index) {
+                var data = this.stopwatches[index];
+                stopwatchAdapter.update(stopwatchStoreName, data);
             },
-            archiveStopwatch: function (index, stopwatch, localSettings) {
-                this.archive.push(stopwatch, localSettings);
-                this.archive.save();
-                dataLayer.push({
-                    'event': 'stopwatchEvent',
-                    'eventCategory': 'Stopwatch',
-                    'eventAction': 'Archive',
-                    'eventLabel': 'Stopwatch #' + index
+            archiveStopwatch: function (index) {
+                var instance = this.stopwatches[index];
+                instance.isArchived = true;
+                stopwatchAdapter.update(stopwatchStoreName, instance)
+                .then(function () {
+                  dataLayer.push({
+                      'event': 'stopwatchEvent',
+                      'eventCategory': 'Stopwatch',
+                      'eventAction': 'Archive',
+                      'eventLabel': 'Stopwatch #' + index
+                  });
                 });
-                this.stopwatches.data.splice(index, 1);
-                this.saveStopwatches();
             },
             unarchiveStopwatch: function(index) {
-                var instance = this.archive.data[index],
-                    stopwatch = instance.stopwatch,
-                    settings = instance.settings;
-                this.removeArchivedStopwatch(index);
-                this.stopwatches.push(stopwatch, settings);
-                this.saveStopwatches();
+              var instance = this.stopwatches[index];
+              instance.isArchived = false;
+              stopwatchAdapter.update(stopwatchStoreName, instance)
+              .then(function() {
                 dataLayer.push({
                     'event': 'stopwatchEvent',
                     'eventCategory': 'Stopwatch',
@@ -767,13 +652,7 @@
                 if(stopwatchChannel) {
                   stopwatchChannel.postMessage({});
                 }
-            },
-            removeArchivedStopwatch: function(index) {
-                this.archive.data.splice(index, 1);
-                this.archive.save();
-                if(stopwatchChannel) {
-                  stopwatchChannel.postMessage({});
-                }
+              });
             },
             formatDuration: formatDuration
         }
@@ -855,4 +734,12 @@
         output += breakdown.years * 31536000000;
         return output;
     }
+
+    stopwatchAdapter.getAll(stopwatchStoreName)
+    .then(function(instances) {
+      for(var i = 0; i < instances.length; i++) {
+        instances[i].stopwatch = StopWatch.from(instances[i].stopwatch);
+      }
+      app.stopwatches = instances;
+    });
 })();

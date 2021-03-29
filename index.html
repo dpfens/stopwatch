@@ -45,7 +45,7 @@
                 <i class="fad fa-stopwatch"></i>
                 <span>Stopwatches</span>
               </a>
-              <a id="toggle-archive" v-if="archive.data.length &gt; 0" v-on:click="currentTab = 'archive'" :class="currentTab === 'archive' ? 'active' : ''">
+              <a id="toggle-archive" v-on:click="currentTab = 'archive'" :class="currentTab === 'archive' ? 'active' : ''">
                 <i class="fad fa-archive"></i>
                 <span>Archives</span>
               </a>
@@ -61,14 +61,16 @@
             <div class="container">
               <div id="stopwatches" class="tab" :class="currentTab === 'stopwatch' ? 'visible' : 'invisible'">
                  <div class="stopwatches">
-                    <div class="stopwatch" v-for="(instance, index) in stopwatches.data" is="stopwatch" v-bind:index="index" v-bind:settings="settings" v-bind:local-settings="instance.settings" v-bind:stopwatch="instance.stopwatch" display="textdisplay" v-bind:show-controls="settings.render.showControls" v-bind:show-splits="settings.render.showSplits" v-bind:mutable="true"><button class="float-left" v-on:click="removeStopWatch(index)"><i class="fad fa-trash"></i><span>Delete</span></button><button class="float-left" v-on:click="cloneStopwatch(index)"><i class="fad fa-clone"></i><span>Clone</span></button></div>
-                    <button class="add" v-if="stopwatches.data.length &lt; 9" v-on:click="addStopWatch()"><i class="fad fa-plus fa-5x"></i><span>Add Stopwatch</span></button>
+                    <div class="stopwatch" v-for="(instance, index) in stopwatches" is="stopwatch" v-if="!instance.isArchived" v-bind:index="index" v-bind:settings="settings" v-bind:local-settings="instance.settings" v-bind:stopwatch="instance.stopwatch" display="textdisplay" v-bind:show-controls="settings.render.showControls" v-bind:show-splits="settings.render.showSplits" v-bind:mutable="true"><button class="float-left" v-on:click="removeStopWatch(index)"><i class="fad fa-trash"></i><span>Delete</span></button><button class="float-left" v-on:click="cloneStopwatch(index)"><i class="fad fa-clone"></i><span>Clone</span></button></div>
+                    <button class="add" v-if="stopwatches.length &lt; 9" v-on:click="addStopWatch()"><i class="fad fa-plus fa-5x"></i><span>Add Stopwatch</span></button>
                  </div>
               </div>
-              <div id="archive" class="tab" v-if="archive.data.length > 0" :class="currentTab === 'archive' ? 'visible' : 'invisible'">
+              <div id="archive" class="tab" :class="currentTab === 'archive' ? 'visible' : 'invisible'">
                  <div class="archives">
-                    <div class="stopwatch" v-for="(instance, index) in archive.data" is="stopwatch" v-bind:index="index" v-bind:settings="settings" v-bind:local-settings="instance.settings" v-bind:stopwatch="instance.stopwatch" display="textdisplay" v-bind:show-splits="settings.render.showSplits" v-bind:mutable="false"><button v-on:click="removeArchivedStopwatch(index)"><i class="fad fa-trash"></i><span>Delete</span></button><button v-on:click="unarchiveStopwatch(index)">Unarchive</button></div>
+                    <div class="stopwatch" v-for="(instance, index) in stopwatches" is="stopwatch" v-if="instance.isArchived" v-bind:index="index" v-bind:settings="settings" v-bind:local-settings="instance.settings" v-bind:stopwatch="instance.stopwatch" display="textdisplay" v-bind:show-splits="settings.render.showSplits" v-bind:mutable="false"><button v-on:click="removeArchivedStopwatch(index)"><i class="fad fa-trash"></i><span>Delete</span></button><button v-on:click="unarchiveStopwatch(index)">Unarchive</button></div>
+                    <p v-else>No archived stopwatches</p>
                  </div>
+
               </div>
               <div id="settings" class="tab" :class="currentTab === 'settings' ? 'visible' : 'invisible'">
                  <h2>Stopwatch Settings</h2>
@@ -80,12 +82,10 @@
                  <h3>Font Size</h3>
                  <p><label for="totalDurationFontSize">Total Duration Font Size:</label>
                      <input type="range" name="totalDurationFontSize" min="0.2" max="1" step="0.2" v-model="settings.totalDuration.fontSize.value" v-on:change="saveSettings">
-                     <span v-if="debug">{{ settings.totalDuration.fontSize.value }}{{ settings.totalDuration.fontSize.unit }}</span>
                  </p>
                  <p>
                      <label for="splitDurationFontSize">Split Duration Font Size:</label>
                      <input type="range" name="splitDurationFontSize" min="0.2" max="1" step="0.2" v-model="settings.splitDuration.fontSize.value" v-on:change="saveSettings">
-                     <span v-if="debug"> {{ settings.splitDuration.fontSize.value }}{{ settings.splitDuration.fontSize.unit }}</span>
                  </p>
                  <h3>View</h3>
                  <p><input type="checkbox" v-model="settings.render.showSplits" v-on:change="saveSettings"><span>Show Splits on each Stopwatch</span></p>
@@ -124,6 +124,7 @@
       <footer></footer>
    </body>
    <script type="text/javascript" src="libs/stopwatch/js/stopwatch.js"></script>
+   <script type="text/javascript" src="libs/storage.js"></script>
    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
    <script type="text/javascript" src="scripts/app.js" async="true"></script>
    <script type="text/javascript">
