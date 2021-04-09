@@ -178,15 +178,13 @@
                 type: String
             },
             'stopwatch': {
-                type: Object,
-                default: Object.create(new StopWatch())
+                type: Object
             },
             'display': String,
             'showControls': Boolean,
             'showSplits': Boolean,
             'splits': {
-                type: Array,
-                default: function () { return [] }
+                type: Array
             },
             'primaryColor': String,
             'secondaryColor': String,
@@ -318,14 +316,6 @@
                     'eventAction': 'Start',
                     'eventLabel': 'Stopwatch #' + this.index
                 });
-                if (stopwatchChannel) {
-                  var data = {
-                    'action': 'update',
-                    'stopwatch': this.stopwatch,
-                    'index': this.index
-                  }
-                  stopwatchChannel.postMessage(data);
-                }
                 this.save();
                 this.startAnimation();
             },
@@ -339,14 +329,6 @@
                 });
                 this.save();
                 this.stopAnimation();
-                if (stopwatchChannel) {
-                  var data = {
-                    'action': 'update',
-                    'stopwatch': this.stopwatch,
-                    'index': this.index
-                  }
-                  stopwatchChannel.postMessage(data);
-                }
             },
             resumeStopwatch: function() {
                 this.stopwatch.resume();
@@ -357,14 +339,6 @@
                     'eventLabel': 'Stopwatch #' + this.index
                 });
                 this.save();
-                if (stopwatchChannel) {
-                  var data = {
-                    'action': 'update',
-                    'stopwatch': this.stopwatch,
-                    'index': this.index
-                  }
-                  stopwatchChannel.postMessage(data);
-                }
                 this.startAnimation();
             },
             resetStopwatch: function() {
@@ -467,19 +441,6 @@
         </div>'
     });
 
-    if ('BroadcastChannel' in window) {
-        var settingsChannel = new BroadcastChannel('settings'),
-            stopwatchChannel = new BroadcastChannel('stopwatch');
-
-        settingsChannel.onmessage = function(event) {
-        }
-
-        stopwatchChannel.onmessage = function(event) {
-        }
-    } else {
-      splitChannel = settingsChannel = stopwatchChannel = null;
-    }
-
     var defaultSettings = {
       totalDuration:
         {fontSize: {
@@ -506,6 +467,14 @@
       appSettings = defaultSettings;
     }
 
+    if ('BroadcastChannel' in window) {
+        var settingsChannel = new BroadcastChannel('settings'),
+            stopwatchChannel = new BroadcastChannel('stopwatch');
+
+    } else {
+      splitChannel = settingsChannel = stopwatchChannel = null;
+    }
+
     var app = new Vue({
         el: 'div#app',
         data: {
@@ -518,6 +487,32 @@
               usage: 0.0
             },
             debug: false
+        },
+        mounted: function() {
+          var self = this;
+          if (settingsChannel) {
+              settingsChannel.onmessage = function(event) {
+                self.settings = event.data;
+              }
+          }
+
+          if (stopwatchChannel) {
+              stopwatchChannel.onmessage = function(event) {
+                var index = event.data.index,
+                    action = event.data.action,
+                    item = event.data.item;
+
+                item.stopwatch = StopWatch.from(item.stopwatch);
+                if (action === 'create') {
+                  self.stopwatches.push(item);
+                } else if (action === 'delete') {
+                  self.stopwatches.splice(index, 1);
+                } else {
+                  self.$set(self.stopwatches, index, item);
+                }
+
+              }
+          }
         },
         methods: {
             saveSettings: function(event) {
@@ -562,6 +557,15 @@
                               'eventAction': 'Create',
                               'eventLabel': 'Stopwatch #' + data.id
                           });
+
+                          if (stopwatchChannel) {
+                            var data = {
+                              'action': 'create',
+                              'item': data,
+                              'index': self.stopwatches.length - 1
+                            }
+                            stopwatchChannel.postMessage(data);
+                          }
                     });
 
                   }
@@ -581,6 +585,14 @@
                       'eventAction': 'Delete',
                       'eventLabel': 'Stopwatch #' + instance.id
                   });
+                  if (stopwatchChannel) {
+                    var data = {
+                      'action': 'delete',
+                      'item': instance,
+                      'index': index
+                    };
+                    stopwatchChannel.postMessage(data);
+                  }
               });
             },
             _cloneStopwatch: function(index) {
@@ -618,6 +630,14 @@
             updateStopwatch: function(index) {
                 var data = this.stopwatches[index];
                 stopwatchAdapter.update(stopwatchStoreName, data);
+                if (stopwatchChannel) {
+                  var data = {
+                    'action': 'update',
+                    'item': data,
+                    'index': index
+                  };
+                  stopwatchChannel.postMessage(data);
+                }
             },
             archiveStopwatch: function (index) {
                 var instance = this.stopwatches[index];
@@ -630,6 +650,15 @@
                       'eventAction': 'Archive',
                       'eventLabel': 'Stopwatch #' + index
                   });
+
+                  if (stopwatchChannel) {
+                    var data = {
+                      'action': 'update',
+                      'item': instance,
+                      'index': index
+                    };
+                    stopwatchChannel.postMessage(data);
+                  }
                 });
             },
             unarchiveStopwatch: function(index) {
@@ -643,8 +672,13 @@
                     'eventAction': 'Unarchive',
                     'eventLabel': 'Stopwatch #' + index
                 });
-                if(stopwatchChannel) {
-                  stopwatchChannel.postMessage({});
+                if (stopwatchChannel) {
+                  var data = {
+                    'action': 'update',
+                    'item': instance,
+                    'index': index
+                  };
+                  stopwatchChannel.postMessage(data);
                 }
               });
             },
