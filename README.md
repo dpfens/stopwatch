@@ -114,6 +114,16 @@ var currentLapDuration = stopwatchInstance.lapDuration();
 ```
 
 ### State
+To get metadata about a stopwatch, using the `metadata` property:
+```javascript
+var metadata = stopwatch.metadata;
+```
+
+To get the start time of a stopwatch, use the `startValue` property:
+```javascript
+var startTimestamp = stopwatch.startValue;
+```
+
 To find out if the stopwatch is currently being used to time something, use the `isRunning` method:
 ```javascript
 if (stopwatchInstance.isRunning()) {
@@ -126,5 +136,19 @@ To find out if the stopwatch has been used and not been reset, use the `isActive
 ```javascript
 if (!stopwatchInstance.isActive()) {
     stopwatchInstance.start();
+}
+```
+
+To iterate over existing splits in the stopwatch:
+```javascript
+for (var i = 0; i < stopwatch.splits.length; i++) {
+  var split = stopwatch.splits[i];
+}
+```
+
+To iterate over existing laps in the stopwatch:
+```javascript
+for (var i = 0; i < stopwatch.laps.length; i++) {
+  var lap = stopwatch.laps[i];
 }
 ```
