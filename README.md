@@ -141,14 +141,14 @@ if (!stopwatchInstance.isActive()) {
 
 To iterate over existing splits in the stopwatch:
 ```javascript
-for (var i = 0; i < stopwatch.splits.length; i++) {
-  var split = stopwatch.splits[i];
+for (var i = 0; i < splitStopwatch.splits.length; i++) {
+  var split = splitStopwatch.splits[i];
 }
 ```
 
 To iterate over existing laps in the stopwatch:
 ```javascript
-for (var i = 0; i < stopwatch.laps.length; i++) {
-  var lap = stopwatch.laps[i];
+for (var i = 0; i < lapStopwatch.laps.length; i++) {
+  var lap = lapStopwatch.laps[i];
 }
 ```
