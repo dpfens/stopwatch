@@ -101,7 +101,7 @@ class BasicStopwatch {
     this.metadata.resetAt = now;
   }
 
-  totalDuration(timestamp: number): number {
+  totalDuration(timestamp: number | null): number {
       /*
       Finds the total duration of the stopwatch
       */
@@ -343,7 +343,7 @@ class SplitStopwatch extends BasicStopwatch {
       }
   }
 
-  splitDuration(timestamp: number): number {
+  splitDuration(timestamp: number | null): number {
       /*
       Finds the duration of the stopwatch since the end of the last split
       */
@@ -473,7 +473,7 @@ class LapStopwatch extends SplitStopwatch {
     return lap;
   }
 
-  lapDuration(timestamp: number): number {
+  lapDuration(timestamp: number | null): number {
     /*
     Finds the duration of the stopwatch since the end of the last lap
     */
