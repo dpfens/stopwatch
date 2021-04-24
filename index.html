@@ -6,7 +6,7 @@
        <!-- End Google Tag Manager -->
       <title>Stopwatch</title>
       <link rel="canonical" href=""/>
-      <meta name="description" content="A configuration multi-stopwatch with support for cloning stopwatches that works offline" />
+      <meta name="description" content="A better offline-capable multi-stopwatch" />
       <script type="application/ld+json"></script>
       <meta property="og:url" content="/stopwatch"/>
       <meta property="og:site_name" content="StopWatch"/>
@@ -56,6 +56,10 @@
               <a id="toggle-settings" v-on:click="currentTab = 'about'" :class="currentTab === 'about' ? 'active' : ''">
                 <i class="fad fa-address-card"></i>
                 <span>About</span>
+              </a>
+              <a id="toggle-share" hidden>
+                <i class="fad fa-share"></i>
+                <span>Share</span>
               </a>
             </div>
             <div class="tab-container">

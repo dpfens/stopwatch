@@ -776,4 +776,18 @@
         app.storage = estimation;
       });
     }
+
+    if (navigator.share) {
+      var shareElement = document.querySelector('a#toggle-share');
+      shareElement.addEventListener('click', function(event) {
+        event.preventDefault();
+        var shareData = {
+          'url': window.location.href,
+          'title': document.title,
+          'text': 'A better, offline-capable multi-stopwatch'
+        }
+        navigator.share(shareData).then(function(event) {});
+      });
+      shareElement.hidden = false;
+    }
 })();
