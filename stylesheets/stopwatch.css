@@ -1,11 +1,33 @@
+:root {
+  --backgroundColor: #FFF;
+  --textColor: #000;
+  --menuBackgroundColor: #DDD;
+  --menuBackgroundColorActive: #BBB;
+  --buttonColor: rgba(75, 75, 75, 0.25);
+  --buttonActiveColor: rgba(0, 0, 0, 0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --backgroundColor: #000;
+    --textColor: #FFF;
+    --menuBackgroundColor: #222;
+    --menuBackgroundColorActive: #444;
+    --buttonColor: rgba(175, 175, 175, 0.5);
+    --buttonActiveColor: rgba(255, 255, 255, 0.75);
+  }
+}
+
 main, div#app {
+  background: var(--backgroundColor);
   height: 100vh;
+  color: var(--textColor);
 }
 
 /* tabs */
 div.tab-container {
   width: 100%;
-  height: calc(100vh - 44px);
+  height: calc(100vh - 48px);
   overflow: hidden;
   position: relative;
 }
@@ -57,7 +79,7 @@ div.tab.invisible#about {
 div.tab-controls {
     text-align: center;
     display: flex;
-    background: #DDD;
+    background: var(--menuBackgroundColor);
     cursor: pointer;
     flex-grow: 1;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
@@ -71,20 +93,20 @@ div.tab-controls {
 }
 
 div.tab-controls .active {
-  background: #BBB;
+  background: var(--menuBackgroundColorActive);
 }
 
 div.tab-controls a {
-    background: #DDD;
     cursor: pointer;
     flex-grow: 1;
     padding: 1em 0;
     line-height: 0;
 }
 
-div.tab-controls a:not(:last-child) {
-    border-right: 1px solid white;
+div.tab-controls a:not(:last-child), div.controls button:not(:last-child) {
+    border-right: 1px solid var(--backgroundColor);
 }
+
 
 div.tab#about, div.tab#settings {
   box-sizing: border-box;
@@ -161,10 +183,12 @@ div.controls button {
 
 .stopwatch button:focus {
   outline: none;
-  background: #CCC;
+  background: var(--buttonActiveColor);
 }
 
 button {
+  background: var(--buttonColor);
+  color: var(--textColor)
   padding: 0.5em;
 }
 
@@ -200,16 +224,14 @@ form.settings {
   margin-top: 4em;
 }
 
-input[type="text"], input[type="tel"] {
-  border: 1px solid #DDD;
-  color: black;
+input[type="text"], input[type="tel"], select {
+  border: 1px solid var(--buttonColor);
+  background: var(--buttonColor);
+  color: var(--textColor);
   font-size: 1em;
   padding: 0.25em;
 }
 
 form.time-display input[type="tel"] {
   width: 2em;
-}
-input[type="tel"] {
-
 }
