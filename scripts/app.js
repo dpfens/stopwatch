@@ -420,8 +420,8 @@
                 </div>\
                 <div class="controls" v-if="showControls && mutable">\
                     <button class="stacked" v-if="!stopwatch.isActive()" v-on:click="startStopWatch()"><i class="fad fa-play"></i><span>Start</span></button>\
-                    <button class="stacked" v-if="stopwatch.isRunning()" v-on:click="stopStopwatch()"><i class="fad fa-hand-paper"></i><span>Stop</span></button>\
-                    <button class="stacked" v-if="stopwatch.isRunning()" v-on:click="recordSplit()">Split</button>\
+                    <button class="stacked stop" v-if="stopwatch.isRunning()" v-on:click="stopStopwatch()"><i class="fad fa-hand-paper"></i><span>Stop</span></button>\
+                    <button class="stacked split" v-if="stopwatch.isRunning()" v-on:click="recordSplit()">Split</button>\
                     <button class="stacked" v-if="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="resumeStopwatch()"><i class="fad fa-redo"></i><span>Resume</span></button>\
                     <button class="stacked" v-if="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="resetStopwatch()"><i class="fad fa-undo"></i><span>Reset</span></button>\
                     <button class="stacked" v-if="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="archiveStopwatch()"><i class="fad fa-archive"></i><span>Archive</span></button>\

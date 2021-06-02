@@ -186,6 +186,19 @@ div.controls button {
   background: var(--buttonActiveColor);
 }
 
+button.start:not(:only-child) {
+  margin-left: 1em;
+}
+
+div.controls button.stop {
+  margin-right: 2em;
+  border-right: 0;
+}
+
+button.split {
+  margin-left: 2em;
+}
+
 button {
   background: var(--buttonColor);
   color: var(--textColor)
