@@ -145,7 +145,14 @@ div.time-display {
 }
 
 div.controls {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+div.controls button {
+  display: block;
+  padding: 0.5em;
+  flex-grow: 1;
 }
 
 .stopwatch button {
