@@ -112,8 +112,15 @@ div.tab#about, div.tab#settings {
   padding: 0.5em;
 }
 
+div.tab#stopwatches {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 /* stopwatch grid */
 .stopwatch-grid {
+
   border: 0;
   display: grid;
   gap: 10px;
