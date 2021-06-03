@@ -33,6 +33,63 @@
         milliseconds: 0
     };
 
+    Vue.directive('longpress', {
+        bind: function (el, binding, vNode) {
+            // Make sure expression provided is a function
+            if (typeof binding.value !== 'function') {
+                // Fetch name of component
+                const compName = vNode.context.name
+                // pass warning to console
+                let warn = `[longpress:] provided expression '${binding.expression}' is not a function, but has to be`
+                if (compName) { warn += `Found in component '${compName}' ` }
+
+                console.warn(warn)
+            }
+            el.oncontextmenu = function() {return false;};
+
+            // Define variable
+            let pressTimer = null
+
+            // Define funtion handlers
+            // Create timeout ( run function after 1s )
+            let start = (e) => {
+
+                if (e.type === 'click' && e.button !== 0) {
+                    return;
+                }
+
+                if (pressTimer === null) {
+                    pressTimer = setTimeout(() => {
+                        // Run function
+                        handler()
+                    }, 1000)
+                }
+            }
+
+            // Cancel Timeout
+            let cancel = (e) => {
+                // Check if timer has a value or not
+                if (pressTimer !== null) {
+                    clearTimeout(pressTimer)
+                    pressTimer = null
+                }
+            }
+            // Run Function
+            const handler = (e) => {
+                binding.value(e)
+            }
+
+            // Add Event listeners
+            el.addEventListener("mousedown", start);
+            el.addEventListener("touchstart", start);
+            // Cancel timeouts if this events happen
+            el.addEventListener("click", cancel);
+            el.addEventListener("mouseout", cancel);
+            el.addEventListener("touchend", cancel);
+            el.addEventListener("touchcancel", cancel);
+        }
+    });
+
     Vue.component('textdisplay', {
         props: {
             'locale': String,
@@ -221,25 +278,29 @@
             };
         },
         watch: {
-          stopwatch: function(newStopwatch, oldStopwatch) {
-            if (newStopwatch.isRunning() && !oldStopwatch.isRunning()){
-              this.startAnimation();
-            }
-            else if (oldStopwatch.isRunning() && !newStopwatch.isRunning()) {
-              this.stopAnimation();
-            }
-
-            if(!newStopwatch.isRunning()) {
-              var totalDuration = newStopwatch.totalDuration(),
-                  totalDurationBreakdown = newStopwatch.breakdown(totalDuration),
-                  splitDuration = newStopwatch.splitDuration(newStopwatch.stopValue),
-                  splitDurationBreakdown = newStopwatch.breakdown(splitDuration);
-              this.currentDuration = totalDurationBreakdown;
-              if (totalDuration !== splitDuration) {
-                this.splitDuration = splitDurationBreakdown;
+          stopwatch: {
+            deep: true,
+            handler: function(newStopwatch) {
+              this.save();
+              if (newStopwatch.isRunning() && !this.animationID){
+                this.startAnimation();
               }
-            }
+              else if (this.animationID && !newStopwatch.isRunning()) {
+                this.stopAnimation();
+              }
 
+              if(!newStopwatch.isRunning()) {
+                var totalDuration = newStopwatch.totalDuration(),
+                    totalDurationBreakdown = newStopwatch.breakdown(totalDuration),
+                    splitDuration = newStopwatch.splitDuration(newStopwatch.stopValue),
+                    splitDurationBreakdown = newStopwatch.breakdown(splitDuration);
+                this.currentDuration = totalDurationBreakdown;
+                if (totalDuration !== splitDuration) {
+                  this.splitDuration = splitDurationBreakdown;
+                }
+              }
+
+            }
           }
         },
         methods: {
@@ -308,6 +369,7 @@
                 } else {
                     clearInterval(this.animationID);
                 }
+                this.animationID = null;
             },
             startStopWatch: function() {
                 this.stopwatch.start();
@@ -318,7 +380,6 @@
                     'eventLabel': 'Stopwatch #' + this.index
                 });
                 this.save();
-                this.startAnimation();
             },
             stopStopwatch: function() {
                 this.stopwatch.stop(),
@@ -329,7 +390,6 @@
                     'eventLabel': 'Stopwatch #' + this.index
                 });
                 this.save();
-                this.stopAnimation();
             },
             resumeStopwatch: function() {
                 this.stopwatch.resume();
@@ -340,7 +400,6 @@
                     'eventLabel': 'Stopwatch #' + this.index
                 });
                 this.save();
-                this.startAnimation();
             },
             resetStopwatch: function() {
                 this.stopwatch.reset();
@@ -489,6 +548,8 @@
               quota: 0.0,
               usage: 0.0
             },
+            aggregate: false,
+            selectedIndices: [],
             debug: false
         },
         mounted: function() {
@@ -685,26 +746,147 @@
                 }
               });
             },
+            toggleSelectMode: function() {
+              this.aggregate = true;
+            },
+            selectStopwatch: function(index) {
+              if(!this.aggregate) {
+                return;
+              }
+              var existingIndex = this.selectedIndices.indexOf(index);
+              if (existingIndex > -1) {
+                this.selectedIndices.splice(existingIndex, 1);
+              } else {
+                this.selectedIndices.push(index);
+              }
+            },
+            canSelectAll: function(){
+              var unarchivedStopwatchCount = 0;
+              for (var i = 0; i < this.stopwatches.length; i++) {
+                if(!this.stopwatches[i].isArchived) {
+                  unarchivedStopwatchCount++;
+                }
+              }
+              return unarchivedStopwatchCount - this.selectedIndices.length > 0;
+            },
+            selectAll: function() {
+              for (var i = 0; i < this.stopwatches.length; i++) {
+                if (!this.stopwatches[i].isArchived) {
+                  if (this.selectedIndices.indexOf(i) === -1) {
+                    this.selectedIndices.push(i);
+                  }
+                }
+              }
+            },
+            canStartAll: function(){
+              for (var i = 0; i < this.selectedIndices.length; i++) {
+                var selectedIndex = this.selectedIndices[i],
+                    stopwatch = this.stopwatches[selectedIndex].stopwatch;
+                if (stopwatch.isActive()) {
+                  return false;
+                }
+              }
+              return true;
+            },
+            startAll: function() {
+              var now = Date.now();
+              for (var i = 0; i < this.selectedIndices.length; i++) {
+                var selectedIndex = this.selectedIndices[i];
+                this.stopwatches[selectedIndex].stopwatch.start(now);
+              }
+            },
+            canStopAll: function(){
+              for (var i = 0; i < this.selectedIndices.length; i++) {
+                var selectedIndex = this.selectedIndices[i],
+                    stopwatch = this.stopwatches[selectedIndex].stopwatch;
+                if (!stopwatch.isRunning()) {
+                  return false;
+                }
+              }
+              return true;
+            },
+            stopAll: function() {
+              var now = Date.now();
+              for (var i = 0; i < this.selectedIndices.length; i++) {
+                var selectedIndex = this.selectedIndices[i];
+                if (this.stopwatches[selectedIndex].stopwatch.isRunning()) {
+                    this.stopwatches[selectedIndex].stopwatch.stop(now);
+                }
+              }
+            },
+            canSplitAll: function(){
+              for (var i = 0; i < this.selectedIndices.length; i++) {
+                var selectedIndex = this.selectedIndices[i],
+                    stopwatch = this.stopwatches[selectedIndex].stopwatch;
+                if (!stopwatch.isRunning()) {
+                  return false;
+                }
+              }
+              return true;
+            },
+            splitAll: function() {
+              var now = Date.now();
+              for (var i = 0; i < this.selectedIndices.length; i++) {
+                var selectedIndex = this.selectedIndices[i];
+                if (this.stopwatches[selectedIndex].stopwatch.isRunning()) {
+                    this.stopwatches[selectedIndex].stopwatch.split(now);
+                }
+              }
+            },
+            canResumeAll: function(){
+              for (var i = 0; i < this.selectedIndices.length; i++) {
+                var selectedIndex = this.selectedIndices[i],
+                    stopwatch = this.stopwatches[selectedIndex].stopwatch;
+                if (!(stopwatch.isActive() && !stopwatch.isRunning())) {
+                  return false;
+                }
+              }
+              return true;
+            },
+            resumeAll: function() {
+              var now = Date.now();
+              for (var i = 0; i < this.selectedIndices.length; i++) {
+                var selectedIndex = this.selectedIndices[i],
+                    stopwatch = this.stopwatches[selectedIndex].stopwatch;
+                if (!stopwatch.isRunning() && stopwatch.isActive()) {
+                    this.stopwatches[selectedIndex].stopwatch.resume(now);
+                }
+              }
+            },
+            canResetAll: function(){
+              return true;
+            },
+            resetAll: function() {
+              var now = Date.now();
+              for (var i = 0; i < this.selectedIndices.length; i++) {
+                var selectedIndex = this.selectedIndices[i],
+                    stopwatch = this.stopwatches[selectedIndex].stopwatch;
+                if (stopwatch.isActive()) {
+                    this.stopwatches[selectedIndex].stopwatch.reset(now);
+                }
+              }
+            },
+            canArchiveAll: function(){
+              for (var i = 0; i < this.selectedIndices.length; i++) {
+                var selectedIndex = this.selectedIndices[i],
+                    stopwatch = this.stopwatches[selectedIndex].stopwatch;
+                if (!(stopwatch.isActive() && !stopwatch.isRunning())) {
+                  return false;
+                }
+              }
+              return true;
+            },
+            archiveAll: function() {
+              for (var i = 0; i < this.selectedIndices.length; i++) {
+                var selectedIndex = this.selectedIndices[i];
+                    stopwatch = this.stopwatches[selectedIndex].stopwatch;
+                if (stopwatch.isActive() && !stopwatch.isRunning()) {
+                    this.stopwatches[selectedIndex].isArchived = true;
+                }
+              }
+            },
             formatDuration: formatDuration
         }
-    });
-
-    Vue.component('lcddisplay', {
-        data: function () {
-            return {
-                count: 0
-            }
-        },
-        template: '<time>\
-            <td>{{ row }}</td>\
-            <td>\
-                <span class="digit-container" v-if="day > 0"></span>\
-                <span class="digit-container" v-if="hour > 0"></span>\
-                <span class="digit-container" v-if="minute > 0"></span>\
-                <span class="digit-container" v-if="second > 0"></span>\
-                <span class="digit-container" v-if="millisecond > 0"></span>\
-            </td>\
-        </tr>'
     });
 
     function formatDateTime(value) {

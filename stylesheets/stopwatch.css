@@ -38,13 +38,12 @@ div.tab {
   position: absolute;
   left: 0;
   top: 0;
-  overflow-y: scroll;
-  will-change: transform, opacity;
+  overflow-y: auto;
+  will-change: opacity;
   transition: transform 0.2s cubic-bezier(0.465, 0.183, 0.153, 0.946), opacity 0.1s;
 }
 
 div.tab.visible {
-  transform: translateX(0%);
   opacity: 1;
 }
 
@@ -115,8 +114,10 @@ div.tab#about, div.tab#settings {
 
 /* stopwatch grid */
 .stopwatch-grid {
+  border: 0;
   display: grid;
   gap: 10px;
+  transition: transform 200ms linear, border 200ms linear;
 }
 
 @media only screen and (min-width: 1200px) {
@@ -143,6 +144,50 @@ div.tab#about, div.tab#settings {
   .stopwatch-grid {
     grid-template-columns: repeat(1, 1fr);
   }
+}
+
+.stopwatch-grid.select-multiple {
+  border: 2px solid var(--buttonColor);
+  position: relative;
+  transform: perspective(50em) translate3d(0, 0, -7em);
+}
+
+.stopwatch-grid.select-multiple .stopwatch::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.stopwatch-grid .stopwatch {
+  transition: transform 100ms linear, box-shadow 100ms linear;
+  will-change: transform, box-shadow;
+}
+
+.stopwatch-grid .selected {
+  background: var(--backgroundColor);
+  border:
+  -webkit-box-shadow: 0px 0px 5px 5px var(--buttonActiveColor);
+  box-shadow: 0px 0px 5px 5px var(--buttonActiveColor);
+  transform: perspective(50em) translateZ(1em);
+}
+
+.bulk {
+  background: var(--backgroundColor);
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  transition: transform 200ms linear;
+  will-change: transform;
+  width: 100vw;
+  transform: translateY(100%);
+}
+
+.bulk.active {
+  bottom: 0;
+  transform: translateY(0);
 }
 
 /* stopwatch */
