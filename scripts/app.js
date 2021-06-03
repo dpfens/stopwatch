@@ -537,7 +537,7 @@
                         primaryColor: null,
                         secondaryColor: null
                     },
-                    obj = {stopwatch: newStopwatch, settings: localSettings};
+                    obj = {stopwatch: newStopwatch, settings: localSettings, isArchived: false};
                 return stopwatchAdapter.add(stopwatchStoreName, obj);
             },
             addStopWatch: function() {
