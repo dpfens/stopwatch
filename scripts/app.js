@@ -424,7 +424,7 @@
                     <button class="stacked split" v-if="stopwatch.isRunning()" v-on:click="recordSplit()">Split</button>\
                     <button class="stacked" v-if="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="resumeStopwatch()"><i class="fad fa-redo"></i><span>Resume</span></button>\
                     <button class="stacked" v-if="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="resetStopwatch()"><i class="fad fa-undo"></i><span>Reset</span></button>\
-                    <button class="stacked" v-if="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="archiveStopwatch()"><i class="fad fa-archive"></i><span>Archive</span></button>\
+                    <button class="stacked" v-if="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="archiveStopwatch()"><i class="fad fa-box"></i><span>Archive</span></button>\
                 </div>\
                 <table class="splits" v-show="showSplits && stopwatch.splits.length > 0 && !edittingSplit">\
                     <thead>\
