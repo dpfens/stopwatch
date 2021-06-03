@@ -542,6 +542,20 @@
       splitChannel = settingsChannel = stopwatchChannel = null;
     }
 
+    var wakeLock = null;
+    if ('wakeLock' in navigator) {
+      navigator.wakeLock.request('screen').then(function(wakeLock) {
+        wakeLock = wakeLock;
+      });
+
+      document.addEventListener('visibilitychange', async () => {
+        if (wakeLock !== null && document.visibilityState === 'visible') {
+          navigator.wakeLock.request('screen').then(function(wakeLock) {
+            wakeLock = wakeLock;
+          });
+        }
+      });
+    }
     var app = new Vue({
         el: 'div#app',
         data: {
