@@ -118,6 +118,7 @@
                     var value = this[key];
                     breakdown[key] = value;
                 }
+                data.label = this.split.label;
                 data.value = toTimeStamp(breakdown);
                 data.breakdown = breakdown;
                 this.$parent.updateSplit(this.index, data);
