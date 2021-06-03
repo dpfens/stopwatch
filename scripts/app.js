@@ -819,25 +819,6 @@
                 }
               }
             },
-            canSplitAll: function(){
-              for (var i = 0; i < this.selectedIndices.length; i++) {
-                var selectedIndex = this.selectedIndices[i],
-                    stopwatch = this.stopwatches[selectedIndex].stopwatch;
-                if (!stopwatch.isRunning()) {
-                  return false;
-                }
-              }
-              return true;
-            },
-            splitAll: function() {
-              var now = Date.now();
-              for (var i = 0; i < this.selectedIndices.length; i++) {
-                var selectedIndex = this.selectedIndices[i];
-                if (this.stopwatches[selectedIndex].stopwatch.isRunning()) {
-                    this.stopwatches[selectedIndex].stopwatch.split(now);
-                }
-              }
-            },
             canResumeAll: function(){
               for (var i = 0; i < this.selectedIndices.length; i++) {
                 var selectedIndex = this.selectedIndices[i],

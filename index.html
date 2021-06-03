@@ -164,7 +164,6 @@
           <div class="bulk controls" :class="aggregate && currentTab === 'stopwatch' ? 'active' : ''">
             <button class="stacked" v-if="selectedIndices.length > 0 && canStartAll()" v-on:click="startAll"><i class="fad fa-play"></i><span>Start</span></button>
             <button class="stacked" v-if="selectedIndices.length > 0 && canStopAll()" v-on:click="stopAll"><i class="fad fa-hand-paper"></i><span>Stop</span></button>
-            <button class="stacked" v-if="selectedIndices.length > 0 && canSplitAll()" v-on:click="splitAll">Split</button>
             <button class="stacked" v-if="selectedIndices.length > 0 && canResumeAll()" v-on:click="resumeAll"><i class="fad fa-redo"></i><span>Resume</span></button>
             <button class="stacked" v-if="selectedIndices.length > 0 && canResetAll()" v-on:click="resetAll"><i class="fad fa-undo"></i><span>Reset</span></button>
             <button class="stacked" v-if="selectedIndices.length > 0 && canArchiveAll()" v-on:click="archiveAll"><i class="fad fa-box"></i><span>Archive</span></button>
