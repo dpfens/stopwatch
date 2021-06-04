@@ -83,7 +83,7 @@ StopWatch.prototype.start = function(timestamp) {
     this.lastSplit = this.startValue;
     this.localGap = 0.0;
     this.totalGap = 0.0;
-    var now = new Date();
+    var now = new Date;
     this.metadata.startedAt = now;
     this.metadata.lastModified = now;
 }
@@ -268,7 +268,7 @@ StopWatch.prototype.reset = function() {
 
     this.metadata.startedAt = null;
     this.metadata.stoppedAt = null;
-    this.metadata.resetAt = new Date();
+    this.metadata.resetAt = new Date;
 }
 
 
@@ -290,10 +290,15 @@ StopWatch.prototype.isActive = function() {
 
 
 StopWatch.from = function(data) {
+  var now = new Date;
     var instance = new StopWatch();
     for (var key in data) {
         instance[key] = data[key];
     }
+    instance.metadata.createdAt = now;
+    instance.metadata.lastModified = null;
+    instance.metadata.resetAt = null;
+    instance.metadata.timezone = now.getTimezoneOffset();
     return instance;
 }
 
