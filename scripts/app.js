@@ -683,7 +683,17 @@
                     newInstanceData = JSON.parse(JSON.stringify(instance)),
                     newStopwatch = StopWatch.from(newInstanceData.stopwatch),
                     newSettings = newInstanceData.settings,
-                    obj = {stopwatch: newStopwatch, settings: newSettings};
+                    obj = {settings: newSettings, isArchived: false};
+
+                newStopwatch.metadata.startedAt = instance.stopwatch.metadata.startedAt;
+                newStopwatch.metadata.stoppedAt = instance.stopwatch.metadata.stoppedAt;
+
+                for (var i = 0; i < newStopwatch.splits.length; i++) {
+                  newStopwatch.splits[i].metadata.createdAt = instance.stopwatch.splits[i].metadata.createdAt;
+                  newStopwatch.splits[i].metadata.lastModified = instance.stopwatch.splits[i].metadata.lastModified;
+                }
+
+                obj.stopwatch = newStopwatch;
                 return stopwatchAdapter.add(stopwatchStoreName, obj);
             },
             cloneStopwatch: function(index) {
