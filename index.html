@@ -161,7 +161,7 @@
                  <p>No specific information (i.e. names, splits, labels, etc) from/about the stopwatch is sent to Google Analytics.  This information is recorded for the developer to understand how the tool is being used, and which features are used/not used.</p>
               </div>
           </div>
-          <div class="bulk controls" :class="currentTab === 'stopwatch' ? 'active' : ''">
+          <div class="bulk controls" :class="currentTab === 'stopwatch' && unarchivedStopwatches() > 1 ? 'active' : ''">
             <button class="stacked" v-if="selectedIndices.length > 0 && canStartAll()" v-on:click="startAll"><i class="fad fa-play"></i><span>Start</span></button>
             <button class="stacked" v-if="selectedIndices.length > 0 && canStopAll()" v-on:click="stopAll"><i class="fad fa-hand-paper"></i><span>Stop</span></button>
             <button class="stacked" v-if="selectedIndices.length > 0 && canResumeAll()" v-on:click="resumeAll"><i class="fad fa-redo"></i><span>Resume</span></button>

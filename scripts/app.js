@@ -808,6 +808,15 @@
               }
               return unarchivedStopwatchCount - this.selectedIndices.length > 0;
             },
+            unarchivedStopwatches: function() {
+              var unarchivedStopwatchCount = 0;
+              for (var i = 0; i < this.stopwatches.length; i++) {
+                if(!this.stopwatches[i].isArchived) {
+                  unarchivedStopwatchCount++;
+                }
+              }
+              return unarchivedStopwatchCount;
+            },
             selectAll: function() {
               for (var i = 0; i < this.stopwatches.length; i++) {
                 if (!this.stopwatches[i].isArchived) {
