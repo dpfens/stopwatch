@@ -32,6 +32,7 @@
         seconds: 0,
         milliseconds: 0
     };
+
     document.oncontextmenu = function(event) {
       event.preventDefault();
       event.stopPropagation();

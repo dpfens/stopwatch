@@ -1,7 +1,7 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
 
-const CACHE_NAME = 'offline-html';
+const CACHE_NAME = 'offline-html-v2';
 // This assumes /offline.html is a URL for your self-contained
 // (no external images or styles) offline page.
 const FALLBACK_HTML_URL = '/stopwatch/';
