@@ -503,7 +503,11 @@
                         <tr is="splitdisplay" v-for="(item, index) in stopwatch.splits" v-bind:key="index" v-bind:index="index" v-bind:split="item" v-bind:mutable="mutable" v-bind:locale="settings.locale"></tr>\
                     <tbody>\
                 </table>\
-                <div v-if="edittingSplit" is="splitform" v-bind:split="edittingSplit" v-bind:index="edittingSplitIndex" v-bind:locale="settings.locale"></splitform>\
+                <div v-if="edittingSplit" is="splitform" v-bind:split="edittingSplit" v-bind:index="edittingSplitIndex" v-bind:locale="settings.locale"></div>\
+                <div class="metadata">\
+                  <p v-if="!mutable && stopwatch.metadata.createdAt">Created At: <time>{{ stopwatch.metadata.createdAt.toLocaleDateString() }} {{ stopwatch.metadata.createdAt.toLocaleTimeString() }}</time></p>\
+                  <p v-if="!mutable && stopwatch.metadata.lastModified">Last Modified: <time>{{ stopwatch.metadata.lastModified.toLocaleDateString() }} {{ stopwatch.metadata.lastModified.toLocaleTimeString() }}</time></p>\
+                </div>\
             </div>\
         </div>'
     });
@@ -778,9 +782,9 @@
             toggleSelectMode: function() {
               this.aggregate = true;
             },
-            selectStopwatch: function(index) {
-              if(!this.aggregate) {
-                return;
+            addStopwatchToGroup: function(index) {
+              if (!this.aggregate) {
+                this.aggregate = true;
               }
               var existingIndex = this.selectedIndices.indexOf(index);
               if (existingIndex > -1) {
@@ -788,6 +792,12 @@
               } else {
                 this.selectedIndices.push(index);
               }
+            },
+            selectStopwatch: function(index) {
+              if(!this.aggregate) {
+                return;
+              }
+              this.addStopwatchToGroup(index);
             },
             canSelectAll: function(){
               var unarchivedStopwatchCount = 0;
@@ -894,6 +904,7 @@
                     this.stopwatches[selectedIndex].isArchived = true;
                 }
               }
+              this.selectedIndices = [];
             },
             formatDuration: formatDuration
         }

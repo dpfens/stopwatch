@@ -126,10 +126,10 @@
                  <p>You can start/stop multiple stopwatches with a single button using.  To start/stop multiple stopwatches at once:</p>
 
                  <ol>
-                  <li>Long-press/click on a stopwatch to toggle batch mode.</li>
+                  <li>Click the "Group Mode" button or long-press on a stopwatch to active Group mode.</li>
                   <li>Then click/tap the set of stopwatches you want to control together.</li>
                   <li>Then use the controls at the bottom to control the selected stopwatches as needed.</li>
-                  <li>When you are done, click the "Exit" button to exist selection mode.</li>
+                  <li>When you are done, click the "Exit" button to exist Group mode.</li>
                  </ol>
 
                  <h3>Contributions</h3>
@@ -161,15 +161,16 @@
                  <p>No specific information (i.e. names, splits, labels, etc) from/about the stopwatch is sent to Google Analytics.  This information is recorded for the developer to understand how the tool is being used, and which features are used/not used.</p>
               </div>
           </div>
-          <div class="bulk controls" :class="aggregate && currentTab === 'stopwatch' ? 'active' : ''">
+          <div class="bulk controls" :class="currentTab === 'stopwatch' ? 'active' : ''">
             <button class="stacked" v-if="selectedIndices.length > 0 && canStartAll()" v-on:click="startAll"><i class="fad fa-play"></i><span>Start</span></button>
             <button class="stacked" v-if="selectedIndices.length > 0 && canStopAll()" v-on:click="stopAll"><i class="fad fa-hand-paper"></i><span>Stop</span></button>
             <button class="stacked" v-if="selectedIndices.length > 0 && canResumeAll()" v-on:click="resumeAll"><i class="fad fa-redo"></i><span>Resume</span></button>
             <button class="stacked" v-if="selectedIndices.length > 0 && canResetAll()" v-on:click="resetAll"><i class="fad fa-undo"></i><span>Reset</span></button>
             <button class="stacked" v-if="selectedIndices.length > 0 && canArchiveAll()" v-on:click="archiveAll"><i class="fad fa-box"></i><span>Archive</span></button>
             <button class="stacked" v-if="selectedIndices.length > 0" v-on:click="selectedIndices = [];"><i class="fad fa-object-ungroup"></i><span>Deselect All</span></button>
-            <button class="stacked" v-if="canSelectAll()" v-on:click="selectAll"><i class="fad fa-object-group"></i><span>Select All</span></button>
-            <button class="stacked" v-on:click="aggregate = false; selectedIndices = [];"><i class="fad fa-times-hexagon"></i><span>Exit</span></button>
+            <button class="stacked" v-if="canSelectAll() && aggregate" v-on:click="selectAll"><i class="fad fa-object-group"></i><span>Select All</span></button>
+            <button class="stacked" v-if="aggregate" v-on:click="aggregate = false; selectedIndices = [];"><i class="fad fa-times-hexagon"></i><span>Exit</span></button>
+            <button class="stacked" v-if="!selectedIndices.length && !aggregate" v-on:click="aggregate = true;"><i class="fad fa-object-group"></i><span>Group Mode</span></button>
           </div>
          </div>
       </main>
