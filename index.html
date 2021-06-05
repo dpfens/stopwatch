@@ -170,13 +170,13 @@
               </div>
           </div>
           <div class="bulk controls" :class="currentTab === 'stopwatch' && unarchivedStopwatches() > 1 ? 'active' : ''">
+            <button class="stacked" v-if="selectedIndices.length > 0" v-on:click="selectedIndices = [];"><i class="fad fa-object-ungroup"></i><span>Deselect All</span></button>
+            <button class="stacked" v-if="canSelectAll() && aggregate" v-on:click="selectAll"><i class="fad fa-object-group"></i><span>Select All</span></button>
             <button class="stacked" v-if="selectedIndices.length > 0 && canStartAll()" v-on:click="startAll"><i class="fad fa-play"></i><span>Start</span></button>
             <button class="stacked" v-if="selectedIndices.length > 0 && canStopAll()" v-on:click="stopAll"><i class="fad fa-hand-paper"></i><span>Stop</span></button>
             <button class="stacked" v-if="selectedIndices.length > 0 && canResumeAll()" v-on:click="resumeAll"><i class="fad fa-redo"></i><span>Resume</span></button>
             <button class="stacked" v-if="selectedIndices.length > 0 && canResetAll()" v-on:click="resetAll"><i class="fad fa-undo"></i><span>Reset</span></button>
             <button class="stacked" v-if="selectedIndices.length > 0 && canArchiveAll()" v-on:click="archiveAll"><i class="fad fa-box"></i><span>Archive</span></button>
-            <button class="stacked" v-if="selectedIndices.length > 0" v-on:click="selectedIndices = [];"><i class="fad fa-object-ungroup"></i><span>Deselect All</span></button>
-            <button class="stacked" v-if="canSelectAll() && aggregate" v-on:click="selectAll"><i class="fad fa-object-group"></i><span>Select All</span></button>
             <button class="stacked" v-if="aggregate" v-on:click="aggregate = false; selectedIndices = [];"><i class="fad fa-times-hexagon"></i><span>Exit</span></button>
             <button class="stacked" v-if="!selectedIndices.length && !aggregate" v-on:click="aggregate = true;"><i class="fad fa-object-group"></i><span>Group Mode</span></button>
           </div>

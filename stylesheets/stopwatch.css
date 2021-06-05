@@ -120,11 +120,11 @@ div.tab#stopwatches {
 
 /* stopwatch grid */
 .stopwatch-grid {
-
   border: 0;
   display: grid;
   gap: 10px;
   transition: transform 200ms cubic-bezier(0.465, 0.183, 0.153, 0.946), border 200ms cubic-bezier(0.465, 0.183, 0.153, 0.946);
+  margin-bottom: 4em;
 }
 
 @media only screen and (min-width: 1200px) {
@@ -133,13 +133,11 @@ div.tab#stopwatches {
   }
 }
 
-
 @media only screen and (min-width: 900px) and (max-width: 1199px) {
   .stopwatch-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-
 
 @media only screen and (min-width: 600px) and (max-width: 899px) {
   .stopwatch-grid {
@@ -183,13 +181,13 @@ div.tab#stopwatches {
 
 .bulk {
   background: var(--backgroundColor);
-  position: sticky;
+  position: fixed;
   bottom: 0;
   text-align: center;
   transition: transform 200ms cubic-bezier(0.465, 0.183, 0.153, 0.946), box-shadow 200ms cubic-bezier(0.465, 0.183, 0.153, 0.946);
   will-change: transform;
   transform: translateY(100%);
-
+  width: 100%;
 }
 
 .bulk.active {
