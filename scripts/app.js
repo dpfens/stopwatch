@@ -831,6 +831,10 @@
             },
             toggleSelectMode: function() {
               this.aggregate = true;
+              if ('vibrate' in navigator) {
+                console.log('vibrating');
+                navigator.vibrate(100);
+              }
             },
             addStopwatchToGroup: function(index) {
               if (!this.aggregate) {
