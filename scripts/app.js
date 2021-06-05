@@ -574,7 +574,10 @@
             },
             aggregate: false,
             selectedIndices: [],
-            debug: false
+            searchQuery: '',
+            lowerBound: null,
+            upperBound: null,
+            debug: false,
         },
         mounted: function() {
           var self = this;
@@ -600,6 +603,50 @@
                 }
 
               }
+          }
+        },
+        computed: {
+          searchResults: function() {
+            var archivedStopwatches = this.stopwatches.filter(function(item) { return item.isArchived; }),
+                lowerBound, upperBound;
+            if (this.lowerBound) {
+              lowerBound = new Date(this.lowerBound);
+            }
+            if (this.upperBound) {
+              upperBound = new Date(this.upperBound);
+            }
+            if (!this.searchQuery.trim() && !lowerBound && !upperBound) {
+              return archivedStopwatches;
+            }
+            var results = [];
+            for (var i = 0; i < archivedStopwatches.length; i++) {
+              var instance = archivedStopwatches[i],
+                  stopwatch = instance.stopwatch,
+                  name = instance.settings.name,
+                  isNameMatch = !this.searchQuery.trim() || name.indexOf(this.searchQuery) > -1,
+                  metadata = stopwatch.metadata,
+                  isLowerBoundMatch = !lowerBound || (metadata.createdAt > lowerBound || (metadata.lastModified && metadata.lastModified > lowerBound)),
+                  isUpperBoundMatch = !upperBound || (metadata.createdAt < upperBound || (metadata.lastModified && metadata.lastModified < upperBound));
+              if (isNameMatch && isLowerBoundMatch && isUpperBoundMatch) {
+                results.push(instance);
+              }
+            }
+            return results;
+          },
+          maxLowerBound: function() {
+            if (!this.upperBound) {
+              return '';
+            }
+            var upperBound = new Date(this.upperBound);
+            return upperBound.toISOString().slice(0, -8);
+          },
+          minUpperBound: function() {
+            if (!this.lowerBound) {
+              return '';
+            }
+            var lowerBound = new Date(this.lowerBound);
+            console.log(lowerBound);
+            return lowerBound.toISOString().slice(0, -8);
           }
         },
         methods: {
@@ -690,6 +737,8 @@
                     newSettings = newInstanceData.settings,
                     obj = {settings: newSettings, isArchived: false};
 
+                newStopwatch.metadata.createdAt = new Date();
+                newStopwatch.metadata.lastModified = null;
                 newStopwatch.metadata.startedAt = instance.stopwatch.metadata.startedAt;
                 newStopwatch.metadata.stoppedAt = instance.stopwatch.metadata.stoppedAt;
 

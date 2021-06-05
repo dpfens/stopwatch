@@ -295,10 +295,6 @@ StopWatch.from = function(data) {
     for (var key in data) {
         instance[key] = data[key];
     }
-    instance.metadata.createdAt = now;
-    instance.metadata.lastModified = null;
-    instance.metadata.resetAt = null;
-    instance.metadata.timezone = now.getTimezoneOffset();
     return instance;
 }
 
