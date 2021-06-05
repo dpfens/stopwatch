@@ -324,22 +324,22 @@ form.time-display input[type="tel"] {
   background: var(--backgroundColor);
 }
 
-.search input[type="search"] {
-  box-sizing: border-box;
-  border-radius: 10000px;
-  padding-left: 0.5em;
-  width: 33%;
+
+.search label {
+  display: inline;
+  border-top-left-radius: 1000px;
+  border-bottom-left-radius: 1000px;
+  background: white;
+  padding: 0.25em 0.25em 0.25em 0.5em;
 }
 
-
-.search input[type="search"]::before {
-  color: green;
-  font-family: 'Font Awesome 5 Duotone';
-  font-weight: 900;
-  content: "\10f002";
-  position: absolute;
-  left: 0;
-
+.search input[type="search"] {
+  box-sizing: border-box;
+  border-top-right-radius: 10000px;
+  border-bottom-right-radius: 10000px;
+  display: inline;
+  padding-left: 0.5em;
+  width: calc(33% - 1em);
 }
 
 
@@ -362,7 +362,7 @@ form.time-display input[type="tel"] {
   }
 
   .search input[type="search"] {
-    width: 100%;
+    width: calc(100% - 2em);
   }
 
   .search .date-range {

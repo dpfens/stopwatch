@@ -76,7 +76,7 @@
               </div>
               <div id="archive" class="tab" :class="currentTab === 'archive' ? 'visible' : 'invisible'">
                 <div class="search">
-                  <input class="query" type="search" v-model="searchQuery" placeholder="Search"/>
+                  <label><i class="fad fa-search"></i></label><input class="query" type="search" v-model="searchQuery" placeholder="Stopwatch name"/>
 
                   <div class="date-range">
                     <input type="datetime-local" v-model="lowerBound" v-bind:max="maxLowerBound" /> &mdash;
