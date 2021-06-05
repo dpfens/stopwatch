@@ -79,8 +79,8 @@
                   <label><i class="fad fa-search"></i></label><input class="query" type="search" v-model="searchQuery" placeholder="Stopwatch name"/>
 
                   <div class="date-range">
-                    <input type="datetime-local" v-model="lowerBound" v-bind:max="maxLowerBound" /> &mdash;
-                    <input type="datetime-local" v-model="upperBound" v-bind:min="minUpperBound" />
+                    <input type="datetime-local" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" v-model="lowerBound" v-bind:max="maxLowerBound" /> &mdash;
+                    <input type="datetime-local" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" v-model="upperBound" v-bind:min="minUpperBound" />
                   </div>
                 </div>
                 <div class="stopwatch-grid">

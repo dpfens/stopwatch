@@ -326,15 +326,20 @@ form.time-display input[type="tel"] {
 
 
 .search label {
+  background: var(--backgroundColor);
+  color: var(--textColor);
+  border-left: 1px solid var(--buttonColor);
+  border-top: 1px solid var(--buttonColor);
+  border-bottom: 1px solid var(--buttonColor);
   display: inline;
   border-top-left-radius: 1000px;
   border-bottom-left-radius: 1000px;
-  background: white;
   padding: 0.25em 0.25em 0.25em 0.5em;
 }
 
 .search input[type="search"] {
   box-sizing: border-box;
+  border-left: none;
   border-top-right-radius: 10000px;
   border-bottom-right-radius: 10000px;
   display: inline;
