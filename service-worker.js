@@ -1,7 +1,7 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
 
-const CACHE_NAME = 'offline-html-v2',
+const CACHE_NAME = 'offline-html-v3',
     FALLBACK_HTML_URL = '/stopwatch/';
 // Populate the cache with the offline HTML page when the
 // service worker is installed.
