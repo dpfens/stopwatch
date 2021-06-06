@@ -895,6 +895,7 @@
               for (var i = 0; i < this.selectedIndices.length; i++) {
                 var selectedIndex = this.selectedIndices[i];
                 this.stopwatches[selectedIndex].stopwatch.start(now);
+                this.updateStopwatch(selectedIndex);
               }
             },
             canStopAll: function(){
@@ -913,6 +914,7 @@
                 var selectedIndex = this.selectedIndices[i];
                 if (this.stopwatches[selectedIndex].stopwatch.isRunning()) {
                     this.stopwatches[selectedIndex].stopwatch.stop(now);
+                    this.updateStopwatch(selectedIndex);
                 }
               }
             },
@@ -933,6 +935,7 @@
                     stopwatch = this.stopwatches[selectedIndex].stopwatch;
                 if (!stopwatch.isRunning() && stopwatch.isActive()) {
                     this.stopwatches[selectedIndex].stopwatch.resume(now);
+                    this.updateStopwatch(selectedIndex);
                 }
               }
             },
@@ -946,6 +949,7 @@
                     stopwatch = this.stopwatches[selectedIndex].stopwatch;
                 if (stopwatch.isActive()) {
                     this.stopwatches[selectedIndex].stopwatch.reset(now);
+                    this.updateStopwatch(selectedIndex);
                 }
               }
             },
@@ -964,7 +968,7 @@
                 var selectedIndex = this.selectedIndices[i];
                     stopwatch = this.stopwatches[selectedIndex].stopwatch;
                 if (stopwatch.isActive() && !stopwatch.isRunning()) {
-                    this.stopwatches[selectedIndex].isArchived = true;
+                    this.archiveStopwatch(selectedIndex);
                 }
               }
               this.selectedIndices = [];
