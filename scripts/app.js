@@ -973,6 +973,9 @@
               }
               this.selectedIndices = [];
             },
+            exportJSONData: function() {
+              downloadObjectAsJson(this.stopwatches, 'stopwatches.json')
+            },
             formatDuration: formatDuration
         }
     });
@@ -1034,6 +1037,17 @@
         output += breakdown.days * 86400000;
         output += breakdown.years * 31536000000;
         return output;
+    }
+
+    function downloadObjectAsJson(exportObj, exportName){
+      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+      var downloadAnchorNode = document.createElement('a');
+      downloadAnchorNode.hidden = true;
+      downloadAnchorNode.setAttribute("href",     dataStr);
+      downloadAnchorNode.setAttribute("download", exportName);
+      document.body.appendChild(downloadAnchorNode); // required for firefox
+      downloadAnchorNode.click();
+      downloadAnchorNode.remove();
     }
 
     stopwatchAdapter.getAll(stopwatchStoreName)

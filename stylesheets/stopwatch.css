@@ -222,7 +222,7 @@ div.controls {
   justify-content: center;
 }
 
-div.controls button {
+button {
   display: block;
   padding: 0.5em;
   flex-grow: 1;
@@ -346,7 +346,6 @@ form.time-display input[type="tel"] {
   padding-left: 0.5em;
   width: calc(33% - 1em);
 }
-
 
 .search .date-range {
   margin: 0.25em 0;

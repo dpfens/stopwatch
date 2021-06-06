@@ -113,6 +113,7 @@
 
                  <div v-if="storage.usage && storage.quota">
                    <h3>Storage</h3>
+                   <button v-on:click="exportJSONData">Export Data (JSON)</button>
                    <p>You are using <output class="percentage" v-bind:value="storage.usage">{{ (storage.usage / storage.quota * 100).toFixed(3) }}</output>% (<output class="raw" v-bind:value="storage.usage">{{ (storage.usage / 1024).toFixed(2) }}</output>kB) of your total available storage (<output class="raw" v-bind:value="storage.quota">{{ (storage.quota / 1024).toFixed(3) }}</output>kB)</p>
                  </div>
               </div>
