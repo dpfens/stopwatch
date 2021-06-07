@@ -472,10 +472,11 @@
             <form class="clear settings" v-if="showSettings">\
                 <p><label for="name">Name:</label>\
                 <input type="text" placeholder="name" name="name" v-model="localSettings.name" v-on:change="save" /></p>\
-                <p><label>Primary Color: </label>\
+                <p class="v-align-top"><label for="notes">Notes:</label>\
+                <textarea name="notes" v-model="localSettings.notes" v-on:change="save" cols="18" rows="4" /></p>\
+                <p><label>Background Color: </label>\
                 <input type="color" v-model="localSettings.primaryColor" v-on:change="save" /></p>\
-                \
-                <p><label>Secondary Color:</label>\
+                <p><label>Text Color:</label>\
                 <input type="color" v-model="localSettings.secondaryColor" v-on:change="save" /></p>\
             </form>\
             <div class="clear" v-else>\
