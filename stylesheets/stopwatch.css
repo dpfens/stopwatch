@@ -94,6 +94,8 @@ div.tab-controls {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    -webkit-box-shadow: 0px 0px 12px 5px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 12px 5px rgba(0,0,0,0.5);
 }
 
 div.tab-controls .active {
@@ -245,6 +247,9 @@ div.stopwatch .metadata * {
 
 button {
   border: 0;
+  background: var(--buttonColor);
+  color: var(--textColor)
+  padding: 0.5em;
 }
 
 .stopwatch button:focus {
@@ -263,12 +268,6 @@ div.controls button.stop {
 
 button.split {
   margin-left: 2em;
-}
-
-button {
-  background: var(--buttonColor);
-  color: var(--textColor)
-  padding: 0.5em;
 }
 
 button.stacked span {
