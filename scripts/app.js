@@ -172,8 +172,10 @@
                     <option v-for="label in split.metadata.tags" value="{{value}}">{{ name }}</option>\
                 </select>\
             </div>\
-            <button class="stacked" v-on:click.prevent="deleteSplit(index)"><i class="fad fa-trash"></i><span>Delete</span></button>\
-            <button class="stacked" v-on:click.prevent="save"><i class="fad fa-save"></i><span>Save</span></button>\
+            <div class="controls">\
+              <button class="stacked" v-on:click.prevent="deleteSplit(index)"><i class="fad fa-trash"></i><span>Delete</span></button>\
+              <button class="stacked" v-on:click.prevent="save"><i class="fad fa-save"></i><span>Save</span></button>\
+            </div>\
         </form>'
     });
 
@@ -216,23 +218,22 @@
             }
         },
 
-        template: '<tr>\
-            <td>{{ index + 1 }}</td>\
-            <td><span v-if="split.distance && lapunit">{{ split.distance }}{{ lapunit }}</span></td>\
-            <td>{{ split.label }}</td>\
-            <td>\
+        template: '<div :class="{\'lap\': split.distance && split.distanceUnit, \'split\': !split.distance && !split.distanceUnit }">\
+            <div class="time">\
                 <time :class="\'localization-\' + locale" v-bind:datetime="formatDateTime(split.breakdown)">\
                 <span class="years" v-if="split.breakdown.years > 0">{{ formattedValue.years }}</span><span class="days" v-if="split.breakdown.years > 0 || split.breakdown.days > 0">{{ formattedValue.days }}</span><span class="hours" v-if="split.breakdown.years > 0 || split.breakdown.days > 0 || split.breakdown.hours > 0">{{ formattedValue.hours }}</span><span class="minutes" v-if="split.breakdown.years > 0 || split.breakdown.days > 0 || split.breakdown.hours > 0 || split.breakdown.minutes > 0">{{ formattedValue.minutes }}</span><span class="seconds">{{ formattedValue.seconds }}</span><span class="milliseconds">{{ formattedValue.milliseconds }}</span>\
                 </time>\
-            </td>\
-            <td>\
+            </div>\
+            <div v-if="split.distance && lapunit" class="lap-distance">{{ split.distance }}{{ lapunit }}</div>\
+            <div class="label"><span>{{ split.label }}</span></div>\
+            <div v-if="split.metadata.tags.length">\
                 <span v-for="label in split.metadata.tags">{{ label }}</span>\
-            </td>\
-            <td v-if="mutable">\
+            </div>\
+            <div v-if="mutable" class="controls">\
                 <button class="stacked" v-on:click="edit"><i class="fad fa-edit"></i><span>Edit</span></button>\
                 <button class="stacked" v-on:click="removeSplit"><i class="fad fa-trash"></i><span>Delete</span></button>\
-            </td>\
-        </tr>'
+            </div>\
+        </div>'
     });
 
     Vue.component('stopwatch', {
@@ -525,19 +526,9 @@
                     <button class="stacked" v-if="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="resetStopwatch()"><i class="fad fa-undo"></i><span>Reset</span></button>\
                     <button class="stacked" v-if="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="archiveStopwatch()"><i class="fad fa-box"></i><span>Archive</span></button>\
                 </div>\
-                <table class="splits" v-show="showSplits && stopwatch.splits.length > 0 && !edittingSplit">\
-                    <thead>\
-                        <tr>\
-                            <th>Split</th>\
-                            <th v-if="stopwatch.lapDistance && stopwatch.lapUnit">Lap</th>\
-                            <th>Label</th>\
-                            <th>Value</th>\
-                        </tr>\
-                    </thead>\
-                    <tbody>\
-                        <tr is="splitdisplay" v-for="(item, index) in stopwatch.splits" v-bind:key="index" v-bind:index="index" v-bind:split="item" v-bind:lapunit="stopwatch.lapUnit" v-bind:mutable="mutable" v-bind:locale="settings.locale"></tr>\
-                    <tbody>\
-                </table>\
+                <div :class="{\'splits-table\': true, \'splits-only-table\': !stopwatch.lapDistance || !stopwatch.lapUnit, \'lap-table\': stopwatch.lapDistance && stopwatch.lapUnit}" v-show="showSplits && stopwatch.splits.length > 0 && !edittingSplit">\
+                    <div is="splitdisplay" v-for="(item, index) in stopwatch.splits" v-bind:key="index" v-bind:index="index" v-bind:split="item" v-bind:lapunit="stopwatch.lapUnit" v-bind:mutable="mutable" v-bind:locale="settings.locale"></div>\
+                </div>\
                 <div v-if="edittingSplit" is="splitform" v-bind:split="edittingSplit" v-bind:index="edittingSplitIndex" v-bind:locale="settings.locale"></div>\
                 <div class="metadata">\
                   <p v-if="!mutable && stopwatch.metadata.createdAt">Created At: <time>{{ stopwatch.metadata.createdAt.toLocaleDateString() }} {{ stopwatch.metadata.createdAt.toLocaleTimeString() }}</time></p>\

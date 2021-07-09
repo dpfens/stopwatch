@@ -276,8 +276,60 @@ button.stacked span {
   margin: 0.2em 0;
 }
 
-table.splits {
-  margin: 0 auto;
+.splits-table {
+  clear:both;
+  display: flex;
+  flex-direction: column;
+  padding-left: 0.5em;
+  margin-top: 1em;
+  margin-bottom: 2em;
+}
+
+.splits-table button {
+  display: inline-block;
+}
+
+.splits-table .split, .lap {
+  display: flex;
+  flex-direction: row;
+  min-height: 2em;
+}
+
+.splits-table .time, .splits-table .label, .splits-table .lap-distance {
+  display: flex;
+  flex-direction: column;
+}
+
+.splits-table .split > *, .splits-table .lap > * {
+  flex-grow: 1;
+}
+
+.splits-table .split > *, .splits-table .lap > * {
+  justify-content: center;
+}
+
+.splits-table .lap .lap-distance, .splits-table .label {
+  text-align: center;
+}
+
+.splits-table .time, .splits-table .controls {
+  flex-grow: 0;
+}
+
+.splits-table .time {
+  width: 5em;
+}
+
+.lap-table .split {
+  border-left: solid 2px currentColor;
+  margin-left: 1em;
+}
+
+.lap-table .split::before {
+  content: "";
+  width: 1em;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-50%);
 }
 
 button.add {
