@@ -343,6 +343,28 @@ class SplitStopwatch extends BasicStopwatch {
       }
   }
 
+  updateSplit(index: number, value: number) {
+      var splitCount: number = this.splits.length,
+          now: Date = new Date();
+      if (index < 0) {
+          index = splitCount + index;
+      }
+      var oldValue: number = this.splits[index].value,
+          difference: number = oldValue - value;
+      this.splits[index].value = value;
+      this.splits[index].metadata.lastModified = now;
+
+      if (this.lastSplit !== null) {
+        this.lastSplit = this.startValue;
+      }
+      if (index === splitCount - 1) {
+          this.lastSplit -= difference;
+      } else {
+          this.splits[index + 1].value += difference;
+          this.splits[index + 1].metadata.lastModified = now;
+      }
+  }
+
   splitDuration(timestamp: number | null): number {
       /*
       Finds the duration of the stopwatch since the end of the last split
@@ -377,55 +399,19 @@ class Lap extends Split {
 }
 
 class LapStopwatch extends SplitStopwatch {
-    public laps: Array<Lap>;
     private lastLap: number | null;
     public readonly lapDistance: number;
     public readonly lapUnit: string;
     private lapGap: number;
+    public lapCount: number;
 
   constructor(lapDistance: number, lapUnit: string) {
     super();
-    this.laps = [];
     this.lastLap = null;
     this.lapDistance = lapDistance;
     this.lapUnit = lapUnit;
     this.lapGap = 0.0;
-  }
-
-  setStartValue(newStartValue: number) {
-    var now: Date = new Date();
-    if (!this.startValue) {
-      this.metadata.startedAt = now;
-    }
-    var hasSplits: boolean = this.splits.length > 0,
-        hasLaps: boolean = this.laps.length > 0;
-    if(this.startValue && (hasSplits || hasLaps) ) {
-      var oldStartValue: number = this.startValue,
-          difference: number = newStartValue - oldStartValue;
-      if (hasSplits) {
-        this.splits[0].value += difference;
-        this.splits[0].metadata.lastModified = now;
-      }
-      if (hasLaps) {
-        this.laps[0].value += difference;
-        this.laps[0].metadata.lastModified = now;
-      }
-    }
-    this.startValue = newStartValue;
-    this.metadata.lastModified = now;
-  }
-
-  setStopValue(newStopValue: number) {
-    var now: Date = new Date();
-    var hasLaps: boolean = this.laps.length > 0;
-    if (this.stopValue && hasLaps) {
-      var oldStopValue: number = this.stopValue,
-          difference: number = newStopValue - oldStopValue,
-          lastIndex: number = this.laps.length - 1;
-      this.laps[lastIndex].value += difference;
-      this.laps[lastIndex].metadata.lastModified = now;
-    }
-    super.setStopValue(newStopValue);
+    this.lapCount = 0;
   }
 
   start(timestamp: number): void {
@@ -446,31 +432,130 @@ class LapStopwatch extends SplitStopwatch {
     super.resume(timestamp);
   }
 
-  _addLap(timestamp: number): Lap {
+  addLap(timestamp: number): Lap {
     if (!this.lastLap) {
         throw Error('Stopwatch must already be running');
     }
     var timestamp: number = timestamp || Date.now(),
+        lapEnd: number = timestamp,
         lapStart: number = this.lastLap + this.lapGap,
-        value = BasicStopwatch.difference(lapStart, timestamp),
+        value: number = BasicStopwatch.difference(lapStart, lapEnd),
+
         metadata: CreationModificationDates = {
             createdAt: new Date(),
             lastModified: null,
         },
         lap: Lap = new Lap(value, this.lapDistance, this.lapUnit, metadata);
-    this.laps.push(lap);
-    this.lastLap = timestamp;
-    this.lapGap = 0.0;
+    this.splits.push(lap);
+    this.lastSplit = this.lastLap = timestamp;
+    this.splitGap = this.lapGap = 0.0;
+    this.lapCount++;
     return lap;
   }
 
-  addLap(timestamp: number, takeSplit: boolean=false): Lap {
-    var timestamp: number = timestamp || Date.now(),
-        lap: Lap = this._addLap(timestamp);
-    if(takeSplit) {
-        this.addSplit(timestamp);
+  _removeLap(index: number): void {
+    var originalSplitsLength: number = this.splits.length;
+    if(index >= originalSplitsLength) {
+        throw RangeError('index ' + index + ' does not exists in splits');
     }
-    return lap;
+    if (index < 0) {
+        index = originalSplitsLength + index;
+    }
+    var isLastSplit = index === originalSplitsLength - 1,
+        nextLapIndex: number | null = null,
+        lapDuration: number = this.splits[index].value;
+        this.splits.splice(index, 1);
+
+        if (isLastSplit) {
+          this.lastSplit -= lapDuration;
+        } else {
+          this.splits[index].value += lapDuration;
+          this.splits[index].metadata.lastModified = new Date();
+
+          for (var i = index; i < this.splits.length; i++) {
+              if (this.splits[i] instanceof Lap) {
+                  nextLapIndex = i;
+                  break;
+              }
+          }
+        }
+        var hasNextLap: boolean = nextLapIndex !== null,
+            followedbySplit: boolean = nextLapIndex !== index;
+        if (hasNextLap && followedbySplit) {
+            this.splits[nextLapIndex].value += lapDuration;
+            this.splits[nextLapIndex].metadata.lastModified = new Date();
+        }
+        else {
+            this.lastLap -= lapDuration;
+        }
+    this.lapCount--;
+  }
+
+  _removeSplit(index: number): void {
+      var originalSplitsLength = this.splits.length;
+      if (index >= originalSplitsLength) {
+          throw RangeError('index ' + index + ' does not exists in splits');
+      }
+      if (index < 0) {
+          index = originalSplitsLength + index;
+      }
+      var isLastSplit = index === originalSplitsLength - 1,
+      split = this.splits[index].value;
+      this.splits.splice(index, 1);
+      if (isLastSplit) {
+          this.lastSplit -= split;
+      }
+      else if (!(this.splits[index] instanceof Lap)) {
+          this.splits[index].value += split;
+          this.splits[index].metadata.lastModified = new Date();
+      }
+  };
+
+  removeSplit(index: number): void {
+      /*
+      Removes the split at a given index.
+      Recalculates the split after the removed split to ensure no information is lost
+      If the last split, reverts the lastSplit property to ensure the
+          splitDuration method still returns accurate values
+      */
+      if (!this.startValue || !this.lastSplit) {
+        throw Error('Stopwatch is not currently running');
+      }
+      var originalSplitsLength: number = this.splits.length;
+      if(index >= originalSplitsLength) {
+          throw RangeError('index ' + index + ' does not exists in splits');
+      }
+      if (index < 0) {
+          index = originalSplitsLength + index;
+      }
+      var isLap: boolean = this.splits[index] instanceof Lap;
+      if (isLap) {
+        this._removeLap(index);
+      } else {
+        this._removeSplit(index);
+      }
+  }
+
+  updateSplit(index: number, value: number) {
+      var splitCount: number = this.splits.length,
+          now: Date = new Date();
+      if (index < 0) {
+          index = splitCount + index;
+      }
+      var oldValue: number = this.splits[index].value,
+          difference: number = oldValue - value;
+      this.splits[index].value = value;
+      this.splits[index].metadata.lastModified = now;
+
+      if (this.lastSplit !== null) {
+        this.lastSplit = this.startValue;
+      }
+      if (index === splitCount - 1) {
+          this.lastSplit -= difference;
+      } else {
+          this.splits[index + 1].value += difference;
+          this.splits[index + 1].metadata.lastModified = now;
+      }
   }
 
   lapDuration(timestamp: number | null): number {
@@ -480,6 +565,7 @@ class LapStopwatch extends SplitStopwatch {
     if (!this.startValue || !this.lastLap) {
         return 0;
     }
+
     var now: number = timestamp || this.stopValue || Date.now(),
     lapStart: number = this.lastLap + this.lapGap;
     return BasicStopwatch.difference(lapStart, now);
@@ -487,8 +573,8 @@ class LapStopwatch extends SplitStopwatch {
 
   reset(): void {
       super.reset();
-      this.laps = [];
       this.lapGap = 0.0;
+      this.lapCount = 0;
   }
 }
 
