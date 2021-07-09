@@ -65,7 +65,7 @@
             <div class="tab-container">
               <div id="stopwatches" class="tab" :class="currentTab === 'stopwatch' ? 'visible' : 'invisible'">
                  <div class="stopwatch-grid" :class="aggregate ? 'select-multiple' : ''">
-                    <div class="stopwatch" :class="selectedIndices.indexOf(index) > -1 ? 'selected' : ''" v-for="(instance, index) in stopwatches" is="stopwatch" v-longpress="toggleSelectMode" v-on:click.native="selectStopwatch(index)" v-if="!instance.isArchived" v-on:click="selectStopwatch(index)" v-bind:index="index" v-bind:settings="settings" v-bind:local-settings="instance.settings" v-bind:stopwatch="instance.stopwatch" display="textdisplay" v-bind:show-controls="settings.render.showControls" v-bind:show-splits="settings.render.showSplits" v-bind:mutable="true">
+                    <div class="stopwatch" :class="selectedIndices.indexOf(index) > -1 ? 'selected' : ''" v-for="(instance, index) in stopwatches" is="stopwatch" v-on:click.native="selectStopwatch(index)" v-if="!instance.isArchived" v-on:click="selectStopwatch(index)" v-bind:index="index" v-bind:settings="settings" v-bind:local-settings="instance.settings" v-bind:stopwatch="instance.stopwatch" display="textdisplay" v-bind:show-controls="settings.render.showControls" v-bind:show-splits="settings.render.showSplits" v-bind:mutable="true">
                       <div class="float-left controls">
                         <button class="float-left stacked" v-on:click="removeStopWatch(index)"><i class="fad fa-trash"></i><span>Delete</span></button>
                         <button class="float-left stacked" v-on:click="cloneStopwatch(index)"><i class="fad fa-clone"></i><span>Clone</span></button>

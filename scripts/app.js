@@ -110,62 +110,6 @@
         </time>'
     });
 
-    Vue.component('splitdisplay', {
-        props: {
-            'index': Number,
-            'mutable': Boolean,
-            'split': Object,
-            'locale': String
-        },
-        computed: {
-            breakdown: function() {
-                return StopWatch.prototype.breakdown.call(null, this.split.value);
-            },
-            formattedValue: function() {
-                return formatDuration(this.breakdown);
-            }
-        },
-        methods:{
-            'formatDateTime': formatDateTime,
-            'removeSplit': function() {
-                this.$parent.deleteSplit(this.index);
-                dataLayer.push({
-                    'event': 'stopwatchEvent',
-                    'eventCategory': 'Split',
-                    'eventAction': 'Delete',
-                    'eventLabel': 'Stopwatch #' + this.$parent.index
-                });
-            },
-            'edit': function() {
-                this.$parent.edittingSplit = this.split;
-                this.$parent.edittingSplitIndex = this.index;
-                dataLayer.push({
-                    'event': 'stopwatchEvent',
-                    'eventCategory': 'Split',
-                    'eventAction': 'Edit',
-                    'eventLabel': 'Stopwatch #' + this.$parent.index
-                });
-            }
-        },
-
-        template: '<tr>\
-            <td>{{ index + 1 }}</td>\
-            <td>{{ split.label }}</td>\
-            <td>\
-                <time :class="\'localization-\' + locale" v-bind:datetime="formatDateTime(split.breakdown)">\
-                <span class="years" v-if="split.breakdown.years > 0">{{ formattedValue.years }}</span><span class="days" v-if="split.breakdown.years > 0 || split.breakdown.days > 0">{{ formattedValue.days }}</span><span class="hours" v-if="split.breakdown.years > 0 || split.breakdown.days > 0 || split.breakdown.hours > 0">{{ formattedValue.hours }}</span><span class="minutes" v-if="split.breakdown.years > 0 || split.breakdown.days > 0 || split.breakdown.hours > 0 || split.breakdown.minutes > 0">{{ formattedValue.minutes }}</span><span class="seconds">{{ formattedValue.seconds }}</span><span class="milliseconds">{{ formattedValue.milliseconds }}</span>\
-                </time>\
-            </td>\
-            <td>\
-                <span v-for="label in split.metadata.tags">{{ label }}</span>\
-            </td>\
-            <td v-if="mutable">\
-                <button class="stacked" v-on:click="edit"><i class="fad fa-edit"></i><span>Edit</span></button>\
-                <button class="stacked" v-on:click="removeSplit"><i class="fad fa-trash"></i><span>Delete</span></button>\
-            </td>\
-        </tr>'
-    });
-
     Vue.component('splitform', {
         props: {
             index: Number,
@@ -233,6 +177,64 @@
         </form>'
     });
 
+    Vue.component('splitdisplay', {
+        props: {
+            'index': Number,
+            'mutable': Boolean,
+            'split': Object,
+            'locale': String,
+            'lapunit': String
+        },
+        computed: {
+            breakdown: function() {
+                return SplitStopwatch.breakdown(this.split.value);
+            },
+            formattedValue: function() {
+                return formatDuration(this.breakdown);
+            }
+        },
+        methods:{
+            'formatDateTime': formatDateTime,
+            'removeSplit': function() {
+                this.$parent.deleteSplit(this.index);
+                dataLayer.push({
+                    'event': 'stopwatchEvent',
+                    'eventCategory': 'Split',
+                    'eventAction': 'Delete',
+                    'eventLabel': 'Stopwatch #' + this.$parent.index
+                });
+            },
+            'edit': function() {
+                this.$parent.edittingSplit = this.split;
+                this.$parent.edittingSplitIndex = this.index;
+                dataLayer.push({
+                    'event': 'stopwatchEvent',
+                    'eventCategory': 'Split',
+                    'eventAction': 'Edit',
+                    'eventLabel': 'Stopwatch #' + this.$parent.index
+                });
+            }
+        },
+
+        template: '<tr>\
+            <td>{{ index + 1 }}</td>\
+            <td><span v-if="split.distance && lapunit">{{ split.distance }}{{ lapunit }}</span></td>\
+            <td>{{ split.label }}</td>\
+            <td>\
+                <time :class="\'localization-\' + locale" v-bind:datetime="formatDateTime(split.breakdown)">\
+                <span class="years" v-if="split.breakdown.years > 0">{{ formattedValue.years }}</span><span class="days" v-if="split.breakdown.years > 0 || split.breakdown.days > 0">{{ formattedValue.days }}</span><span class="hours" v-if="split.breakdown.years > 0 || split.breakdown.days > 0 || split.breakdown.hours > 0">{{ formattedValue.hours }}</span><span class="minutes" v-if="split.breakdown.years > 0 || split.breakdown.days > 0 || split.breakdown.hours > 0 || split.breakdown.minutes > 0">{{ formattedValue.minutes }}</span><span class="seconds">{{ formattedValue.seconds }}</span><span class="milliseconds">{{ formattedValue.milliseconds }}</span>\
+                </time>\
+            </td>\
+            <td>\
+                <span v-for="label in split.metadata.tags">{{ label }}</span>\
+            </td>\
+            <td v-if="mutable">\
+                <button class="stacked" v-on:click="edit"><i class="fad fa-edit"></i><span>Edit</span></button>\
+                <button class="stacked" v-on:click="removeSplit"><i class="fad fa-trash"></i><span>Delete</span></button>\
+            </td>\
+        </tr>'
+    });
+
     Vue.component('stopwatch', {
         props: {
             'index': {
@@ -263,9 +265,9 @@
                 secondaryColor = this.secondaryColor;
             if (this.stopwatch.isActive()) {
                 startDurationValue = this.stopwatch.totalDuration(),
-                startDuration = this.stopwatch.breakdown(startDurationValue),
+                startDuration = SplitStopwatch.breakdown(startDurationValue),
                 startSplitDurationValue = this.stopwatch.splitDuration(),
-                startSplitDuration = this.stopwatch.breakdown(startSplitDurationValue);
+                startSplitDuration = SplitStopwatch.breakdown(startSplitDurationValue);
             } else {
                 startDuration = Object.create(defaultDuration),
                 startSplitDuration = Object.create(defaultDuration)
@@ -297,9 +299,9 @@
 
               if(!newStopwatch.isRunning()) {
                 var totalDuration = newStopwatch.totalDuration(),
-                    totalDurationBreakdown = newStopwatch.breakdown(totalDuration),
+                    totalDurationBreakdown = SplitStopwatch.breakdown(totalDuration),
                     splitDuration = newStopwatch.splitDuration(newStopwatch.stopValue),
-                    splitDurationBreakdown = newStopwatch.breakdown(splitDuration);
+                    splitDurationBreakdown = SplitStopwatch.breakdown(splitDuration);
                 this.currentDuration = totalDurationBreakdown;
                 if (totalDuration !== splitDuration) {
                   this.splitDuration = splitDurationBreakdown;
@@ -337,9 +339,9 @@
                         if(!self.showSettings && self.$parent.currentTab === 'stopwatch') {
                             var now = Date.now(),
                                 totalDuration = self.stopwatch.totalDuration(now),
-                                totalDurationBreakdown = self.stopwatch.breakdown(totalDuration),
+                                totalDurationBreakdown = SplitStopwatch.breakdown(totalDuration),
                                 splitDuration = self.stopwatch.splitDuration(now),
-                                splitDurationBreakdown = self.stopwatch.breakdown(splitDuration);
+                                splitDurationBreakdown = SplitStopwatch.breakdown(splitDuration);
                             self.currentDuration = totalDurationBreakdown;
                             if (totalDuration !== splitDuration) {
                                 self.splitDuration = splitDurationBreakdown;
@@ -354,9 +356,9 @@
 
                         if (!self.showSettings && self.$parent.currentTab === 'stopwatch') {
                             var totalDuration = self.stopwatch.totalDuration(),
-                                totalDurationBreakdown = self.stopwatch.breakdown(totalDuration),
+                                totalDurationBreakdown = SplitStopwatch.breakdown(totalDuration),
                                 splitDuration = self.stopwatch.splitDuration(),
-                                splitDurationBreakdown = self.stopwatch.breakdown(splitDuration);
+                                splitDurationBreakdown = SplitStopwatch.breakdown(splitDuration);
                             self.currentDuration = totalDurationBreakdown;
                             if (totalDuration !== splitDuration) {
                                 self.splitDuration = splitDurationBreakdown;
@@ -416,7 +418,7 @@
                     'eventLabel': 'Stopwatch #' + this.index
                 });
                 this.save();
-                var breakdown = this.stopwatch.breakdown(0);
+                var breakdown = SplitStopwatch.breakdown(0);
                 this.currentDuration = breakdown;
                 this.splitDuration = breakdown;
                 this.splits = [];
@@ -427,7 +429,7 @@
             recordSplit: function() {
                 var splitCount = this.stopwatch.splits.length,
                     split = this.stopwatch.addSplit(),
-                    breakdown = this.stopwatch.breakdown(split.value),
+                    breakdown = SplitStopwatch.breakdown(split.value),
                     splitNumber = splitCount + 1;
                     split.metadata.tags = [];
                     split.metadata.annotations = [];
@@ -442,11 +444,28 @@
                 this.save();
             },
             updateSplit: function(index, data) {
-                this.stopwatch.update(index, data.value);
+                this.stopwatch.updateSplit(index, data.value);
                 this.save();
             },
             deleteSplit: function(index) {
                 this.stopwatch.removeSplit(index);
+                this.save();
+            },
+            recordLap: function() {
+                var timestamp = Date.now(),
+                    lap = this.stopwatch.addLap(timestamp),
+                    breakdown = SplitStopwatch.breakdown(lap.value);
+                    lap.metadata.tags = [];
+                    lap.metadata.annotations = [];
+                    lap.breakdown = breakdown;
+                    lap.label = 'Lap #' + this.stopwatch.lapCount;
+
+                dataLayer.push({
+                    'event': 'stopwatchEvent',
+                    'eventCategory': 'Lap',
+                    'eventAction': 'Create',
+                    'eventLabel': 'Stopwatch #' + this.index
+                });
                 this.save();
             },
             formatDuration: formatDuration,
@@ -472,6 +491,18 @@
             <form class="clear settings" v-if="showSettings">\
                 <p><label for="name">Name:</label>\
                 <input type="text" placeholder="name" name="name" v-model="localSettings.name" v-on:change="save" /></p>\
+                <p><label>Lap:</label>\
+                  <input v-model="stopwatch.lapDistance" type="number" min="0" />\
+                  <select v-model="stopwatch.lapUnit">\
+                    <optgroup label="Metric">\
+                      <option value="m">Meters</option>\
+                      <option value="km">Kilometers</option>\
+                    </optgroup>\
+                    <optgroup label="Imperial">\
+                      <option value="mi">Miles</option>\
+                    </optgroup>\
+                  </select>\
+                </p>\
                 <p class="v-align-top"><label for="notes">Notes:</label>\
                 <textarea name="notes" v-model="localSettings.notes" v-on:change="save" cols="18" rows="4" /></p>\
                 <p><label>Background Color: </label>\
@@ -489,6 +520,7 @@
                     <button class="stacked" v-if="!stopwatch.isActive()" v-on:click="startStopWatch()"><i class="fad fa-play"></i><span>Start</span></button>\
                     <button class="stacked stop" v-if="stopwatch.isRunning()" v-on:click="stopStopwatch()"><i class="fad fa-hand-paper"></i><span>Stop</span></button>\
                     <button class="stacked split" v-if="stopwatch.isRunning()" v-on:click="recordSplit()">Split</button>\
+                    <button class="stacked" v-if="stopwatch.isRunning() && stopwatch.lapDistance && stopwatch.lapUnit" v-on:click="recordLap()">Lap</button>\
                     <button class="stacked" v-if="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="resumeStopwatch()"><i class="fad fa-redo"></i><span>Resume</span></button>\
                     <button class="stacked" v-if="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="resetStopwatch()"><i class="fad fa-undo"></i><span>Reset</span></button>\
                     <button class="stacked" v-if="!stopwatch.isRunning() && stopwatch.isActive()" v-on:click="archiveStopwatch()"><i class="fad fa-box"></i><span>Archive</span></button>\
@@ -497,12 +529,13 @@
                     <thead>\
                         <tr>\
                             <th>Split</th>\
+                            <th v-if="stopwatch.lapDistance && stopwatch.lapUnit">Lap</th>\
                             <th>Label</th>\
                             <th>Value</th>\
                         </tr>\
                     </thead>\
                     <tbody>\
-                        <tr is="splitdisplay" v-for="(item, index) in stopwatch.splits" v-bind:key="index" v-bind:index="index" v-bind:split="item" v-bind:mutable="mutable" v-bind:locale="settings.locale"></tr>\
+                        <tr is="splitdisplay" v-for="(item, index) in stopwatch.splits" v-bind:key="index" v-bind:index="index" v-bind:split="item" v-bind:lapunit="stopwatch.lapUnit" v-bind:mutable="mutable" v-bind:locale="settings.locale"></tr>\
                     <tbody>\
                 </table>\
                 <div v-if="edittingSplit" is="splitform" v-bind:split="edittingSplit" v-bind:index="edittingSplitIndex" v-bind:locale="settings.locale"></div>\
@@ -594,7 +627,7 @@
                     action = event.data.action,
                     item = event.data.item;
 
-                item.stopwatch = StopWatch.from(item.stopwatch);
+                item.stopwatch = Object.setPrototypeOf(item.stopwatch, LapStopwatch.prototype);
                 if (action === 'create') {
                   self.stopwatches.push(item);
                 } else if (action === 'delete') {
@@ -664,7 +697,7 @@
                 }
             },
             _addStopWatch: function() {
-                var newStopwatch = new StopWatch(),
+                var newStopwatch = new LapStopwatch(),
                     localSettings = {
                         name: '',
                         primaryColor: null,
@@ -684,7 +717,7 @@
                     .then(function (getEvents) {
                       var getEvent = getEvents[0],
                           data = getEvent.target.result;
-                          data.stopwatch = StopWatch.from(data.stopwatch);
+                          Object.setPrototypeOf(data.stopwatch, LapStopwatch.prototype);
                           self.stopwatches.push(data);
 
                           dataLayer.push({
@@ -734,9 +767,16 @@
             _cloneStopwatch: function(index) {
                 var instance = this.stopwatches[index],
                     newInstanceData = JSON.parse(JSON.stringify(instance)),
-                    newStopwatch = StopWatch.from(newInstanceData.stopwatch),
                     newSettings = newInstanceData.settings,
-                    obj = {settings: newSettings, isArchived: false};
+                    obj = {settings: newSettings, isArchived: false},
+                    newStopwatch = Object.setPrototypeOf(newInstanceData.stopwatch, LapStopwatch.prototype);
+                for (var i = 0; i < newStopwatch.splits.length; i++) {
+                    if(newStopwatch.splits[i].distance && newStopwatch.splits[i].distanceUnit) {
+                        Object.setPrototypeOf(newStopwatch.splits[i], Lap.prototype);
+                    }  else {
+                        Object.setPrototypeOf(newStopwatch.splits[i], Split.prototype);
+                    }
+                }
 
                 newStopwatch.metadata.createdAt = new Date();
                 newStopwatch.metadata.lastModified = null;
@@ -746,6 +786,13 @@
                 for (var i = 0; i < newStopwatch.splits.length; i++) {
                   newStopwatch.splits[i].metadata.createdAt = instance.stopwatch.splits[i].metadata.createdAt;
                   newStopwatch.splits[i].metadata.lastModified = instance.stopwatch.splits[i].metadata.lastModified;
+                }
+
+                if(newStopwatch.laps) {
+                  for (var i = 0; i < newStopwatch.laps.length; i++) {
+                    newStopwatch.laps[i].metadata.createdAt = instance.stopwatch.laps[i].metadata.createdAt;
+                    newStopwatch.laps[i].metadata.lastModified = instance.stopwatch.laps[i].metadata.lastModified;
+                  }
                 }
 
                 obj.stopwatch = newStopwatch;
@@ -762,7 +809,7 @@
                     .then(function(getEvents) {
                       var getEvent = getEvents[0],
                           data = getEvent.target.result;
-                          data.stopwatch = StopWatch.from(data.stopwatch);
+                          Object.setPrototypeOf(data.stopwatch, LapStopwatch.prototype);
                       self.stopwatches.push(data);
                     });
                   }
@@ -1054,7 +1101,14 @@
     stopwatchAdapter.getAll(stopwatchStoreName)
     .then(function(instances) {
       for(var i = 0; i < instances.length; i++) {
-        instances[i].stopwatch = StopWatch.from(instances[i].stopwatch);
+        Object.setPrototypeOf(instances[i].stopwatch, LapStopwatch.prototype);
+        for (var j = 0; j < instances[i].stopwatch.splits.length; j++) {
+          if(instances[i].stopwatch.splits[j].distance && instances[i].stopwatch.splits[j].distanceUnit) {
+            Object.setPrototypeOf(instances[i].stopwatch.splits[j], Lap.prototype);
+          }  else {
+            Object.setPrototypeOf(instances[i].stopwatch.splits[j], Split.prototype);
+          }
+        }
       }
       app.stopwatches = instances;
     });
