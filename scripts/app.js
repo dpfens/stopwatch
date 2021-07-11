@@ -49,7 +49,7 @@
                 let warn = `[longpress:] provided expression '${binding.expression}' is not a function, but has to be`
                 if (compName) { warn += `Found in component '${compName}' ` }
 
-                console.warn(warn)
+                console.warn(warn);
             }
             el.oncontextmenu = function() {return false;};
 
@@ -450,6 +450,9 @@
             },
             deleteSplit: function(index) {
                 this.stopwatch.removeSplit(index);
+                if(this.stopwatch.splits.length >= index) {
+                  this.stopwatch.splits[index].breakdown = BasicStopwatch.breakdown(this.stopwatch.splits[index].value);
+                }
                 this.save();
             },
             recordLap: function() {
@@ -670,7 +673,6 @@
               return '';
             }
             var lowerBound = new Date(this.lowerBound);
-            console.log(lowerBound);
             return lowerBound.toISOString().slice(0, -8);
           }
         },
@@ -871,7 +873,6 @@
             toggleSelectMode: function() {
               this.aggregate = true;
               if ('vibrate' in navigator) {
-                console.log('vibrating');
                 navigator.vibrate(100);
               }
             },
