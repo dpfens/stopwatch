@@ -261,12 +261,12 @@ button.start:not(:only-child) {
   margin-left: 1em;
 }
 
-div.controls button.stop {
+div.controls button.right-gap {
   margin-right: 2em;
   border-right: 0;
 }
 
-button.split {
+button.left-gap {
   margin-left: 2em;
 }
 
