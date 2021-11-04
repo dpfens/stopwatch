@@ -48,38 +48,6 @@ div.tab {
   transition: transform 0.2s cubic-bezier(0.465, 0.183, 0.153, 0.946), opacity 0.1s;
 }
 
-div.tab.visible {
-  opacity: 1;
-}
-
-div.tab.invisible {
-  opacity: 0;
-}
-
-div.tab.invisible#stopwatches {
-  transform: translateX(-100%);
-}
-
-div.tab.visible + div.tab.invisible#archive {
-  transform: translateX(100%);
-}
-
-div.tab.invisible + div.tab.invisible#archive {
-  transform: translateX(-100%);
-}
-
-div.tab.visible ~ div.tab.invisible#settings {
-  transform: translateX(100%) !important;
-}
-
-div.tab.invisible + div.tab.invisible#settings {
-  transform: translateX(-100%);
-}
-
-div.tab.invisible#about {
-  transform: translateX(100%);
-}
-
 div.tab-controls {
     text-align: center;
     display: flex;

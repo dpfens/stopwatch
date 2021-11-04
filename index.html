@@ -40,30 +40,30 @@
        <!-- End Google Tag Manager (noscript) -->
       <main>
          <div id="app">
-            <div class="tab-controls">
-              <a id="toggle-stopwatch" v-on:click="currentTab = 'stopwatch'" :class="currentTab === 'stopwatch' ? 'active' : ''">
+            <div class="tab-controls" role="tablist">
+              <a id="stopwatch-tab" v-on:click="currentTab = 'stopwatch'" :class="currentTab === 'stopwatch' ? 'active' : ''" :aria-selected="currentTab === 'stopwatch' ? 'true' : 'false'" role="tab" aria-controls="stopwatch-panel" :tabindex="currentTab === 'stopwatch' ? '0' : '-1'">
                 <i class="fad fa-stopwatch"></i>
                 <span>Stopwatches</span>
               </a>
-              <a id="toggle-archive" v-on:click="currentTab = 'archive'" :class="currentTab === 'archive' ? 'active' : ''">
+              <a id="archive-tab" v-on:click="currentTab = 'archive'" :class="currentTab === 'archive' ? 'active' : ''" :aria-selected="currentTab === 'archive' ? 'true' : 'false'" role="tab" aria-controls="archive-panel" :tabindex="currentTab === 'archive' ? '0' : '-1'">
                 <i class="fad fa-box"></i>
                 <span>Archives</span>
               </a>
-              <a id="toggle-settings" v-on:click="currentTab = 'settings'" :class="currentTab === 'settings' ? 'active' : ''">
+              <a id="settings-tab" v-on:click="currentTab = 'settings'" :class="currentTab === 'settings' ? 'active' : ''" :aria-selected="currentTab === 'settings' ? 'true' : 'false'" role="tab" aria-controls="settings-panel" :tabindex="currentTab === 'settings' ? '0' : '-1'">
                 <i class="fad fa-sliders-h"></i>
                 <span>Settings</span>
               </a>
-              <a id="toggle-settings" v-on:click="currentTab = 'about'" :class="currentTab === 'about' ? 'active' : ''">
+              <a id="settings-tab" v-on:click="currentTab = 'about'" :class="currentTab === 'about' ? 'active' : ''" :aria-selected="currentTab === 'about' ? 'true' : 'false'" role="tab" aria-controls="about-panel":tabindex="currentTab === 'about' ? '0' : '-1'">
                 <i class="fad fa-address-card"></i>
                 <span>About</span>
               </a>
-              <a id="toggle-share" hidden>
+              <a id="toggle-share" hidden role="button">
                 <i class="fad fa-share"></i>
                 <span>Share</span>
               </a>
             </div>
             <div class="tab-container">
-              <div id="stopwatches" class="tab" :class="currentTab === 'stopwatch' ? 'visible' : 'invisible'">
+              <div id="stopwatches" class="tab" role="tabpanel" aria-labelledby="stopwatch-tab" v-show="currentTab === 'stopwatch'">
                  <div class="stopwatch-grid" :class="aggregate ? 'select-multiple' : ''">
                     <div class="stopwatch" :class="selectedIndices.indexOf(index) > -1 ? 'selected' : ''" v-for="(instance, index) in stopwatches" is="stopwatch" v-on:click.native="selectStopwatch(index)" v-if="!instance.isArchived" v-on:click="selectStopwatch(index)" v-bind:index="index" v-bind:settings="settings" v-bind:local-settings="instance.settings" v-bind:stopwatch="instance.stopwatch" display="textdisplay" v-bind:show-controls="settings.render.showControls" v-bind:show-splits="settings.render.showSplits" v-bind:mutable="true">
                       <div class="float-left controls">
@@ -74,7 +74,7 @@
                     <button class="add" v-if="!aggregate" v-on:click="addStopWatch()"><i class="fad fa-plus fa-4x"></i><span>Add Stopwatch</span></button>
                  </div>
               </div>
-              <div id="archive" class="tab" :class="currentTab === 'archive' ? 'visible' : 'invisible'">
+              <div id="archive" class="tab" role="tabpanel" aria-labelledby="archive-tab" v-show="currentTab === 'archive'">
                 <div class="search">
                   <label><i class="fad fa-search"></i></label><input class="query" type="search" v-model="searchQuery" placeholder="Stopwatch name"/>
 
@@ -92,7 +92,7 @@
                     </div>
                  </div>
               </div>
-              <div id="settings" class="tab" :class="currentTab === 'settings' ? 'visible' : 'invisible'">
+              <div id="settings" class="tab" role="tabpanel" aria-labelledby="settings-tab" v-show="currentTab === 'settings'">
                  <h2>Stopwatch Settings</h2>
                  <h3>Formatting</h3>
                  <select v-model="settings.locale" v-on:change="saveSettings">
@@ -117,7 +117,7 @@
                    <p>You are using <output class="percentage" v-bind:value="storage.usage">{{ (storage.usage / storage.quota * 100).toFixed(3) }}</output>% (<output class="raw" v-bind:value="storage.usage">{{ (storage.usage / 1024).toFixed(2) }}</output>kB) of your total available storage (<output class="raw" v-bind:value="storage.quota">{{ (storage.quota / 1024).toFixed(3) }}</output>kB)</p>
                  </div>
               </div>
-              <div id="about" class="tab" :class="currentTab === 'about' ? 'visible' : 'invisible'">
+              <div id="about" class="tab" role="tabpanel" aria-labelledby="about-tab" v-show="currentTab === 'about'">
                  <h2>What is a multi-stopwatch?</h2>
                  <p>A multi-stopwatch is a tool for simultaneously managing multiple stopwatches.  I wanted a tool that was simple, and worked well on mobile devices so I built this <s>simple</s> web app.  This stopwatch stores stopwatch information in the browser, so it can work/store executions without any internet access on a device.</p>
 

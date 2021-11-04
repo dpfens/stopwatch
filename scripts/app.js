@@ -100,12 +100,13 @@
         props: {
             'locale': String,
             'value': Object,
-            'fontsize': Object
+            'fontsize': Object,
+            'isActive': Boolean
         },
         methods:{
             'formatDateTime': formatDateTime
         },
-        template: '<time :class="\'display digital-display localization-\' + locale + \' text-display\'" v-bind:datetime="formatDateTime(value)" v-bind:style="{fontSize: fontsize.value + fontsize.unit }">\
+        template: '<time :class="\'display digital-display localization-\' + locale + \' text-display\'" v-bind:datetime="formatDateTime(value)" v-bind:style="{fontSize: fontsize.value + fontsize.unit }" role="timer" :aria-live="isActive ? \'on\' : \'off\'" >\
             <span v-if="value.years && value.years !== \'00\'" class="years digit-container">{{ value.years }}</span><span v-if="value.days && value.days !== \'00\'" class="days digit-container">{{ value.days }}</span><span v-if="value.hours && value.hours !== \'00\'" class="hours digit-container">{{ value.hours }}</span><span v-if="value.minutes !== \'00\'" class="minutes digit-container">{{ value.minutes }}</span><span class="seconds digit-container">{{ value.seconds }}</span>\<span class="milliseconds digit-container">{{ value.milliseconds }}</span>\
         </time>'
     });
@@ -166,12 +167,6 @@
             <span class="minutes"><input type="tel" class="minutes" name="minutes" min="0" v-model.number="minutes" /></span>\
             <span class="seconds"><input type="tel" class="seconds" name="seconds" min="0" v-model.number="seconds" /></span>\
             <span class="milliseconds"><input type="tel" class="milliseconds" name="milliseconds" v-model.number="milliseconds" /></span></p>\
-            <div v-if="split.metadata.tags">\
-                <h3 >Tags</h3>\
-                <select v-model="split.metadata.tags" multiple>\
-                    <option v-for="label in split.metadata.tags" value="{{value}}">{{ name }}</option>\
-                </select>\
-            </div>\
             <div class="controls">\
               <button class="stacked" v-on:click.prevent="deleteSplit(index)"><i class="fad fa-trash"></i><span>Delete</span></button>\
               <button class="stacked" v-on:click.prevent="save"><i class="fad fa-save"></i><span>Save</span></button>\
@@ -226,9 +221,6 @@
             </div>\
             <div v-if="split.distance && lapunit" class="lap-distance">{{ split.distance }}{{ lapunit }}</div>\
             <div class="label"><span>{{ split.label }}</span></div>\
-            <div v-if="split.metadata.tags.length">\
-                <span v-for="label in split.metadata.tags">{{ label }}</span>\
-            </div>\
             <div v-if="mutable" class="controls">\
                 <button class="stacked" v-on:click="edit"><i class="fad fa-edit"></i><span>Edit</span></button>\
                 <button class="stacked" v-on:click="removeSplit"><i class="fad fa-trash"></i><span>Delete</span></button>\
@@ -517,8 +509,8 @@
             <div class="clear" v-else>\
                 <h2 class="text-center">{{ localSettings.name }}</h2>\
                 <div class="time-display" @click="toggleStopWatch">\
-                    <textdisplay v-bind:locale="settings.locale" v-bind:value="formatDuration(currentDuration)" v-bind:fontsize="settings.totalDuration.fontSize"></textdisplay>\
-                    <textdisplay v-show="stopwatch.splits.length > 0" class="split" v-bind:locale="settings.locale" v-bind:value="formatDuration(splitDuration)" v-bind:fontsize="settings.splitDuration.fontSize"></textdisplay>\
+                    <textdisplay v-bind:locale="settings.locale" v-bind:value="formatDuration(currentDuration)" v-bind:fontsize="settings.totalDuration.fontSize" v-bind:isActive="stopwatch.isActive()"></textdisplay>\
+                    <textdisplay v-show="stopwatch.splits.length > 0" class="split" v-bind:locale="settings.locale" v-bind:value="formatDuration(splitDuration)" v-bind:fontsize="settings.splitDuration.fontSize" v-bind:isActive="stopwatch.isActive()"></textdisplay>\
                 </div>\
                 <div class="controls" v-if="showControls && mutable">\
                     <button class="stacked" v-if="!stopwatch.isActive()" v-on:click="startStopWatch()"><i class="fad fa-play"></i><span>Start</span></button>\
