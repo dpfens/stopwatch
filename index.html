@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
    <head>
-       <!-- Google Tag Manager -->
-       <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NCXJXW');</script>
-       <!-- End Google Tag Manager -->
       <title>Stopwatch</title>
       <link rel="canonical" href=""/>
       <meta name="description" content="A better offline-capable multi-stopwatch" />
@@ -35,160 +32,16 @@
       <link rel="stylesheet" href="libs/fontawesome-pro/css/duotone.css">
    </head>
    <body>
-       <!-- Google Tag Manager (noscript) -->
-       <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NCXJXW"height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-       <!-- End Google Tag Manager (noscript) -->
-      <main>
-         <div id="app">
-            <div class="tab-controls">
-              <a id="toggle-stopwatch" v-on:click="currentTab = 'stopwatch'" :class="currentTab === 'stopwatch' ? 'active' : ''">
-                <i class="fad fa-stopwatch"></i>
-                <span>Stopwatches</span>
-              </a>
-              <a id="toggle-archive" v-on:click="currentTab = 'archive'" :class="currentTab === 'archive' ? 'active' : ''">
-                <i class="fad fa-box"></i>
-                <span>Archives</span>
-              </a>
-              <a id="toggle-settings" v-on:click="currentTab = 'settings'" :class="currentTab === 'settings' ? 'active' : ''">
-                <i class="fad fa-sliders-h"></i>
-                <span>Settings</span>
-              </a>
-              <a id="toggle-settings" v-on:click="currentTab = 'about'" :class="currentTab === 'about' ? 'active' : ''">
-                <i class="fad fa-address-card"></i>
-                <span>About</span>
-              </a>
-              <a id="toggle-share" hidden>
-                <i class="fad fa-share"></i>
-                <span>Share</span>
-              </a>
-            </div>
-            <div class="tab-container">
-              <div id="stopwatches" class="tab" :class="currentTab === 'stopwatch' ? 'visible' : 'invisible'">
-                 <div class="stopwatch-grid" :class="aggregate ? 'select-multiple' : ''">
-                    <div class="stopwatch" :class="selectedIndices.indexOf(index) > -1 ? 'selected' : ''" v-for="(instance, index) in stopwatches" is="stopwatch" v-on:click.native="selectStopwatch(index)" v-if="!instance.isArchived" v-on:click="selectStopwatch(index)" v-bind:index="index" v-bind:settings="settings" v-bind:local-settings="instance.settings" v-bind:stopwatch="instance.stopwatch" display="textdisplay" v-bind:show-controls="settings.render.showControls" v-bind:show-splits="settings.render.showSplits" v-bind:mutable="true">
-                      <div class="float-left controls">
-                        <button class="float-left stacked" v-on:click="removeStopWatch(index)"><i class="fad fa-trash"></i><span>Delete</span></button>
-                        <button class="float-left stacked" v-on:click="cloneStopwatch(index)"><i class="fad fa-clone"></i><span>Clone</span></button>
-                      </div>
-                    </div>
-                    <button class="add" v-if="!aggregate" v-on:click="addStopWatch()"><i class="fad fa-plus fa-4x"></i><span>Add Stopwatch</span></button>
-                 </div>
-              </div>
-              <div id="archive" class="tab" :class="currentTab === 'archive' ? 'visible' : 'invisible'">
-                <div class="search">
-                  <label><i class="fad fa-search"></i></label><input class="query" type="search" v-model="searchQuery" placeholder="Stopwatch name"/>
-
-                  <div class="date-range">
-                    <input type="datetime-local" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" v-model="lowerBound" v-bind:max="maxLowerBound" /> &mdash;
-                    <input type="datetime-local" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" v-model="upperBound" v-bind:min="minUpperBound" />
-                  </div>
-                </div>
-                <div class="stopwatch-grid">
-                    <div class="stopwatch" v-for="(instance, index) in searchResults" is="stopwatch" v-if="instance.isArchived" v-bind:index="index" v-bind:settings="settings" v-bind:local-settings="instance.settings" v-bind:stopwatch="instance.stopwatch" display="textdisplay" v-bind:show-splits="settings.render.showSplits" v-bind:mutable="false">
-                      <div class="float-left controls">
-                        <button class="float-left stacked" v-on:click="removeStopWatch(index)"><i class="fad fa-trash"></i><span>Delete</span></button>
-                        <button class="float-left stacked" v-on:click="unarchiveStopwatch(index)"><i class="fad fa-box-open"></i><span>Unarchive</span></button>
-                      </div>
-                    </div>
-                 </div>
-              </div>
-              <div id="settings" class="tab" :class="currentTab === 'settings' ? 'visible' : 'invisible'">
-                 <h2>Stopwatch Settings</h2>
-                 <h3>Formatting</h3>
-                 <select v-model="settings.locale" v-on:change="saveSettings">
-                    <option value="en-us">US</option>
-                    <option value="en-uk">EU</option>
-                 </select>
-                 <h3>Font Size</h3>
-                 <p><label for="totalDurationFontSize">Total Duration Font Size:</label>
-                     <input type="range" name="totalDurationFontSize" min="0.2" max="1" step="0.2" v-model="settings.totalDuration.fontSize.value" v-on:change="saveSettings">
-                 </p>
-                 <p>
-                     <label for="splitDurationFontSize">Split Duration Font Size:</label>
-                     <input type="range" name="splitDurationFontSize" min="0.2" max="1" step="0.2" v-model="settings.splitDuration.fontSize.value" v-on:change="saveSettings">
-                 </p>
-                 <h3>View</h3>
-                 <p><input type="checkbox" v-model="settings.render.showSplits" v-on:change="saveSettings"><span>Show Splits on each Stopwatch</span></p>
-                 <p><input type="checkbox" v-model="settings.render.showControls" v-on:change="saveSettings"><span>Show Controls for each Stopwatch</span></p>
-
-                 <div v-if="storage.usage && storage.quota">
-                   <h3>Storage</h3>
-                   <button v-on:click="exportJSONData">Export Data (JSON)</button>
-                   <p>You are using <output class="percentage" v-bind:value="storage.usage">{{ (storage.usage / storage.quota * 100).toFixed(3) }}</output>% (<output class="raw" v-bind:value="storage.usage">{{ (storage.usage / 1024).toFixed(2) }}</output>kB) of your total available storage (<output class="raw" v-bind:value="storage.quota">{{ (storage.quota / 1024).toFixed(3) }}</output>kB)</p>
-                 </div>
-              </div>
-              <div id="about" class="tab" :class="currentTab === 'about' ? 'visible' : 'invisible'">
-                 <h2>What is a multi-stopwatch?</h2>
-                 <p>A multi-stopwatch is a tool for simultaneously managing multiple stopwatches.  I wanted a tool that was simple, and worked well on mobile devices so I built this <s>simple</s> web app.  This stopwatch stores stopwatch information in the browser, so it can work/store executions without any internet access on a device.</p>
-
-                 <h3>Name stopwatches / Change colors</h3>
-                 <p>Color code stopwatches and name stopwatches to quickly determine which stopwatch corresponds to which team and which competitor.</p>
-
-                 <h3>Clone a Stopwatch</h3>
-                 <p>If you want another copy of an existing stopwatch, you can clone an existing stopwatch, so that you can reuse when the stopwatch was started, as well as the splits that have been measured up until that point.</p>
-                 <p>This was written with the intent of track & field races.  Sometimes during a race I decide I want to measure the splits of more athletes, but I only had one stopwatch, or had no way of retaining the original start time on the new stopwatch.  This way, I could clone my existing stopwatch to keep the original start time of the race as well as optionally keeping the splits from the original stopwatch.</p>
-
-                 <h3>Modify splits</h3>
-                 <p>Sometimes during track & field meets, my splits would be off because I could not see exactly where a distance marker was.  This caused the subsequent split to be wrong because my recorded split was too early/late.  By being able to edit splits after they are taken, I can later cross-reference my splits with the official splits so my recorded splits would be accurate.</p>
-
-                 <h3>Control multiple stopwatches at once</h3>
-                 <p>You can start/stop multiple stopwatches with a single button using.  To start/stop multiple stopwatches at once:</p>
-
-                 <ol>
-                  <li>Click the "Group Mode" button or long-press on a stopwatch to active Group mode.</li>
-                  <li>Then click/tap the set of stopwatches you want to control together.</li>
-                  <li>Then use the controls at the bottom to control the selected stopwatches as needed.</li>
-                  <li>When you are done, click the "Exit" button to exist Group mode.</li>
-                 </ol>
-
-                 <h3>Contributions</h3>
-                 <p>The source for this app can be found on <a href="https://github.com/dpfens/stopwatch/tree/gh-pages">Github</a>.  Pull requests are welcome.</p>
-
-                 <h3>Privacy</h3>
-                 <p>This tool does have standard Google Analytics tracking on it, which does record information about the device, but no personal information is recorded.  The following actions are recorded in Google Analytics:</p>
-                 <ul>
-                     <li>Stopwatches
-
-                       <ul>
-                         <li>Starts</li>
-                         <li>Stops</li>
-                         <li>Resumes</li>
-                         <li>Resets</li>
-                         <li>Clones</li>
-                         <li>Deletes</li>
-                         <li>Settings changes</li>
-                       </ul>
-                     </li>
-                     <li>Splits/Laps
-                      <ul>
-                        <li>Adding</li>
-                        <li>Edits</li>
-                        <li>Deletes</li>
-                      </ul>
-                     </li>
-                 </ul>
-                 <p>No specific information (i.e. names, splits, labels, etc) from/about the stopwatch is sent to Google Analytics.  This information is recorded for the developer to understand how the tool is being used, and which features are used/not used.</p>
-              </div>
-          </div>
-          <div class="bulk controls" :class="currentTab === 'stopwatch' && (unarchivedStopwatches() > 1 || aggregate) ? 'active' : ''">
-            <button class="stacked" v-if="selectedIndices.length > 0" v-on:click="selectedIndices = [];"><i class="fad fa-object-ungroup"></i><span>Deselect All</span></button>
-            <button class="stacked" v-if="canSelectAll() && aggregate" v-on:click="selectAll"><i class="fad fa-object-group"></i><span>Select All</span></button>
-            <button class="stacked" v-if="selectedIndices.length > 0 && canStartAll()" v-on:click="startAll"><i class="fad fa-play"></i><span>Start</span></button>
-            <button class="stacked" v-if="selectedIndices.length > 0 && canStopAll()" v-on:click="stopAll"><i class="fad fa-hand-paper"></i><span>Stop</span></button>
-            <button class="stacked" v-if="selectedIndices.length > 0 && canResumeAll()" v-on:click="resumeAll"><i class="fad fa-redo"></i><span>Resume</span></button>
-            <button class="stacked" v-if="selectedIndices.length > 0 && canResetAll()" v-on:click="resetAll"><i class="fad fa-undo"></i><span>Reset</span></button>
-            <button class="stacked" v-if="selectedIndices.length > 0 && canArchiveAll()" v-on:click="archiveAll"><i class="fad fa-box"></i><span>Archive</span></button>
-            <button class="stacked" v-if="aggregate" v-on:click="aggregate = false; selectedIndices = [];"><i class="fad fa-times-hexagon"></i><span>Exit</span></button>
-            <button class="stacked" v-if="!selectedIndices.length && !aggregate" v-on:click="aggregate = true;"><i class="fad fa-object-group"></i><span>Group Mode</span></button>
-          </div>
-         </div>
-      </main>
-      <footer></footer>
+     <main>
+       <div id="app"></div>
+     </main>
    </body>
    <script type="text/javascript" src="libs/stopwatch/js/stopwatch.js"></script>
    <script type="text/javascript" src="libs/storage.js"></script>
-   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
-   <script type="text/javascript" src="scripts/app.js" async="true"></script>
+   <script type="text/javascript" src="node_modules/react/umd/react.development.js"></script>
+   <script type="text/javascript" src="node_modules/react-dom/umd/react-dom.development.js"></script>
+   <script type="text/javascript" src="dist/stopwatch.js"></script>
+   <script type="text/javascript" src="dist/main.js" async="true"></script>
    <script type="text/javascript">
    if ('serviceWorker' in navigator) {
        window.addEventListener('load', function() {
