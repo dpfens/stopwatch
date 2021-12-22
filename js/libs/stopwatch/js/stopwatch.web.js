@@ -2,10 +2,12 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -21,6 +23,7 @@ var BasicStopwatch = (function () {
             createdAt: now,
             startedAt: null,
             stoppedAt: null,
+            resumedAt: null,
             resetAt: null,
             lastModified: null,
             timezone: now.getTimezoneOffset()
@@ -68,11 +71,11 @@ var BasicStopwatch = (function () {
         if (!this.stopValue) {
             throw Error('Stopwatch is already running, cannot resume');
         }
-        var startValue = timestamp || Date.now(), stopValue = this.stopValue, gap = BasicStopwatch.difference(startValue, stopValue);
+        var startValue = timestamp || Date.now(), now = new Date(), stopValue = this.stopValue, gap = BasicStopwatch.difference(startValue, stopValue);
         this.totalGap += gap;
         this.stopValue = null;
-        this.metadata.stoppedAt = null;
-        this.metadata.lastModified = new Date();
+        this.metadata.lastModified = now;
+        this.metadata.resumedAt = now;
     };
     BasicStopwatch.prototype.reset = function () {
         this.startValue = null;
@@ -444,4 +447,4 @@ if (typeof module !== "undefined" && module.exports) {
         'LapStopwatch': LapStopwatch
     };
 }
-//# sourceMappingURL=stopwatch.js.map
+//# sourceMappingURL=stopwatch.web.js.map
