@@ -89,7 +89,6 @@ class BasicStopwatch {
     gap = BasicStopwatch.difference(startValue, stopValue);
     this.totalGap += gap;
     this.stopValue = null;
-    this.metadata.stoppedAt = null;
     this.metadata.lastModified = now;
     this.metadata.resumedAt = now;
   }
