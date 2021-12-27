@@ -2,6 +2,7 @@ interface StopWatchMetadata {
   readonly createdAt: Date;
   startedAt: Date | null;
   stoppedAt: Date | null;
+  resumedAt: Date | null;
   resetAt: Date | null;
   lastModified: Date | null;
   timezone: number | null;
@@ -28,6 +29,7 @@ class BasicStopwatch {
         createdAt: now,
         startedAt: null,
         stoppedAt: null,
+        resumedAt: null,
         resetAt: null,
         lastModified: null,
         timezone: now.getTimezoneOffset()
@@ -82,12 +84,14 @@ class BasicStopwatch {
         throw Error('Stopwatch is already running, cannot resume');
     }
     var startValue = timestamp || Date.now(),
+    now = new Date(),
     stopValue = this.stopValue,
     gap = BasicStopwatch.difference(startValue, stopValue);
     this.totalGap += gap;
     this.stopValue = null;
     this.metadata.stoppedAt = null;
-    this.metadata.lastModified = new Date();
+    this.metadata.lastModified = now;
+    this.metadata.resumedAt = now;
   }
 
   reset(): void {
@@ -275,7 +279,7 @@ class SplitStopwatch extends BasicStopwatch {
           this.splits[index].value = nextNearestSplit.difference;
           this.splits[index].metadata.lastModified = new Date();
       }
-      var metadata: CreationModificationDates = {
+      const metadata: CreationModificationDates = {
           createdAt: new Date(),
           lastModified: null
       },
