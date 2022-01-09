@@ -57,7 +57,7 @@ if ('indexedDB' in window) {
     return StopwatchStorageAdapter;
   }(IndexedDBStorageAdapter);
 
-  var databaseName = 'stopwatch',
-      databaseVersion = 2;
+  var databaseName = 'stopwatchv2',
+      databaseVersion = 1;
   stopwatchAdapter = new StopwatchStorageAdapter(databaseName, databaseVersion);
 }

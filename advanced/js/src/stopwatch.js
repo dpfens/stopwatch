@@ -656,64 +656,64 @@ class StopwatchListItem extends Stopwatch {
         </div>
       </div>
 
-      <div className='back d-flex justify-content-between align-items-center'>
-        <div>
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="name-stopwatch">Name</InputGroup.Text>
-              <FormControl
-              placeholder="Name"
-              aria-label="name stopwatch"
-              aria-describedby="name-stopwatch"
-              value={this.props.instance.name}
-              onChange={this.handleNameChange.bind(this)}
-              />
-          </InputGroup>
-        </div>
+      <div className='back'>
 
-        <div>
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="description-stopwatch">Description</InputGroup.Text>
-              <FormControl
-              as="textarea"
-              placeholder="Search"
-              aria-label="search stopwatch"
-              aria-describedby="search-stopwatch"
-              value={this.props.instance.description}
-              onChange={this.handleDescriptionChange.bind(this)}
-              />
-          </InputGroup>
-        </div>
-
-        <div>
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="lap-distance-stopwatch">Lap Distance</InputGroup.Text>
-              <FormControl
-              type='tel'
-              placeholder="Lap Distance"
-              aria-label="lap-distance"
-              aria-describedby="lap-distance-stopwatch"
-              value={this.props.instance.stopwatch.lapDistance}
-              onChange={this.handleLapDistanceChange.bind(this)}
-              />
-          </InputGroup>
-        </div>
-
-        <div>
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="lap-distance-unit-stopwatch">Lap Units</InputGroup.Text>
+        <div className='d-flex justify-content-between align-items-center'>
+          <div className='me-1 ms-1'>
+            <InputGroup className="mb-1">
+              <InputGroup.Text id="name-stopwatch">Name</InputGroup.Text>
                 <FormControl
-                placeholder="Lap Distance Unit"
-                aria-label="lap-distance"
-                aria-describedby="lap-distance-stopwatch"
-                value={this.props.instance.stopwatch.lapUnit}
-                onChange={this.handleLapDistanceUnitChange.bind(this)}
+                placeholder="Name"
+                aria-label="name stopwatch"
+                aria-describedby="name-stopwatch"
+                value={this.props.instance.name}
+                onChange={this.handleNameChange.bind(this)}
                 />
             </InputGroup>
-        </div>
 
-        <ButtonGroup >
-          <Button variant="outline-secondary" onClick={this.stopEditing.bind(this)}><i className="fad fa-times"></i></Button>
-        </ButtonGroup>
+            <InputGroup className="mb-1">
+              <InputGroup.Text id="description-stopwatch">Description</InputGroup.Text>
+                <FormControl
+                as="textarea"
+                placeholder="Search"
+                aria-label="search stopwatch"
+                aria-describedby="search-stopwatch"
+                value={this.props.instance.description}
+                onChange={this.handleDescriptionChange.bind(this)}
+                />
+            </InputGroup>
+          </div>
+
+          <div className='me-1'>
+            <div className='mb-1 text-align-right'>
+              <ButtonGroup>
+                <Button variant="outline-secondary" onClick={this.stopEditing.bind(this)}><i className="fad fa-times"></i></Button>
+              </ButtonGroup>
+            </div>
+            <InputGroup className="mb-1">
+              <InputGroup.Text id="lap-distance-stopwatch">Lap Distance</InputGroup.Text>
+                <FormControl
+                type='tel'
+                placeholder="Lap Distance"
+                aria-label="lap-distance"
+                aria-describedby="lap-distance-stopwatch"
+                value={this.props.instance.stopwatch.lapDistance}
+                onChange={this.handleLapDistanceChange.bind(this)}
+                />
+            </InputGroup>
+
+              <InputGroup className="mb-1">
+                <InputGroup.Text id="lap-distance-unit-stopwatch">Lap Units</InputGroup.Text>
+                  <FormControl
+                  placeholder="Lap Distance Unit"
+                  aria-label="lap-distance"
+                  aria-describedby="lap-distance-stopwatch"
+                  value={this.props.instance.stopwatch.lapUnit}
+                  onChange={this.handleLapDistanceUnitChange.bind(this)}
+                  />
+              </InputGroup>
+          </div>
+        </div>
       </div>
     </Item>;
   }

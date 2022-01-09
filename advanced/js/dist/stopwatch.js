@@ -885,96 +885,96 @@ var StopwatchListItem = function (_Stopwatch) {
         ),
         React.createElement(
           'div',
-          { className: 'back d-flex justify-content-between align-items-center' },
+          { className: 'back' },
           React.createElement(
             'div',
-            null,
+            { className: 'd-flex justify-content-between align-items-center' },
             React.createElement(
-              InputGroup,
-              { className: 'mb-3' },
+              'div',
+              { className: 'me-1 ms-1' },
               React.createElement(
-                InputGroup.Text,
-                { id: 'name-stopwatch' },
-                'Name'
+                InputGroup,
+                { className: 'mb-1' },
+                React.createElement(
+                  InputGroup.Text,
+                  { id: 'name-stopwatch' },
+                  'Name'
+                ),
+                React.createElement(FormControl, {
+                  placeholder: 'Name',
+                  'aria-label': 'name stopwatch',
+                  'aria-describedby': 'name-stopwatch',
+                  value: this.props.instance.name,
+                  onChange: this.handleNameChange.bind(this)
+                })
               ),
-              React.createElement(FormControl, {
-                placeholder: 'Name',
-                'aria-label': 'name stopwatch',
-                'aria-describedby': 'name-stopwatch',
-                value: this.props.instance.name,
-                onChange: this.handleNameChange.bind(this)
-              })
-            )
-          ),
-          React.createElement(
-            'div',
-            null,
-            React.createElement(
-              InputGroup,
-              { className: 'mb-3' },
               React.createElement(
-                InputGroup.Text,
-                { id: 'description-stopwatch' },
-                'Description'
-              ),
-              React.createElement(FormControl, {
-                as: 'textarea',
-                placeholder: 'Search',
-                'aria-label': 'search stopwatch',
-                'aria-describedby': 'search-stopwatch',
-                value: this.props.instance.description,
-                onChange: this.handleDescriptionChange.bind(this)
-              })
-            )
-          ),
-          React.createElement(
-            'div',
-            null,
+                InputGroup,
+                { className: 'mb-1' },
+                React.createElement(
+                  InputGroup.Text,
+                  { id: 'description-stopwatch' },
+                  'Description'
+                ),
+                React.createElement(FormControl, {
+                  as: 'textarea',
+                  placeholder: 'Search',
+                  'aria-label': 'search stopwatch',
+                  'aria-describedby': 'search-stopwatch',
+                  value: this.props.instance.description,
+                  onChange: this.handleDescriptionChange.bind(this)
+                })
+              )
+            ),
             React.createElement(
-              InputGroup,
-              { className: 'mb-3' },
+              'div',
+              { className: 'me-1' },
               React.createElement(
-                InputGroup.Text,
-                { id: 'lap-distance-stopwatch' },
-                'Lap Distance'
+                'div',
+                { className: 'mb-1 text-align-right' },
+                React.createElement(
+                  ButtonGroup,
+                  null,
+                  React.createElement(
+                    Button,
+                    { variant: 'outline-secondary', onClick: this.stopEditing.bind(this) },
+                    React.createElement('i', { className: 'fad fa-times' })
+                  )
+                )
               ),
-              React.createElement(FormControl, {
-                type: 'tel',
-                placeholder: 'Lap Distance',
-                'aria-label': 'lap-distance',
-                'aria-describedby': 'lap-distance-stopwatch',
-                value: this.props.instance.stopwatch.lapDistance,
-                onChange: this.handleLapDistanceChange.bind(this)
-              })
-            )
-          ),
-          React.createElement(
-            'div',
-            null,
-            React.createElement(
-              InputGroup,
-              { className: 'mb-3' },
               React.createElement(
-                InputGroup.Text,
-                { id: 'lap-distance-unit-stopwatch' },
-                'Lap Units'
+                InputGroup,
+                { className: 'mb-1' },
+                React.createElement(
+                  InputGroup.Text,
+                  { id: 'lap-distance-stopwatch' },
+                  'Lap Distance'
+                ),
+                React.createElement(FormControl, {
+                  type: 'tel',
+                  placeholder: 'Lap Distance',
+                  'aria-label': 'lap-distance',
+                  'aria-describedby': 'lap-distance-stopwatch',
+                  value: this.props.instance.stopwatch.lapDistance,
+                  onChange: this.handleLapDistanceChange.bind(this)
+                })
               ),
-              React.createElement(FormControl, {
-                placeholder: 'Lap Distance Unit',
-                'aria-label': 'lap-distance',
-                'aria-describedby': 'lap-distance-stopwatch',
-                value: this.props.instance.stopwatch.lapUnit,
-                onChange: this.handleLapDistanceUnitChange.bind(this)
-              })
-            )
-          ),
-          React.createElement(
-            ButtonGroup,
-            null,
-            React.createElement(
-              Button,
-              { variant: 'outline-secondary', onClick: this.stopEditing.bind(this) },
-              React.createElement('i', { className: 'fad fa-times' })
+              React.createElement(
+                InputGroup,
+                { className: 'mb-1' },
+                React.createElement(
+                  InputGroup.Text,
+                  { id: 'lap-distance-unit-stopwatch' },
+                  'Lap Units'
+                ),
+                React.createElement(FormControl, {
+                  placeholder: 'Lap Distance Unit',
+                  'aria-label': 'lap-distance',
+                  'aria-describedby': 'lap-distance-stopwatch',
+                  value: this.props.instance.stopwatch.lapUnit,
+                  onChange: this.handleLapDistanceUnitChange.bind(this)
+                })
+              )
             )
           )
         )
