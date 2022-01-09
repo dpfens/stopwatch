@@ -8,7 +8,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "https://dpfens.github.io/stopwatch/beta/?utm_source=homescreen",
+  "start_url": "https://dpfens.github.io/stopwatch/advanced/?utm_source=homescreen",
   "background_color": "#FFFFFF",
   "theme_color": "#AE3B27",
   "display": "standalone"
