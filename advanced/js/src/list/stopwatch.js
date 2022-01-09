@@ -1,3 +1,21 @@
+function isV1Instance(instance) {
+  return 'settings' in instance && 'isArchived' in instance;
+}
+
+function convertFromV1(instance) {
+  const name = instance.settings.name;
+      locked = instance.isArchived,
+      visible = !instance.isArchived;
+  delete instance.settings;
+  delete instance.isArchived;
+  instance.name = name;
+  instance.locked = locked;
+  instance.visible = visible;
+  instance.activity = [];
+  instance.groups = [];
+  return instance;
+}
+
 function stopwatchFromObject(obj) {
   obj.stopwatch.metadata.createdAt = new Date(obj.stopwatch.metadata.createdAt);
   obj.stopwatch.metadata.lastModified = new Date(obj.stopwatch.metadata.lastModified);

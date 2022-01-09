@@ -41,7 +41,7 @@ if ('indexedDB' in window) {
     }
   }
 
-  var databaseName = 'stopwatch',
-      databaseVersion = 2;
+  var databaseName = 'stopwatchv2',
+      databaseVersion = 1;
   stopwatchAdapter = new StopwatchStorageAdapter(databaseName, databaseVersion);
 }

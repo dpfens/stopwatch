@@ -344,7 +344,11 @@ var App = function (_React$Component) {
             groups = results[1];
 
         for (var i = 0; i < stopwatches.length; i++) {
-          stopwatches[i] = stopwatchFromObject(stopwatches[i]);
+          var instance = stopwatches[i];
+          if (isV1Instance(instance)) {
+            convertFromV1(instance);
+          }
+          stopwatches[i] = stopwatchFromObject(instance);
         }
         self.setState({ stopwatches: stopwatches, groups: groups });
       });
