@@ -671,17 +671,13 @@ var StopwatchListView = function (_StopwatchView) {
       ),
           moreActionsIcon = React.createElement('i', { className: 'fad fa-ellipsis-v fa-1x' });
       return React.createElement(
-        'span',
-        null,
-        React.createElement(
-          DropdownButton,
-          { variant: 'outline-secondary', align: 'end', title: moreActionsIcon },
-          editElement,
-          lockElement,
-          cloneElement,
-          hideElement,
-          deleteElement
-        )
+        DropdownButton,
+        { variant: 'outline-secondary', align: 'end', drop: 'up', title: moreActionsIcon },
+        editElement,
+        lockElement,
+        cloneElement,
+        hideElement,
+        deleteElement
       );
     }
   }, {
@@ -745,7 +741,8 @@ var StopwatchListItem = function (_Stopwatch) {
         startElement = React.createElement(
           Button,
           { variant: 'success', className: 'start', title: 'Start', onClick: this.onStart },
-          'Start'
+          React.createElement('i', { className: 'fad fa-play fa-1x' }),
+          ' Start'
         );
       }
       var stopElement = '',
@@ -755,7 +752,8 @@ var StopwatchListItem = function (_Stopwatch) {
         stopElement = React.createElement(
           Button,
           { variant: 'danger', className: 'stop', title: 'Stop', onClick: this.onStop },
-          'Stop'
+          React.createElement('i', { className: 'fad fa-stop fa-1x' }),
+          ' Stop'
         );
         splitElement = React.createElement(
           Button,
@@ -785,12 +783,13 @@ var StopwatchListItem = function (_Stopwatch) {
         resumeElement = React.createElement(
           Button,
           { variant: 'success', className: 'resume', title: 'Resume', onClick: this.onResume },
-          'Resume'
+          React.createElement('i', { className: 'fad fa-play fa-1x' }),
+          ' Resume'
         );
       }
 
       return React.createElement(
-        ButtonGroup,
+        React.Fragment,
         null,
         startElement,
         stopElement,
@@ -842,29 +841,46 @@ var StopwatchListItem = function (_Stopwatch) {
         { className: classnames, onClick: this.props.onClick, active: this.props.selected },
         React.createElement(
           'div',
-          { className: 'front d-flex justify-content-between align-items-center' },
+          { className: 'front d-sm-flex justify-content-between' },
           React.createElement(
             'div',
-            { className: 'name' },
-            instance.name
-          ),
-          React.createElement(
-            'div',
-            { className: 'times' },
+            { className: 'd-flex justify-content-between align-items-center top-row' },
             React.createElement(
-              'strong',
-              null,
-              React.createElement(Display, { classname: 'display total', years: totalClock.years, days: totalClock.days, hours: totalClock.hours, minutes: totalClock.minutes, seconds: totalClock.seconds, milliseconds: totalClock.milliseconds })
+              'div',
+              { className: 'name' },
+              React.createElement(
+                'div',
+                null,
+                instance.name
+              ),
+              React.createElement(
+                InputGroup,
+                { className: 'd-block d-sm-none mt-4' },
+                controlsElement,
+                this.props.children
+              )
             ),
-            lapDisplay,
-            React.createElement(Display, { classname: 'display split', years: splitClock.years, days: splitClock.days, hours: splitClock.hours, minutes: splitClock.minutes, seconds: splitClock.seconds, milliseconds: splitClock.milliseconds })
+            React.createElement(
+              'div',
+              { className: 'times' },
+              React.createElement(
+                'strong',
+                null,
+                React.createElement(Display, { classname: 'display total', years: totalClock.years, days: totalClock.days, hours: totalClock.hours, minutes: totalClock.minutes, seconds: totalClock.seconds, milliseconds: totalClock.milliseconds })
+              ),
+              lapDisplay,
+              React.createElement(Display, { classname: 'display split', years: splitClock.years, days: splitClock.days, hours: splitClock.hours, minutes: splitClock.minutes, seconds: splitClock.seconds, milliseconds: splitClock.milliseconds })
+            )
           ),
           React.createElement(
             'div',
-            { className: 'actions justify-content-end' },
-            controlsElement,
-            ' ',
-            this.props.children
+            { className: 'd-sm-flex align-items-center actions d-none' },
+            React.createElement(
+              InputGroup,
+              null,
+              controlsElement,
+              this.props.children
+            )
           )
         ),
         React.createElement(

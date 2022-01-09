@@ -678,13 +678,13 @@ class StopwatchContainerView extends BaseContainerView {
   renderAdminControls() {
     const addGroupTitle = <i className='fad fa-ellipsis-v fa-1x'></i>,
       adminActionElements = <InputGroup>
-      <Button variant="outline-secondary" onClick={this.cloneSelected.bind(this)}><i className='fad fa-clone fa-1x'></i></Button>
 
       <ButtonGroup className='mx-3'>
         <Button variant="outline-secondary" onClick={this.lockSelected.bind(this)}><i className='fad fa-lock fa-1x'></i></Button>
         <Button variant="outline-secondary" onClick={this.unlockSelected.bind(this)}><i className='fad fa-lock-open fa-1x'></i></Button>
       </ButtonGroup>
       <DropdownButton variant='outline-secondary' align='end' title={addGroupTitle}>
+        <Dropdown.Item variant="outline-secondary" onClick={this.cloneSelected.bind(this)}><i className='fad fa-clone fa-1x'></i> Clone</Dropdown.Item>
         <Dropdown.Item variant="outline-secondary" onClick={this.hideSelected.bind(this)}><i className='fad fa-eye-slash fa-1x'></i> Hide</Dropdown.Item>
         <Dropdown.Item variant="danger" onClick={this.deleteSelected.bind(this)}><i className='fad fa-trash fa-1x'></i> Delete</Dropdown.Item>
       </DropdownButton>

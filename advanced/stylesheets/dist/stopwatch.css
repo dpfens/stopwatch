@@ -85,17 +85,14 @@
 .list-item .stopwatch time.lap {
   font-size: 1.2em;
 }
-.list-item .stopwatch .name, .list-item .stopwatch .actions {
+.list-item .stopwatch .top-row {
   flex: 1;
-  flex-grow: 1;
 }
 .list-item .stopwatch .times {
-  flex: 2;
-  flex-grow: 2;
-  padding: 0 1em;
+  flex: 1;
 }
-.list-item .stopwatch .actions {
-  display: flex;
+.list-item .stopwatch .name {
+  flex-grow: 2;
 }
 
 .group-mode.list-item, .group-mode.grid {

@@ -799,11 +799,6 @@ var StopwatchContainerView = function (_BaseContainerView) {
         InputGroup,
         null,
         React.createElement(
-          Button,
-          { variant: 'outline-secondary', onClick: this.cloneSelected.bind(this) },
-          React.createElement('i', { className: 'fad fa-clone fa-1x' })
-        ),
-        React.createElement(
           ButtonGroup,
           { className: 'mx-3' },
           React.createElement(
@@ -820,6 +815,12 @@ var StopwatchContainerView = function (_BaseContainerView) {
         React.createElement(
           DropdownButton,
           { variant: 'outline-secondary', align: 'end', title: addGroupTitle },
+          React.createElement(
+            Dropdown.Item,
+            { variant: 'outline-secondary', onClick: this.cloneSelected.bind(this) },
+            React.createElement('i', { className: 'fad fa-clone fa-1x' }),
+            ' Clone'
+          ),
           React.createElement(
             Dropdown.Item,
             { variant: 'outline-secondary', onClick: this.hideSelected.bind(this) },

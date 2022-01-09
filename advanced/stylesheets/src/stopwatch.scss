@@ -121,20 +121,18 @@
       font-size: 1.2em;
     }
 
-    .name, .actions  {
+    .top-row {
       flex: 1;
-      flex-grow: 1;
     }
 
     .times {
-      flex: 2;
-      flex-grow: 2;
-      padding: 0 1em;
+      flex: 1;
     }
 
-    .actions {
-      display: flex;
+    .name {
+      flex-grow: 2;
     }
+
   }
 }
 

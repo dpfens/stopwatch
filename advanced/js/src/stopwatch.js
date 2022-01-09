@@ -532,13 +532,13 @@ class StopwatchListView extends StopwatchView {
     }
     const lockElement = <Dropdown.Item variant="outline-secondary" onClick={this.toggleLock.bind(this, instance)}>{lockIcon}</Dropdown.Item>,
           moreActionsIcon = <i className="fad fa-ellipsis-v fa-1x"></i>;
-    return <span><DropdownButton variant='outline-secondary' align='end' title={moreActionsIcon}>
+    return <DropdownButton variant='outline-secondary' align='end' drop='up' title={moreActionsIcon}>
           {editElement}
           {lockElement}
           {cloneElement}
           {hideElement}
           {deleteElement}
-        </DropdownButton></span>;
+        </DropdownButton>;
   }
 
   renderInstance(instance) {
@@ -576,13 +576,13 @@ class StopwatchListItem extends Stopwatch {
           isRunning = stopwatch.isRunning();
     var startElement = '';
     if (!isActive) {
-      startElement = <Button variant="success" className='start' title='Start' onClick={this.onStart}>Start</Button>;
+      startElement = <Button variant="success" className='start' title='Start' onClick={this.onStart}><i className='fad fa-play fa-1x'></i> Start</Button>;
     }
     var stopElement = '',
         splitElement = '',
         lapElement = '';
     if (isRunning) {
-      stopElement = <Button variant="danger" className='stop' title='Stop' onClick={this.onStop}>Stop</Button>
+      stopElement = <Button variant="danger" className='stop' title='Stop' onClick={this.onStop}><i className='fad fa-stop fa-1x'></i> Stop</Button>
       splitElement = <Button variant="secondary" className='split' title='Split' onClick={this.onSplit}>Split</Button>
       if (stopwatch.lapDistance) {
         lapElement = <Button variant="secondary" className='lap' title='Lap' onClick={this.onLap}>Lap ({stopwatch.lapDistance}{stopwatch.lapUnit})</Button>
@@ -593,17 +593,17 @@ class StopwatchListItem extends Stopwatch {
         resumeElement = '';
     if (isActive && !isRunning) {
       resetElement = <Button variant="danger" className='reset' title='Reset' onClick={this.onReset}>Reset</Button>
-      resumeElement = <Button variant="success" className='resume' title='Resume' onClick={this.onResume}>Resume</Button>
+      resumeElement = <Button variant="success" className='resume' title='Resume' onClick={this.onResume}><i className='fad fa-play fa-1x'></i> Resume</Button>
     }
 
-    return <ButtonGroup>
+    return <React.Fragment>
       {startElement}
       {stopElement}
       {resumeElement}
       {resetElement}
       {splitElement}
       {lapElement}
-    </ButtonGroup>;
+    </React.Fragment>;
   }
 
   render() {
@@ -639,14 +639,21 @@ class StopwatchListItem extends Stopwatch {
 
     return <Item className={classnames} onClick={this.props.onClick} active={this.props.selected}>
 
-      <div className='front d-flex justify-content-between align-items-center'>
-        <div className='name'>{instance.name}</div>
-        <div className='times'>
-          <strong><Display classname='display total' years={totalClock.years} days={totalClock.days} hours={totalClock.hours} minutes={totalClock.minutes} seconds={totalClock.seconds} milliseconds={totalClock.milliseconds} /></strong>
-          {lapDisplay}
-          <Display classname='display split' years={splitClock.years} days={splitClock.days} hours={splitClock.hours} minutes={splitClock.minutes} seconds={splitClock.seconds} milliseconds={splitClock.milliseconds} />
+      <div className='front d-sm-flex justify-content-between'>
+        <div className='d-flex justify-content-between align-items-center top-row'>
+          <div className='name'>
+            <div>{instance.name}</div>
+            <InputGroup className='d-block d-sm-none mt-4'>{controlsElement}{this.props.children}</InputGroup>
+          </div>
+          <div className='times'>
+            <strong><Display classname='display total' years={totalClock.years} days={totalClock.days} hours={totalClock.hours} minutes={totalClock.minutes} seconds={totalClock.seconds} milliseconds={totalClock.milliseconds} /></strong>
+            {lapDisplay}
+            <Display classname='display split' years={splitClock.years} days={splitClock.days} hours={splitClock.hours} minutes={splitClock.minutes} seconds={splitClock.seconds} milliseconds={splitClock.milliseconds} />
+          </div>
         </div>
-        <div className='actions justify-content-end'>{controlsElement} {this.props.children}</div>
+        <div className='d-sm-flex align-items-center actions d-none'>
+          <InputGroup>{controlsElement}{this.props.children}</InputGroup>
+        </div>
       </div>
 
       <div className='back d-flex justify-content-between align-items-center'>
