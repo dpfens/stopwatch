@@ -33,20 +33,24 @@ if ('indexedDB' in window) {
     _createClass(StopwatchStorageAdapter, [{
       key: 'upgrade',
       value: function upgrade(event) {
-        var db = event.target.result,
-            groupStore = GROUPSTORE,
-            groupOptions = {
-          keyPath: 'id',
-          autoIncrement: true
-        };
-        db.createObjectStore(groupStore, groupOptions);
+        var db = event.target.result;
+        var groupStoreExists = db.objectStoreNames.contains(GROUPSTORE),
+            stopwatchStoreExists = db.objectStoreNames.contains(STOPWATCHSTORE);
+        if (!groupStoreExists) {
+          var groupOptions = {
+            keyPath: 'id',
+            autoIncrement: true
+          },
+              groupStore = db.createObjectStore(GROUPSTORE, groupOptions);
+        }
 
-        var stopwatchStore = STOPWATCHSTORE,
-            stopwatchOptions = {
-          keyPath: 'id',
-          autoIncrement: true
-        };
-        db.createObjectStore(stopwatchStore, stopwatchOptions);
+        if (!stopwatchStoreExists) {
+          var stopwatchOptions = {
+            keyPath: 'id',
+            autoIncrement: true
+          },
+              stopwatchStore = db.createObjectStore(STOPWATCHSTORE, stopwatchOptions);
+        }
       }
     }]);
 
@@ -54,6 +58,6 @@ if ('indexedDB' in window) {
   }(IndexedDBStorageAdapter);
 
   var databaseName = 'stopwatch',
-      databaseVersion = 1;
+      databaseVersion = 2;
   stopwatchAdapter = new StopwatchStorageAdapter(databaseName, databaseVersion);
 }

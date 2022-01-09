@@ -17,25 +17,31 @@ var STOPWATCHSTORE = 'stopwatch',
     groupAdapter;
 if ('indexedDB' in window) {
   class StopwatchStorageAdapter extends IndexedDBStorageAdapter {
-    upgrade(event) {
-      let db = event.target.result,
-          groupStore = GROUPSTORE,
-          groupOptions = {
-            keyPath: 'id',
-            autoIncrement: true
-      };
-      db.createObjectStore(groupStore, groupOptions);
 
-      let stopwatchStore = STOPWATCHSTORE,
-          stopwatchOptions = {
-            keyPath: 'id',
-            autoIncrement: true
-      };
-      db.createObjectStore(stopwatchStore, stopwatchOptions);
+    upgrade(event) {
+      let db = event.target.result;
+      let groupStoreExists = db.objectStoreNames.contains(GROUPSTORE),
+          stopwatchStoreExists = db.objectStoreNames.contains(STOPWATCHSTORE);
+      if (!groupStoreExists) {
+        let groupOptions = {
+              keyPath: 'id',
+              autoIncrement: true
+        },
+        groupStore = db.createObjectStore(GROUPSTORE, groupOptions);
+      }
+
+      if (!stopwatchStoreExists) {
+        let stopwatchOptions = {
+              keyPath: 'id',
+              autoIncrement: true
+        },
+        stopwatchStore = db.createObjectStore(STOPWATCHSTORE, stopwatchOptions);
+      }
+
     }
   }
 
   var databaseName = 'stopwatch',
-      databaseVersion = 1;
+      databaseVersion = 2;
   stopwatchAdapter = new StopwatchStorageAdapter(databaseName, databaseVersion);
 }
