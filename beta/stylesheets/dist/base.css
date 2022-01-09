@@ -1,0 +1,52 @@
+html, body, main, #app {
+  font-size: 16px;
+  height: 100vh;
+}
+
+.text-align-left {
+  text-align: left;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+.flippable {
+  backface-visibility: visible;
+  transform-style: preserve-3d;
+  transition: transform 0.3s;
+}
+.flippable .back, .flippable .front {
+  background: inherit;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.flippable .front {
+  transform: translateZ(0);
+}
+.flippable .back {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+.flippable.flippable-h.flipped {
+  transform: rotateY(180deg);
+}
+.flippable.flippable-h .back {
+  transform: rotateY(180deg);
+}
+.flippable.flippable-v.flipped {
+  transform: rotateX(180deg);
+}
+.flippable.flippable-v .back {
+  transform: rotateX(180deg);
+}
+
+/*# sourceMappingURL=base.css.map */

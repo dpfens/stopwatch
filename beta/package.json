@@ -1,0 +1,31 @@
+{
+  "name": "stopwatch",
+  "version": "2.0.0",
+  "description": "",
+  "main": "service-worker.js",
+  "devDependencies": {
+    "babel-cli": "6",
+    "babel-preset-react-app": "3",
+    "sass": "latest"
+  },
+  "dependencies": {
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-bootstrap": "latest"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx babel js/src --out-dir js/dist --presets react-app/prod && sass stylesheets/src:stylesheets/dist/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dpfens/stopwatch.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dpfens/stopwatch/issues"
+  },
+  "homepage": "https://github.com/dpfens/stopwatch#readme"
+}

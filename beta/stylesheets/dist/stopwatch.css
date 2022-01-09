@@ -1,0 +1,117 @@
+.stopwatch .display {
+  position: relative;
+  contain: layout;
+}
+.stopwatch .display.total::before {
+  content: "TOTAL";
+  font-size: 16px;
+  display: inline-block;
+  transform: translateY(-150%);
+}
+.stopwatch .display.lap::before {
+  content: "LAP";
+  font-size: 16px;
+  display: inline-block;
+  transform: translateY(-150%);
+}
+.stopwatch .display.split::before {
+  content: "SPLIT";
+  font-size: 16px;
+  display: inline-block;
+  transform: translateY(-150%);
+}
+.stopwatch time .years::after, .stopwatch time .days::after, .stopwatch time .hours::after, .stopwatch time .minutes::after {
+  content: ":";
+}
+.stopwatch time .seconds::after {
+  content: ".";
+}
+.stopwatch .activity-list {
+  max-height: 15em;
+  overflow-y: auto;
+}
+
+.grid {
+  transition: transform 0.2s;
+  will-change: transform;
+}
+.grid .stopwatch {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.grid .stopwatch .display {
+  margin-top: 1rem;
+  position: relative;
+  display: block;
+}
+.grid .stopwatch .display.total {
+  font-size: 3em;
+}
+.grid .stopwatch .display.lap {
+  margin-top: 1rem;
+  font-size: 2.5em;
+}
+.grid .stopwatch .display.split {
+  font-size: 2.25em;
+}
+
+.list-item {
+  transition: transform 0.2s;
+  will-change: transform;
+}
+.list-item .stopwatch {
+  font-size: 20px;
+}
+.list-item .stopwatch.flipped {
+  transform-style: preserve-3d;
+}
+.list-item .stopwatch .display {
+  margin-top: 1em;
+}
+.list-item .stopwatch .display::before {
+  transform: translateY(-68%);
+}
+.list-item .stopwatch time.total, .list-item .stopwatch time.lap, .list-item .stopwatch time.split {
+  display: block;
+}
+.list-item .stopwatch time.total::before, .list-item .stopwatch time.lap::before, .list-item .stopwatch time.split::before {
+  position: absolute;
+}
+.list-item .stopwatch time.total {
+  font-size: 1.4em;
+}
+.list-item .stopwatch time.lap {
+  font-size: 1.2em;
+}
+.list-item .stopwatch .name, .list-item .stopwatch .actions {
+  flex: 1;
+  flex-grow: 1;
+}
+.list-item .stopwatch .times {
+  flex: 2;
+  flex-grow: 2;
+  padding: 0 1em;
+}
+.list-item .stopwatch .actions {
+  display: flex;
+}
+
+.group-mode.list-item, .group-mode.grid {
+  transform: perspective(10em) translateZ(-2em);
+}
+.group-mode .stopwatch::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.group {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+/*# sourceMappingURL=stopwatch.css.map */

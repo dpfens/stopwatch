@@ -1,0 +1,159 @@
+.stopwatch {
+
+  .display {
+    position: relative;
+    contain: layout;
+
+    &.total {
+
+      &::before {
+        content: "TOTAL";
+        font-size: 16px;
+        display: inline-block;
+        transform: translateY(-150%);
+      }
+    }
+
+    &.lap {
+
+      &::before {
+        content: "LAP";
+        font-size: 16px;
+        display: inline-block;
+        transform: translateY(-150%);
+      }
+    }
+
+    &.split {
+
+      &::before {
+        content: "SPLIT";
+        font-size: 16px;
+        display: inline-block;
+        transform: translateY(-150%);
+      }
+    }
+  }
+
+  time {
+    .years::after, .days::after, .hours::after, .minutes::after {
+      content: ":";
+    }
+
+    .seconds::after {
+      content: ".";
+    }
+  }
+
+  .activity-list {
+    max-height: 15em;
+    overflow-y: auto;
+  }
+}
+
+
+
+.grid {
+  transition: transform 0.2s;
+  will-change: transform;
+
+  .stopwatch {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    text-align: center;
+    transform-style: preserve-3d;
+    will-change: transform;
+
+    .display {
+      margin-top: 1rem;
+      position: relative;
+      display: block;
+
+      &.total {
+        font-size: 3em;
+      }
+
+      &.lap {
+        margin-top: 1rem;
+        font-size: 2.5em;
+
+      }
+
+      &.split {
+        font-size: 2.25em;
+      }
+    }
+  }
+}
+
+
+.list-item {
+  transition: transform 0.2s;
+  will-change: transform;
+
+  .stopwatch {
+    font-size: 20px;
+
+    &.flipped {
+      transform-style: preserve-3d;
+    }
+
+    .display {
+      margin-top: 1em;
+
+      &::before {
+        transform: translateY(-68%);
+      }
+    }
+
+    time.total, time.lap, time.split {
+      display: block;
+
+        &::before {
+          position: absolute;
+        }
+    }
+
+    time.total {
+      font-size: 1.4em;
+    }
+
+    time.lap {
+      font-size: 1.2em;
+    }
+
+    .name, .actions  {
+      flex: 1;
+      flex-grow: 1;
+    }
+
+    .times {
+      flex: 2;
+      flex-grow: 2;
+      padding: 0 1em;
+    }
+
+    .actions {
+      display: flex;
+    }
+  }
+}
+
+.group-mode {
+  &.list-item, &.grid {
+    transform: perspective(10em) translateZ(-2em);
+  }
+
+  .stopwatch::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
+
+.group {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
