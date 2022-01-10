@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
 .stopwatch {
 
   .display {
+    font-family: 'Roboto Mono', monospace;
     position: relative;
     contain: layout;
 
@@ -49,6 +52,10 @@
     max-height: 15em;
     overflow-y: auto;
   }
+
+  table time {
+    font-family: 'Roboto Mono', monospace;
+  }
 }
 
 
@@ -69,7 +76,7 @@
       display: block;
 
       &.total {
-        font-size: 3em;
+        font-size: 2.75em;
       }
 
       &.lap {
