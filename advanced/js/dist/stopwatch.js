@@ -1228,7 +1228,7 @@ var StopwatchGridItem = function (_Stopwatch2) {
 
       return React.createElement(
         ButtonGroup,
-        { 'aria-label': 'Basic example' },
+        { className: 'my-3', 'aria-label': 'Basic controls' },
         startElement,
         stopElement,
         resumeElement,

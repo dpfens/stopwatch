@@ -840,7 +840,7 @@ class StopwatchGridItem extends Stopwatch {
       resumeElement = <Button variant="success" className='resume' title='Resume' onClick={this.onResume}><i className='fad fa-play fa-1x'></i> Resume</Button>
     }
 
-    return <ButtonGroup aria-label="Basic example">
+    return <ButtonGroup className='my-4' aria-label="Basic controls">
       {startElement}
       {stopElement}
       {resumeElement}
