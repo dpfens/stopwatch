@@ -144,6 +144,11 @@
 }
 
 .group-mode {
+
+  .stopwatch {
+    cursor: pointer;
+  }
+
   &.list-item, &.grid {
     transform: perspective(10em) translateZ(-2em);
   }

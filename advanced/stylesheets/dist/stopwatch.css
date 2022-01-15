@@ -100,6 +100,9 @@
   flex-grow: 2;
 }
 
+.group-mode .stopwatch {
+  cursor: pointer;
+}
 .group-mode.list-item, .group-mode.grid {
   transform: perspective(10em) translateZ(-2em);
 }
