@@ -1,0 +1,60 @@
+@if(loading()) {
+    <div class="asymmetric-loading">
+        <div class="loading-block loading-block-1">
+            <mat-card class="skeleton-card">
+                <mat-card-content>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line short"></div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="loading-block loading-block-2">
+            <mat-card class="skeleton-card">
+                <mat-card-content>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line short"></div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="loading-block loading-block-3">
+            <mat-spinner diameter="40" class="floating-spinner"></mat-spinner>
+        </div>
+    </div>
+}
+@else {
+    @if(instances().length > 0) {
+        <div class="row row-gap-2">
+        @for (instance of instances(); track instance.id) {
+            <stopwatch-list-detail-view [id]="instance.id" class="col-12"></stopwatch-list-detail-view>
+        }
+        </div>
+    } @else {
+        <div class="empty-state-asymmetric">
+            <div class="empty-block empty-block-1">
+                <mat-card>
+                    <mat-card-content>
+                        <mat-icon class="empty-icon">schedule</mat-icon>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div class="empty-block empty-block-2">
+                <mat-card class="action-card">
+                    <mat-card-content>
+                        <h2>No Stopwatches</h2>
+                        <p>Create your first timer</p>
+                        <button mat-raised-button color="primary">
+                            <mat-icon>add</mat-icon>
+                            New Stopwatch
+                        </button>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div class="empty-block empty-block-3">
+                <div class="geometric-accent"></div>
+            </div>
+        </div>
+    }
+}
+@if(selectionService.hasSelection()) {
+    <global-action-bar></global-action-bar>
+}

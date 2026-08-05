@@ -1,0 +1,12 @@
+@if(loading()) {
+
+}
+@else {
+    <mat-list>
+    @for (instance of instances(); track instance.id) {
+        <group-list-detail-view [id]="instance.id" ></group-list-detail-view>
+    } @empty {
+        <span>No groups found.</span>
+    }
+    </mat-list>
+}

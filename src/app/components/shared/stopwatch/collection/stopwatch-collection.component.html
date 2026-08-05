@@ -1,0 +1,145 @@
+<div class="container-fluid">
+  <!-- View Toggle Section -->
+  <div class="row mb-3">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-3">
+          @if (showControls() && hasActiveFilters()) {
+            <span>
+              Showing {{ filteredInstances().length }} of {{ instances().length }} 
+              ({{ searchService.getFilterSummary() }})
+            </span>
+          } @else {
+            <span>
+              {{ instances().length }} stopwatch{{ instances().length === 1 ? '' : 'es' }}
+            </span>
+          }
+        </div>
+        
+        <!-- View Toggle -->
+        <mat-button-toggle-group 
+          [value]="currentView()" 
+          (change)="setView($event.value)"
+          aria-label="View mode">
+          <mat-button-toggle value="list" matTooltip="List view">
+            <mat-icon>view_list</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle value="grid" matTooltip="Grid view">
+            <mat-icon>view_module</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Controls Section -->
+@if (showControls()) {
+  <div class="row mb-4">
+    <div class="col-12">
+      <mat-card class="search-card">
+        <mat-card-content>
+          <!-- Combined Search and Filter Row -->
+          <div class="row align-items-center">
+            <!-- Search Bar - Full width on small, half width on large -->
+            <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Search stopwatches</mat-label>
+                <input 
+                  matInput 
+                  placeholder="Enter search term..."
+                  [value]="searchTerm()"
+                  (input)="onSearchChange($event)">
+                <mat-icon matPrefix>search</mat-icon>
+                @if (searchTerm()) {
+                  <button 
+                    matSuffix 
+                    mat-icon-button 
+                    (click)="clearSearch()"
+                    matTooltip="Clear search">
+                    <mat-icon>clear</mat-icon>
+                  </button>
+                }
+              </mat-form-field>
+            </div>
+            
+            <!-- Status Filter -->
+            <div class="col-4 col-lg-2 mb-3 mb-lg-0">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Status</mat-label>
+                <mat-select 
+                  [value]="searchService.statusFilter()"
+                  (selectionChange)="searchService.setStatusFilter($event.value)">
+                  <mat-option value="all">
+                    <mat-icon class="me-2">all_inclusive</mat-icon>
+                    All stopwatches
+                  </mat-option>
+                  <mat-option value="active">
+                    <mat-icon class="me-2">play_circle</mat-icon>
+                    Active only
+                  </mat-option>
+                  <mat-option value="inactive">
+                    <mat-icon class="me-2">pause_circle</mat-icon>
+                    Inactive only
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            
+            <!-- Running State Filter -->
+            <div class="col-4 col-lg-2 mb-3 mb-lg-0">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Running State</mat-label>
+                <mat-select 
+                  [value]="searchService.runningFilter()"
+                  [disabled]="!searchService.runningFilterEnabled()"
+                  (selectionChange)="searchService.setRunningFilter($event.value)">
+                  <mat-option value="all">
+                    <mat-icon class="me-2">all_inclusive</mat-icon>
+                    All states
+                  </mat-option>
+                  <mat-option value="running">
+                    <mat-icon class="me-2">play_arrow</mat-icon>
+                    Running
+                  </mat-option>
+                  <mat-option value="stopped">
+                    <mat-icon class="me-2">stop</mat-icon>
+                    Stopped
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            
+            <!-- Clear Filters -->
+            <div class="col-4 col-lg-2">
+              @if (hasActiveFilters()) {
+                <div class="d-flex justify-content-end justify-content-lg-center">
+                  <button 
+                    mat-stroked-button 
+                    color="primary"
+                    (click)="clearAllFilters()">
+                    <mat-icon>clear_all</mat-icon>
+                    <span class="d-none d-lg-inline">Clear filters</span>
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+}
+  <!-- Content Area -->
+  <div class="row">
+    <div class="col-12">
+      @switch (currentView()) {
+        @case ('list') {
+          <stopwatch-list-view [instances]="filteredInstances()" />
+        }
+        @case ('grid') {
+          <stopwatch-list-grid-view [instances]="filteredInstances()" [columns]="gridClasses()" />
+        }
+      }
+    </div>
+  </div>
+</div>

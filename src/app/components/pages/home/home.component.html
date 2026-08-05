@@ -1,0 +1,244 @@
+<!-- home.component.html - Radical Bauhaus + Material -->
+<div class="home-container">
+  <!-- Hero Section - Radical Asymmetry -->
+  <section class="hero-section">
+    <div class="hero-grid">
+      <!-- Large Typography Block -->
+      <div class="hero-type-block">
+        <div class="type-stack">
+          <div class="type-massive text-uppercase">Timing</div>
+          <div class="type-emphasis text-uppercase">made simple</div>
+          <div class="type-counter">01</div>
+        </div>
+      </div>
+      
+      <!-- Content Block - Diagonal Flow -->
+      <div class="hero-content-block">
+        <div class="content-inner">
+          <h1 class="hero-title">Professional Timing Made Simple</h1>
+          <div class="problem-statement">
+            <p>You want to time multiple things at once without losing track of what belongs to who, or missing what's actually happening because you're <em>fighting with your timing tool</em>.</p>
+          </div>
+          <div class="reality-check">
+            <p>Most stopwatches are built for the simplest case: one timer, start/stop/reset. The native stopwatch on your smartphone works fine for timing a single thing. But real timing is messier.</p>
+          </div>
+
+          <div class="mt-3">
+            <button routerLink="/stopwatch/" mat-fab extended color="primary" class="primary-action text-uppercase">
+              Start timing
+            </button>
+            <button matButton="outlined" routerLink="/about/" color="primary" class="ms-3 secondary-action text-uppercase">
+              About
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem Context - Diagonal Text Block -->
+  <section class="context-section">
+    <div class="context-grid">
+      <div class="context-number">02</div>
+      <div class="context-content">
+        <div class="problem-flow">
+          <p class="context-text">You're tracking different people, recording various types of splits, dealing with things happening simultaneously. The gap between basic phone stopwatches and expensive enterprise timing systems leaves most people stuck with tools that don't fit how timing actually works.</p>
+          <div class="solution-block">
+            <p>This is a stopwatch app designed for that reality. It runs multiple independent timers, works offline, keeps your data local, and gets out of your way so you can focus on what's happening instead of wrestling with your timing tool.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features - Modular Grid System -->
+  <section class="features-section">
+    <div class="features-grid">
+      <!-- Section Header as Graphic Element -->
+      <div class="section-header-block">
+        <div class="section-number">03</div>
+        <h2 class="section-title text-uppercase">What it<br>actually<br>does</h2>
+      </div>
+      
+      <!-- Multiple Timers - Hero Feature -->
+      <div class="feature-major">
+        <div class="feature-header">
+          <div class="feature-label text-uppercase">Core function</div>
+          <h3>Multiple Independent Timers</h3>
+        </div>
+        <ul class="feature-list">
+          <li>Run as many stopwatches as you need simultaneously</li>
+          <li>Copy a running timer to start timing someone else mid-race</li>
+          <li>Each timer keeps its own splits and history</li>
+          <li>Name your timers so you know which is which</li>
+          <li>Group related timers together for easy management</li>
+        </ul>
+      </div>
+      
+      <!-- Two Column Features -->
+      <div class="feature-block left">
+        <div class="feature-header">
+          <div class="feature-label text-uppercase">organization</div>
+          <h3>Organization That Makes Sense</h3>
+        </div>
+        <ul class="feature-list">
+          <li>Name your timers with runner names, event types, or whatever makes sense for your situation</li>
+          <li>Group related timers together by event, team, session, or any way that helps you stay organized</li>
+          <li>Archive old sessions to keep current ones clean and focused</li>
+          <li>Search through your timing history when you need to reference past data</li>
+        </ul>
+      </div>
+      
+      <div class="feature-block right">
+        <div class="feature-header">
+          <div class="feature-label text-uppercase">Timing</div>
+          <h3>Timing Features You'll Actually Use</h3>
+        </div>
+        <ul class="feature-list">
+          <li>Record splits during races without stopping the main timer</li>
+          <li>Add lap markers for track events to keep track of distance and pacing</li>
+          <li>Note events and measurements as they happen</li>
+          <li>Add timestamps for specific moments you want to remember</li>
+          <li>Review timing patterns and trends from your sessions</li>
+        </ul>
+      </div>
+      
+      <!-- Advanced Feature -->
+      <div class="feature-major bottom">
+        <div class="feature-header">
+          <div class="feature-label text-uppercase">Advanced</div>
+          <h3>Advanced Group Management</h3>
+        </div>
+        <ul class="feature-list">
+          <li>Set up timing groups for different scenarios - parallel starts for races, sequential handoffs for relays, or independent timing for general use</li>
+          <li>The app understands different timing contexts and provides relevant tools for each</li>
+          <li>Bulk operations for starting, stopping, or managing multiple timers at once</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Conditions - Industrial Grid -->
+  <section class="conditions-section">
+    <div class="conditions-grid">
+      <div class="conditions-header">
+        <div class="section-number">04</div>
+        <h2 class="text-uppercase">Built for<br>real conditions</h2>
+      </div>
+      
+      <mat-card class="condition-card offline">
+        <mat-card-header>
+          <mat-icon color="primary">cloud_off</mat-icon>
+          <mat-card-title clas="text-uppercase">Works offline</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Your data lives on your device, not in the cloud. Whether there's no internet, or no cell service, it will continue to work just as it always does.</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="condition-card battery">
+        <mat-card-header>
+          <mat-icon color="primary">battery_charging_full</mat-icon>
+          <mat-card-title class="text-uppercase">Battery Conscious</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Designed to not drain your phone during long meets or training sessions. The app has been used for 5+ hour events without noticeable battery impact beyond normal usage.</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="condition-card reliable">
+        <mat-card-header>
+          <mat-icon color="primary">verified</mat-icon>
+          <mat-card-title class="text-uppercase">Actually reliable</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Your timing data isn't tied to keeping a browser window open or staying in the app. The underlying timing mechanism ensures accuracy regardless of what else you do with your device.</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="condition-card responsive">
+        <mat-card-header>
+          <mat-icon color="primary">devices</mat-icon>
+          <mat-card-title class="text-uppercase">Responsive interface</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Works on phones, tablets, laptops. Touch or mouse. Portrait or landscape. The interface adapts to your device and how you're using it.</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="condition-card privacy">
+        <mat-card-header>
+          <mat-icon color="primary">security</mat-icon>
+          <mat-card-title class="text-uppercase">Privacy by design</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>No accounts required, no personal data collection. Everything happens on your device. Your timing data never leaves your browser. I track feature usage to see what's getting used versus what is ignored, but that's all anonymous.</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+
+  <!-- Use Cases - Stacked Blocks -->
+  <section class="use-cases-section">
+    <div class="use-cases-grid">
+      <div class="use-cases-header">
+        <div class="section-number">05</div>
+        <h2 class="text-uppercase">This might help if...</h2>
+        <p class="subtitle">You want to time multiple things while staying present for what's happening.</p>
+      </div>
+      
+      <div class="use-case-stack">
+        <div class="use-case-item track">
+          <mat-icon>directions_run</mat-icon>
+          <div class="use-case-content">
+            <h3>Track & Field and Cross Country</h3>
+            <p>Coaches timing multiple runners, recording splits at different distances, tracking training progress over time.</p>
+          </div>
+        </div>
+
+        <div class="use-case-item research">
+          <mat-icon>science</mat-icon>
+          <div class="use-case-content">
+            <h3>Research and Data Collection</h3>
+            <p>Precise timing for experiments, observations, or any situation where you need accurate time measurements for multiple subjects or processes.</p>
+          </div>
+        </div>
+
+        <div class="use-case-item manufacturing">
+          <mat-icon>precision_manufacturing</mat-icon>
+          <div class="use-case-content">
+            <h3>Work and Manufacturing</h3>
+            <p>Teams tracking completion rates, process timing, quality control intervals, or any workplace timing needs.</p>
+          </div>
+        </div>
+
+        <div class="use-case-item general">
+          <mat-icon>timer</mat-icon>
+          <div class="use-case-content">
+            <h3>General Multi-Timing</h3>
+            <p>Anyone juggling multiple processes where precise timing matters - cooking multiple dishes, study sessions, project work, or any situation where you need more than one timer running.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final Section - Bold Statement -->
+  <section class="final-section">
+    <div class="final-grid">
+      <div class="final-statement">
+        <div class="section-number">06</div>
+        <h2 class="text-uppercase">Free to use</h2>
+        <p>Your data stays yours. No subscriptions, no accounts, no data sent to servers.</p>
+        <p>For more details about how and why this works the way it does, <button matButton routerLink="/about/" color="primary">see the About page</button>.</p>
+      </div>
+      
+      <div class="final-action">
+        <button routerLink="/stopwatch/" matFab extended color="primary" class="final-cta text-uppercase">
+          <mat-icon>play_arrow</mat-icon>
+          Start timing
+        </button>
+      </div>
+    </div>
+  </section>
+</div>

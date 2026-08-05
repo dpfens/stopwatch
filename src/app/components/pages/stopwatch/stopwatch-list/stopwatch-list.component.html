@@ -1,0 +1,55 @@
+@if(loading()) {
+  <div class="loading-state">
+    <div class="loading-cards">
+      @for(i of [1,2,3]; track i) {
+        <mat-card class="loading-card" [class]="'loading-card-' + i">
+          <mat-card-content>
+            <div class="skeleton-lines">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+              <div class="skeleton-line medium"></div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+    <div class="loading-text">
+      <span class="loading-label">Loading stopwatches</span>
+      <mat-progress-bar mode="indeterminate" class="progress-accent"></mat-progress-bar>
+    </div>
+  </div>
+}
+@else {
+    @if (instances().length) {
+        <stopwatch-collection-view [instances]="instances()" [showControls]="instances().length > 10"></stopwatch-collection-view>
+    } @else {
+        <div class="empty-state">
+          <div class="empty-geometry">
+            <mat-card class="empty-card card-1">
+              <mat-card-content>
+                <mat-icon class="empty-icon">timer_off</mat-icon>
+              </mat-card-content>
+            </mat-card>
+            <mat-card class="empty-card card-2">
+              <mat-card-content>
+                <div class="empty-stripe"></div>
+              </mat-card-content>
+            </mat-card>
+            <mat-card class="empty-card card-3">
+              <mat-card-content>
+                <span class="empty-number">0</span>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          
+          <div class="empty-content">
+            <h1 class="empty-title">No stopwatches yet</h1>
+            <p class="empty-description">Create a stopwatch to start tracking time</p>
+            <button mat-raised-button color="primary" class="create-button" (click)="createNew()">
+              <mat-icon>add</mat-icon>
+              Create Stopwatch
+            </button>
+          </div>
+        </div>
+    }
+}

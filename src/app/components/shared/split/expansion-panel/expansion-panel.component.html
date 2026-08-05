@@ -1,0 +1,108 @@
+<div class="">
+    <div class="d-flex text-start align-items-center">
+        <div class="flex-grow-1">
+            <div class="fw-semibold">{{ instance.event.annotation.title }}</div>
+            <small>{{ instance.event.type }}</small>
+        </div>
+
+        <div class="text-end me-2">
+            @if (instance.event.unit && instance.event.unit.value && instance.event.unit.unit) {
+                <div class="fw-bold text-primary small">
+                    {{ instance.event.unit.value }}{{ instance.event.unit.unit }}
+                </div>
+            }
+            <div class="fw-medium">
+                {{ timeService.msDurationFormatter().format(instance.duration) }}
+            </div>
+            
+            <!-- Lap difference display -->
+            @if (instance.event.type === 'lap' && instance.difference !== undefined) {
+                <div class="small" 
+                     [class.text-success]="instance.difference < 0" 
+                     [class.text-danger]="instance.difference > 0">
+                    @if (instance.difference < 0) {
+                        <mat-icon class="material-icons-outlined" style="font-size: 16px; vertical-align: middle;">trending_down</mat-icon>
+                        {{ timeService.msDurationFormatter().format(timeService.toDurationObject(abs(instance.difference))) }}
+                    } @else if (instance.difference > 0) {
+                        <mat-icon class="material-icons-outlined" style="font-size: 16px; vertical-align: middle;">trending_up</mat-icon>
+                        +{{ timeService.msDurationFormatter().format(timeService.toDurationObject(instance.difference)) }}
+                    }
+                </div>
+            }
+        </div>
+    
+        <div class="d-flex align-items-center">
+            @if (!isEditing()) {
+                @if (isEditable()) {
+                    <button matIconButton aria-label="Edit" (click)="isEditing.set(true)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                }
+                @if (isDeletable()) {
+                    <button matIconButton aria-label="Delete" (click)="delete()">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                }
+            } @else {
+                <button matIconButton aria-label="Save" (click)="isEditing.set(false)">
+                    <mat-icon>check</mat-icon>
+                </button>
+                <button matIconButton aria-label="Cancel" (click)="cancelEditing()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            }
+        </div>
+    </div>
+    
+    @if(isEditable() && isEditing()) {
+        <form [formGroup]="form">
+            <div class="d-flex justify-space-between">
+                <mat-form-field>
+                    <mat-label>Title</mat-label>
+                    <input matInput formControlName="title" />
+                </mat-form-field>
+
+                <mat-form-field class="ms-1">
+                    <mat-label>Split Type</mat-label>
+                    <mat-select formControlName="splitType">
+                        @for (group of selectableSplitTypes; track group) {
+                            <mat-optgroup [label]="group.display">
+                                @for(option of group.options; track option.value) {
+                                    <mat-option [value]="option.value">
+                                        {{ option.display }}
+                                    </mat-option>
+                                }
+                            </mat-optgroup>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            
+            <div class="d-flex flex-row">
+                <mat-form-field class="example-full-width">
+                    <mat-label>
+                        @if(splitTypeControl.value === 'lap') {Lap} @else {Split} Distance
+                    </mat-label>
+                    <input type="number" matInput placeholder="400" formControlName="splitValue">
+                </mat-form-field>
+                
+                <mat-form-field class="flex-grow-1 ms-1">
+                    <mat-label>
+                        @if(splitTypeControl.value === 'lap') {Lap} @else {Split} Units
+                    </mat-label>
+                    <mat-select formControlName="splitUnit">
+                        @for (group of lapUnits; track group) {
+                            <mat-optgroup [label]="group.display">
+                                @for(option of group.options; track option.value) {
+                                    <mat-option [value]="option.value">
+                                        {{ option.display }}
+                                    </mat-option>
+                                }
+                            </mat-optgroup>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </form>
+    }
+</div>

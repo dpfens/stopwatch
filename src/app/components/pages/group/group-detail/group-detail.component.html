@@ -1,0 +1,8 @@
+@if(loading()) {
+
+} @else {
+    @if (error()) {
+    } @else {
+        <full-group-detail [id]="id()!"></full-group-detail>
+    }
+}

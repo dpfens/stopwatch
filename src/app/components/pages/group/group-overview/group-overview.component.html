@@ -1,0 +1,360 @@
+<div class="overview-container">
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="geometric-loader">
+        <div class="rotating-square"></div>
+        <div class="rotating-square delay-1"></div>
+        <div class="rotating-square delay-2"></div>
+      </div>
+      <h2 class="loading-text">Loading Groups</h2>
+    </div>
+  }
+
+  <!-- Error State -->
+  @else if (error()) {
+    <div class="error-state">
+      <div class="error-geometric">
+        <div class="diagonal-bar red"></div>
+        <div class="diagonal-bar black"></div>
+      </div>
+      <h2 class="error-title">Error Loading Groups</h2>
+      <p class="error-message">{{ error() }}</p>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @else if (!instances() || instances().length === 0) {
+    <div class="empty-state">
+      <div class="geometric-empty">
+        <div class="circle-outline"></div>
+        <div class="diagonal-strike"></div>
+      </div>
+      <h1 class="empty-title">No Groups Yet</h1>
+      <p class="empty-description">
+        Groups organize your stopwatches with shared timing behaviors and evaluation methods.
+        Create your first group to start tracking collective performance.
+      </p>
+      <div class="text-center">
+        <button mat-raised-button color="primary" class="create-button" (click)="createNew()">
+          <mat-icon>add</mat-icon>
+          Create Group
+        </button>
+      </div>
+      <div class="empty-features">
+        <div class="feature-card rotated-left">
+          <h3>Parallel Timing</h3>
+          <p>Track simultaneous activities</p>
+        </div>
+        <div class="feature-card rotated-right">
+          <h3>Comparative Analysis</h3>
+          <p>Rank and benchmark performance</p>
+        </div>
+        <div class="feature-card">
+          <h3>Workflow Automation</h3>
+          <p>Sequential task management</p>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Minimal Content State (1-2 groups) -->
+  @else if (instances().length < 3) {
+    <div class="minimal-state">
+      <div class="header-section">
+        <div class="title-block rotated">
+          <h1 class="main-title">Groups</h1>
+          <div class="count-badge">{{ instances().length }}</div>
+        </div>
+        <p class="subtitle">Limited data available. Create more groups for comprehensive analytics.</p>
+      </div>
+
+      <group-list-view [instances]="instances()"></group-list-view>
+    </div>
+  }
+
+  <!-- Full Overview State -->
+  @else {
+    <div class="p-0 p-md-3">
+      <!-- Header with Asymmetric Title -->
+      <div class="overview-header">
+        <div class="title-section">
+          <h1 class="main-title diagonal">
+            <span class="title-text">Groups</span>
+            <span class="title-overlay">Overview</span>
+          </h1>
+          <div class="stats-bar">
+            <div class="stat-item">
+              <span class="stat-value">{{ instances().length }}</span>
+              <span class="stat-label">Total Groups</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-value">{{ getTotalMembers() }}</span>
+              <span class="stat-label">Total Stopwatches</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-value">{{ getAverageMemberCount() }}</span>
+              <span class="stat-label">Avg Members</span>
+            </div>
+          </div>
+        </div>
+        <div class="geometric-decoration">
+          <div class="red-square"></div>
+          <div class="black-triangle"></div>
+        </div>
+      </div>
+
+      <!-- Breakdown by Preset -->
+      <section class="breakdown-section preset-breakdown">
+        <h2 class="section-title rotated-title">
+          <span class="title-bg">By Preset</span>
+        </h2>
+        <div class="preset-grid">
+          @for (preset of getPresetBreakdown(); track preset.name) {
+            <mat-card class="preset-card" [class]="'preset-' + preset.name">
+              <div class="card-header-diagonal">
+                <h3>{{ preset.name }}</h3>
+                <span class="count-circle">{{ preset.count }}</span>
+              </div>
+              <group-list-view [instances]="preset.groups"></group-list-view>
+            </mat-card>
+          }
+        </div>
+      </section>
+
+      <!-- Timing Behaviors Detailed -->
+      <section class="breakdown-section timing-breakdown">
+        <div class="section-header-asymmetric">
+          <h2 class="section-title">Timing Behaviors</h2>
+          <div class="header-decoration"></div>
+        </div>
+        <div class="timing-grid">
+          @for (timing of getTimingBreakdown(); track timing.behavior) {
+            <div class="timing-card">
+              <div class="timing-label-rotated">
+                <span>{{ timing.behavior }}</span>
+              </div>
+              <div class="timing-bar" [style.width.%]="timing.percentage">
+                <span class="timing-count">{{ timing.count }}</span>
+              </div>
+              <div class="timing-percentage">{{ timing.percentage | number:'1.0-1' }}%</div>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Evaluation Behaviors Detailed -->
+      <section class="breakdown-section evaluation-breakdown">
+        <h2 class="section-title diagonal-inverse">
+          <span class="title-stroke">Evaluation</span>
+          <span class="title-fill">Methods</span>
+        </h2>
+        <div class="evaluation-grid">
+          @for (evaluation of getEvaluationBreakdown(); track evaluation.behavior) {
+            <div class="evaluation-card" [class.primary]="evaluation.count > getEvaluationAverage()">
+              <div class="eval-header">
+                <h3>{{ evaluation.behavior }}</h3>
+                <div class="eval-count-badge">{{ evaluation.count }}</div>
+              </div>
+              <div class="eval-bar-container">
+                <div class="eval-bar" [style.width.%]="evaluation.percentage"></div>
+              </div>
+              <div class="eval-meta">
+                <span>{{ evaluation.percentage | number:'1.0-1' }}% of groups</span>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Analytics Traits Breakdown -->
+      <section class="breakdown-section analytics-breakdown">
+        <div class="section-header-split">
+          <h2 class="section-title">Analytics</h2>
+          <div class="section-subtitle">Configuration Patterns</div>
+        </div>
+        <div class="analytics-grid">
+          @for (analytic of getAnalyticsBreakdown(); track analytic.trait) {
+            <div class="analytics-card">
+              <div class="analytics-icon">
+                <div class="icon-shape"></div>
+              </div>
+              <div class="analytics-content">
+                <h4>{{ formatTraitName(analytic.trait) }}</h4>
+                <div class="analytics-stats">
+                  <span class="count">{{ analytic.count }} groups</span>
+                  <span class="badge">{{ analytic.percentage | number:'1.0-0' }}%</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+        @if (getAnalyticsBreakdown().length === 0) {
+          <div class="empty-analytics">
+            <p>No analytics traits configured across groups</p>
+          </div>
+        }
+      </section>
+
+      <!-- Group Size Distribution -->
+      <section class="breakdown-section size-breakdown">
+        <h2 class="section-title rotated-title">
+          <span class="title-bg">Group Size Distribution</span>
+        </h2>
+        <div class="size-visualization">
+          @for (bucket of getSizeDistribution(); track bucket.label) {
+            <div class="size-bucket">
+              <div class="bucket-label-rotated">
+                <span>{{ bucket.label }}</span>
+              </div>
+              <div class="bucket-content">
+                <div class="bucket-bar" [style.height.%]="bucket.percentage">
+                  <span class="bucket-count">{{ bucket.count }}</span>
+                </div>
+              </div>
+              <div class="bucket-range">{{ bucket.range }}</div>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Timing + Evaluation Matrix -->
+      <section class="breakdown-section matrix-breakdown">
+        <h2 class="section-title diagonal-inverse">
+          <span class="title-stroke">Behavior</span>
+          <span class="title-fill">Matrix</span>
+        </h2>
+        <div class="matrix-description">
+          Cross-analysis of timing behaviors and evaluation methods
+        </div>
+        <div class="behavior-matrix">
+          <div class="matrix-grid">
+            @for (combination of getBehaviorMatrix(); track combination.timing + combination.evaluation) {
+              <div class="matrix-cell" 
+                   [class.has-groups]="combination.count > 0"
+                   [class.popular]="combination.count >= 2">
+                <div class="cell-header">
+                  <span class="timing-label">{{ combination.timing }}</span>
+                  <span class="eval-label">{{ combination.evaluation }}</span>
+                </div>
+                <div class="cell-count">{{ combination.count }}</div>
+              </div>
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- Activity Timeline -->
+      <section class="breakdown-section activity-breakdown">
+        <div class="section-header-asymmetric">
+          <h2 class="section-title">Activity Timeline</h2>
+          <div class="header-decoration"></div>
+        </div>
+        <div class="activity-timeline">
+          @for (period of getActivityBreakdown(); track period.label) {
+            <div class="timeline-segment" [class]="'segment-' + period.label">
+              <div class="segment-header">
+                <h3>{{ period.label }}</h3>
+                <span class="segment-count">{{ period.count }}</span>
+              </div>
+              <div class="segment-bar-container">
+                <div class="segment-bar" [style.width.%]="period.percentage"></div>
+              </div>
+              @if (period.groups.length > 0) {
+                <div class="segment-groups">
+                  @for (group of period.groups.slice(0, 3); track group.id) {
+                    <a class="group-tag text-decoration-none" routerLink="/group/{{ group.id }}">{{group.annotation.title || truncate(group.id, 12) }}</a>
+                  }
+                  @if (period.groups.length > 3) {
+                    <span class="more-tag">+{{ period.groups.length - 3 }} more</span>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Member Overlap Analysis -->
+      <section class="breakdown-section overlap-breakdown">
+        <h2 class="section-title rotated-title">
+          <span class="title-bg">Member Overlap</span>
+        </h2>
+        <div class="overlap-stats">
+          <div class="overlap-card major">
+            <div class="overlap-number">{{ getMultiGroupStopwatches().length }}</div>
+            <div class="overlap-label">Stopwatches in Multiple Groups</div>
+          </div>
+          <div class="overlap-card">
+            <div class="overlap-number">{{ getAverageGroupsPerStopwatch() | number:'1.0-1' }}</div>
+            <div class="overlap-label">Avg Groups per Stopwatch</div>
+          </div>
+          <div class="overlap-card">
+            <div class="overlap-number">{{ getMaxOverlap() }}</div>
+            <div class="overlap-label">Max Groups for One Stopwatch</div>
+          </div>
+        </div>
+        @if (getTopOverlappingStopwatches().length > 0) {
+          <div class="overlap-list">
+            <h3>Most Connected Stopwatches</h3>
+            <div class="overlap-items">
+              @for (item of getTopOverlappingStopwatches(); track item.stopwatch.id) {
+                <div class="overlap-item">
+                  <div class="item-name">{{ item.stopwatch.annotation.title }}</div>
+                  <div class="item-groups">
+                    <span class="groups-count">{{ item.groupCount }} groups</span>
+                    <div class="group-badges">
+                      @for (group of item.groups; track group.id) {
+                        <span class="mini-badge">{{group.annotation.title || truncate(group.id, 15) }}</span>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </section>
+
+      <!-- Complexity Score -->
+      <section class="breakdown-section complexity-breakdown">
+        <h2 class="section-title diagonal-inverse">
+          <span class="title-stroke">Configuration</span>
+          <span class="title-fill">Complexity</span>
+        </h2>
+        <div class="complexity-grid">
+          @for (complexity of getComplexityBreakdown(); track complexity.level) {
+            <div class="complexity-card" [class]="'complexity-' + complexity.level">
+              <div class="complexity-header">
+                <h3>{{ complexity.level }}</h3>
+                <div class="complexity-indicator">
+                  @for (dot of [].constructor(complexity.dots); track $index) {
+                    <span class="dot"></span>
+                  }
+                </div>
+              </div>
+              <div class="complexity-count">{{ complexity.count }} groups</div>
+              <div class="complexity-description">{{ complexity.description }}</div>
+            </div>
+          }
+        </div>
+      </section>
+      
+      <!-- Quick Access to Stopwatches -->
+      @if(getRecentStopwatches().length > 0) {
+        <section class="">
+          <div class="access-header">
+            <h2 class="section-title">Recent Stopwatches</h2>
+            <div class="geometric-accent">
+              <div class="accent-bar"></div>
+              <div class="accent-circle"></div>
+            </div>
+          </div>
+          <stopwatch-collection-view [instances]="getRecentStopwatches()" [showControls]="getRecentStopwatches().length > 10"></stopwatch-collection-view>
+        </section>
+      }
+    </div>
+  }
+</div>

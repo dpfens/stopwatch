@@ -1,0 +1,17 @@
+@if(loading()) {
+
+}
+@else {
+    <mat-drawer-container [hasBackdrop]="true" (backdropClick)="showSidenav.set(!showSidenav())">
+    <mat-drawer [opened]="showSidenav()" mode="over">
+        @if (instances().length) {
+            <group-list-view [instances]="instances()"></group-list-view>
+        } @else {
+            <span >No groups found.</span>
+        }
+    </mat-drawer>
+    <mat-drawer-content>
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+    </mat-drawer-container>
+}

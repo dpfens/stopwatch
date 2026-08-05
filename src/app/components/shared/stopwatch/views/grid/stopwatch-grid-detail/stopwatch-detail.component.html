@@ -1,0 +1,282 @@
+<mat-card 
+    id="{{ getInstance().id }}"
+    appearance="outlined"
+    class="flex-grow-1 pb-3 stopwatch-card"
+    [class.selected]="isSelected()"
+    [class.selection-mode]="selectionMode() || hasAnySelection()"
+    (click)="onCardClick($event)"
+    >
+
+    <div class="selection-checkbox-container d-flex align-items-center justify-content-center p-1"
+        [class.visible]="selectionMode() || hasAnySelection()">
+        <mat-icon
+        (click)="onSelectionChange($event)"
+        role="checkbox"
+        [attr.aria-checked]="isSelected()"
+        aria-label="Select stopwatch"
+        tabindex="0"
+        (keydown.enter)="onSelectionChange($event)"
+        (keydown.space)="onSelectionChange($event)"
+        class="selection-icon">
+        @if(isSelected()) {
+            check_circle
+        } @else {
+            check
+        }
+        </mat-icon>
+    </div>
+
+  <mat-card-header class="d-flex align-items-center">
+    @if(!displaySettings()) {
+        <div class="flex-grow-1">
+            <mat-card-title>{{ getInstance().annotation.title || 'Untitled' }}</mat-card-title>
+            <mat-card-subtitle></mat-card-subtitle>
+        </div>
+        <button matIconButton 
+                [matMenuTriggerFor]="menu" 
+                aria-label="Open secondary menu for stopwatch"
+                class="control-button"
+                [class.disabled-in-selection]="selectionMode() || hasAnySelection()">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" xPosition="before" >   
+            <button mat-menu-item (click)="fork()">
+                <mat-icon>fork_right</mat-icon>
+                <span>Fork</span>
+            </button>
+            <button mat-menu-item (click)="showSettings()">
+                <mat-icon>settings</mat-icon>
+                <span>Settings</span>
+            </button>
+            <button mat-menu-item (click)="delete()">
+                <mat-icon>delete</mat-icon>
+                <span>Delete</span>
+            </button>
+        </mat-menu>
+    }
+    
+  </mat-card-header>
+  @if(displaySettings()) {
+    <mat-card-content>
+        <form [formGroup]="settingsForm" class="d-flex flex-column">
+            <!-- Title Field -->
+            <mat-form-field class="example-full-width">
+                <mat-label>Title</mat-label>
+                <input matInput placeholder="Ex. Pizza" formControlName="title">
+                @if(getFieldError('title')) {
+                    <mat-error>{{ getFieldError('title') }}</mat-error>
+                }
+            </mat-form-field>
+
+            <!-- Description Field -->
+            <mat-form-field class="example-full-width">
+                <mat-label>Description</mat-label>
+                <textarea matInput 
+                    placeholder=""
+                    formControlName="description">
+                </textarea>
+                @if(getFieldError('description')) {
+                    <mat-error>{{ getFieldError('description') }}</mat-error>
+                }
+            </mat-form-field>
+
+            <!-- Lap Settings -->
+            <div class="d-flex flex-row">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Lap Distance</mat-label>
+                    <input type="number" 
+                           matInput 
+                           placeholder="400" 
+                           formControlName="lapValue"
+                           min="0.01"
+                           step="0.01">
+                    @if(getFieldError('lapValue')) {
+                        <mat-error>{{ getFieldError('lapValue') }}</mat-error>
+                    }
+                </mat-form-field>
+                
+                <mat-form-field class="flex-grow-1">
+                    <mat-label>Lap Units</mat-label>
+                    <mat-select formControlName="lapUnit">
+                        @for (group of lapUnits; track group) {
+                            <mat-optgroup [label]="group.display">
+                                @for(option of group.options; track option.value) {
+                                    <mat-option [value]="option.value">{{option.display}}</mat-option>
+                                }
+                            </mat-optgroup>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <!-- Groups Selection -->
+            <div class="d-flex">
+                <mat-form-field>
+                    <mat-label>Groups</mat-label>
+                    <mat-select formControlName="groups" multiple>
+                        @for (group of groups(); track group.id) {
+                            <mat-option [value]="group.id">{{ group.annotation.title || group.id }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <!-- Metadata Display -->
+            <div class="metadata-section mt-3">
+                <p><strong>Created:</strong> 
+                    <time [dateTime]="getInstance().metadata.creation.timestamp.toISOString()">
+                        {{ getInstance().metadata.creation.timestamp.format() }}
+                    </time>
+                </p>
+                <p><strong>Last Modified:</strong> 
+                    <time [dateTime]="getInstance().metadata.lastModification.timestamp.toISOString()">
+                        {{ getInstance().metadata.lastModification.timestamp.format() }}
+                    </time>
+                </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="form-actions d-flex gap-2 mt-3">
+                <button mat-button 
+                        color="primary"
+                        (click)="saveAndClose()">
+                    <mat-icon>save</mat-icon>
+                    <span>Save & Close</span>
+                </button>
+
+                <button mat-button 
+                        (click)="discardChanges()">
+                    <mat-icon>close</mat-icon>
+                    <span>Cancel</span>
+                </button>
+            </div>
+        </form>
+    </mat-card-content>
+  } @else {
+    <mat-card-content class="text-center">
+        <div class="d-flex justify-content-around align-items-center mt-3 duration-display-container">
+            <div class="d-flex flex-column align-items-start duration-block total">
+                <label class="text-uppercase">total</label>
+                <simple-timer
+                                [getDuration]="totalDurationCalc"
+                                [isRunning]="controller().isRunning()"
+                                [includeMs]="totalDurationCalc() < MILLISECOND_THRESHOLD"
+                                class="duration-time"
+                                [class.text-start]="hasLaps() || hasSplits()"
+                            ></simple-timer>
+            </div>
+            @if(hasLaps() || hasSplits()) {
+                <div class="d-flex flex-column">
+                    @if(!!hasLaps()) {
+                        <div class="d-flex flex-column align-items-start duration-block secondary">
+                            <label class="text-uppercase">lap</label>
+                            <simple-timer
+                                [getDuration]="lapDurationCalc"
+                                [isRunning]="controller().isRunning()"
+                                [includeMs]="lapDurationCalc() < MILLISECOND_THRESHOLD"
+                                class="duration-time text-start"
+                            ></simple-timer>
+                        </div>
+                    }
+                    @if(hasSplits()) {
+                        <div class="d-flex flex-column align-items-start duration-block secondary" [class.mt-3]="hasLaps()">
+                            <label class="text-uppercase">split</label>
+                            <simple-timer
+                                [getDuration]="splitDurationCalc"
+                                [isRunning]="controller().isRunning()"
+                                [includeMs]="splitDurationCalc() < MILLISECOND_THRESHOLD"
+                                class="duration-time text-start"
+                            ></simple-timer>
+                        </div>
+                    }
+                </div> 
+            }
+        </div>
+
+
+        <mat-button-toggle-group
+        class="my-3 control-buttons"
+        name="favoriteColor"
+        aria-label="Favorite Color"
+        [hideSingleSelectionIndicator]="true"
+        [class.disabled-in-selection]="selectionMode() || hasAnySelection()"
+        >
+            @if(showBasicControls()) {
+                @if(!controller().isActive()) {
+                    <mat-button-toggle (click)="start()">
+                        <mat-icon>play_arrow</mat-icon>
+                        Start
+                    </mat-button-toggle>
+                }
+                @if(controller().isActive() && !controller().isRunning()) {
+                    <mat-button-toggle (click)="resume()">
+                        <mat-icon>play_circle_outline</mat-icon>
+                        Resume
+                    </mat-button-toggle>
+                    <mat-button-toggle (click)="reset()">
+                        <mat-icon>restart_alt</mat-icon>
+                        Reset
+                    </mat-button-toggle>
+                }
+            }
+            @if(controller().isRunning()) {
+                @if (showBasicControls()) {
+                <mat-button-toggle (click)="stop()">
+                    <mat-icon>stop</mat-icon>
+                    Stop
+                </mat-button-toggle>
+                }
+                @if(showCheckpointControls()) {
+                    @if (!!getInstance().state.lap) {
+                        <mat-button-toggle (click)="lap()">
+                            <mat-icon>track_changes</mat-icon>
+                            Lap
+                        </mat-button-toggle>
+                    }
+                    <mat-button-toggle (click)="split()">
+                        <mat-icon>call_split</mat-icon>
+                        Split
+                    </mat-button-toggle>
+                }
+            }
+        </mat-button-toggle-group>
+
+        @if(visibleSplits().length) {
+            <mat-list>
+                @for(split of visibleSplits(); track $index) {
+                    <split-expansion-panel
+                        [instance]="split"
+                        (updateEmitter)="handleSplitUpdate($event)"
+                        (deleteEmitter)="handleSplitDelete($event)"
+                        [class.disabled-in-selection]="selectionMode() || hasAnySelection()">    
+                    </split-expansion-panel>
+                }
+            </mat-list>
+            <!-- computed/forecasted events -->
+            @if (computedSplits().length > 0) {
+                Forecasts
+                <mat-list>
+                    @for(split of computedSplits(); track $index) {
+                        <split-expansion-panel
+                            [instance]="split"
+                            [class.disabled-in-selection]="selectionMode() || hasAnySelection()">    
+                        </split-expansion-panel>
+                    }
+                </mat-list>
+            }
+        }
+    </mat-card-content>
+    @if(getInstance().groups.length) {
+        <mat-card-footer>
+            <div class="mx-3">
+                <span class="groups-label text-uppercase">Groups</span>
+                <mat-chip-set aria-label="Groups" class="mt-1">
+                    @for(group of getInstance().groups; track group.id) {
+                        <mat-chip id="{{ group.id }}" routerLink="/group/{{ group.id }}">{{ group.annotation.title || truncate(group.id, 10) }}</mat-chip>
+                    }
+                </mat-chip-set>
+            </div>
+        </mat-card-footer>
+    }
+  }
+</mat-card>

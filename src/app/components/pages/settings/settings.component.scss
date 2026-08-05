@@ -1,0 +1,483 @@
+// Settings Component Styles - Angular Material 3
+
+.setting-item {
+  background: var(--mat-sys-surface-container-high);
+}
+
+// Scope chip styling
+.scope-chip {
+  font-size: 0.75rem;
+  height: 24px;
+  
+  &.scope-user {
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+    
+    mat-icon {
+      color: var(--mat-sys-on-primary-container);
+    }
+  }
+  
+  &.scope-group {
+    background-color: var(--mat-sys-secondary-container);
+    color: var(--mat-sys-on-secondary-container);
+    
+    mat-icon {
+      color: var(--mat-sys-on-secondary-container);
+    }
+  }
+  
+  &.scope-global {
+    background-color: var(--mat-sys-tertiary-container);
+    color: var(--mat-sys-on-tertiary-container);
+    
+    mat-icon {
+      color: var(--mat-sys-on-tertiary-container);
+    }
+  }
+}
+
+// Form field enhancements
+mat-form-field {
+  &.mat-form-field-appearance-outline {
+    .mat-form-field-outline {
+      transition: all 0.2s ease;
+    }
+    
+    &:hover .mat-form-field-outline {
+      .mat-form-field-outline-thick {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+// Select option descriptions
+mat-option {
+  .text-muted {
+    font-size: 0.8em;
+    line-height: 1.2;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+// Badge enhancements
+.badge {
+  display: inline-flex;
+  align-items: center;
+  
+  mat-icon {
+    margin-right: 0.25rem;
+  }
+  
+  // Override Bootstrap badges with Material 3 colors
+  &.bg-warning {
+    background-color: var(--mat-sys-tertiary-container) !important;
+    color: var(--mat-sys-on-tertiary-container) !important;
+  }
+  
+  &.bg-success {
+    background-color: var(--mat-sys-primary-container) !important;
+    color: var(--mat-sys-on-primary-container) !important;
+  }
+}
+
+// Card enhancements
+mat-card {
+  border-radius: 12px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  background-color: var(--mat-sys-surface-container-low);
+  
+  mat-card-header {
+    padding-bottom: 1rem;
+    
+    mat-card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--mat-sys-on-surface);
+    }
+    
+    mat-card-subtitle {
+      font-size: 0.9rem;
+      color: var(--mat-sys-on-surface-variant);
+    }
+  }
+}
+
+// Action buttons styling
+mat-card-actions {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--mat-sys-outline-variant);
+  
+  button[matButton] {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    mat-icon {
+      font-size: 1.1rem;
+      width: 1.1rem;
+      height: 1.1rem;
+      margin: 0; // Remove default margins since we're using gap
+    }
+    
+    mat-spinner {
+      margin: 0; // Remove default margins since we're using gap
+    }
+  }
+}
+
+// Material button enhancements
+button[matButton] {
+  mat-icon {
+    margin-right: 0; // Override any default spacing
+  }
+}
+
+// Alert enhancements
+.alert {
+  border-radius: 8px;
+  border: none;
+  
+  &.alert-danger {
+    background-color: var(--mat-sys-error-container);
+    color: var(--mat-sys-on-error-container);
+    
+    .btn-outline-danger {
+      border-color: var(--mat-sys-error);
+      color: var(--mat-sys-error);
+      
+      &:hover {
+        background-color: var(--mat-sys-error);
+        color: var(--mat-sys-on-error);
+      }
+    }
+  }
+  
+  mat-icon {
+    font-size: 1.2rem;
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+}
+
+// Current value display
+.bg-light {
+  background-color: var(--mat-sys-surface-container) !important;
+  border: 1px solid var(--mat-sys-outline-variant);
+}
+
+// Page header enhancements
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--mat-sys-on-surface);
+}
+
+.text-primary {
+  color: var(--mat-sys-primary) !important;
+}
+
+.text-muted {
+  color: var(--mat-sys-on-surface-variant) !important;
+}
+
+// Info card styling
+.info-card {
+  background: var(--mat-sys-surface-container);
+  border: 1px solid var(--mat-sys-outline-variant);
+}
+
+// Scope info section colors
+.text-primary {
+  color: var(--mat-sys-primary) !important;
+}
+
+.text-secondary {
+  color: var(--mat-sys-secondary) !important;
+}
+
+.text-tertiary {
+  color: var(--mat-sys-tertiary) !important;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .setting-item {
+    .row {
+      .col-md-8,
+      .col-md-4 {
+        width: 100%;
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+  
+  .d-flex.gap-2 {
+    flex-direction: column;
+    gap: 0.5rem !important;
+    
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  
+  .scope-chip {
+    font-size: 0.7rem;
+    height: 20px;
+  }
+}
+
+// Snackbar custom classes - keeping these as custom since they're notification specific
+.success-snackbar {
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+}
+
+.error-snackbar {
+  background-color: var(--mat-sys-error);
+  color: var(--mat-sys-on-error);
+}
+
+// Smooth transitions
+* {
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+// Custom focus states for better accessibility
+.btn:focus,
+mat-form-field:focus-within {
+  outline: 2px solid color-mix(in srgb, var(--mat-sys-primary) 30%, transparent);
+  outline-offset: 2px;
+}
+
+// Enhanced mat-chip-set spacing
+mat-chip-set {
+  margin: 0;
+  
+  mat-chip {
+    margin: 0 0.25rem 0 0;
+  }
+}
+
+// Form validation error styling
+mat-error {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  color: var(--mat-sys-error);
+}
+
+// Additional Material 3 specific enhancements
+.border-bottom {
+  border-bottom-color: var(--mat-sys-outline-variant) !important;
+}
+
+.border-top {
+  border-top-color: var(--mat-sys-outline-variant) !important;
+}
+
+.border {
+  border-color: var(--mat-sys-outline-variant) !important;
+}
+
+// Shadow enhancements using Material 3 elevation
+.shadow-sm {
+  box-shadow: 
+    0px 1px 2px var(--mat-sys-shadow),
+    0px 1px 3px color-mix(in srgb, var(--mat-sys-shadow) 30%, transparent) !important;
+}
+
+// Custom Material 3 elevation levels
+.elevation-1 {
+  box-shadow: 
+    0px 1px 2px var(--mat-sys-shadow),
+    0px 1px 3px color-mix(in srgb, var(--mat-sys-shadow) 30%, transparent);
+}
+
+.elevation-2 {
+  box-shadow: 
+    0px 1px 5px var(--mat-sys-shadow),
+    0px 2px 4px color-mix(in srgb, var(--mat-sys-shadow) 30%, transparent);
+}
+
+// Person icon indicator for user customizations
+mat-icon[style*="font-size: 16px"] {
+  color: var(--mat-sys-primary);
+}
+
+
+/* Angular Material Theme-Agnostic Color Classes */
+/* Uses Material Design 3 color tokens that work with any theme */
+
+/* Primary color for icons and accents */
+.mat-primary-icon {
+  color: var(--mat-sys-primary);
+}
+
+/* Muted/secondary text color */
+.mat-muted-text {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+/* Error alert styling */
+.mat-error-alert {
+  background-color: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+  border: 1px solid var(--mat-sys-error);
+  border-radius: 4px;
+  padding: 12px 16px;
+}
+
+.mat-error-alert mat-icon {
+  color: var(--mat-sys-error);
+}
+
+/* Warning chip styling */
+.mat-warning-chip {
+  background-color: var(--mat-sys-tertiary-container) !important;
+  color: var(--mat-sys-on-tertiary-container) !important;
+}
+
+.mat-warning-chip mat-icon {
+  color: var(--mat-sys-on-tertiary-container) !important;
+}
+
+/* Success chip styling */
+.mat-success-chip {
+  background-color: var(--mat-sys-primary-container) !important;
+  color: var(--mat-sys-on-primary-container) !important;
+}
+
+.mat-success-chip mat-icon {
+  color: var(--mat-sys-on-primary-container) !important;
+}
+
+/* Scope chip variants (if you want different colors for different scopes) */
+.scope-chip.scope-user {
+  background-color: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+}
+
+.scope-chip.scope-group {
+  background-color: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+}
+
+.scope-chip.scope-global {
+  background-color: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+}
+
+/* Setting item border */
+.setting-item {
+  border-color: var(--mat-sys-outline-variant) !important;
+}
+
+/* Card header border */
+.border-bottom {
+  border-bottom-color: var(--mat-sys-outline-variant) !important;
+}
+
+.border-top {
+  border-top-color: var(--mat-sys-outline-variant) !important;
+}
+
+/* Optional: Override Bootstrap border class if needed */
+.border {
+  border-color: var(--mat-sys-outline-variant) !important;
+}
+
+
+
+/* Angular Material Theme-Agnostic Color Classes */
+/* SCSS version with optional theme integration */
+
+// If you want to use Material theme mixins, import Material:
+// @use '@angular/material' as mat;
+
+/* Primary color for icons and accents */
+.mat-primary-icon {
+  color: var(--mat-sys-primary);
+}
+
+/* Muted/secondary text color */
+.mat-muted-text {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+/* Error alert styling */
+.mat-error-alert {
+  background-color: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+  border: 1px solid var(--mat-sys-error);
+  border-radius: 4px;
+  padding: 12px 16px;
+
+  mat-icon {
+    color: var(--mat-sys-error);
+  }
+}
+
+/* Warning chip styling */
+.mat-warning-chip {
+  background-color: var(--mat-sys-tertiary-container) !important;
+  color: var(--mat-sys-on-tertiary-container) !important;
+
+  mat-icon {
+    color: var(--mat-sys-on-tertiary-container) !important;
+  }
+}
+
+/* Success chip styling */
+.mat-success-chip {
+  background-color: var(--mat-sys-primary-container) !important;
+  color: var(--mat-sys-on-primary-container) !important;
+
+  mat-icon {
+    color: var(--mat-sys-on-primary-container) !important;
+  }
+}
+
+/* Scope chip variants */
+.scope-chip {
+  &.scope-user {
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+  }
+
+  &.scope-group {
+    background-color: var(--mat-sys-secondary-container);
+    color: var(--mat-sys-on-secondary-container);
+  }
+
+  &.scope-global {
+    background-color: var(--mat-sys-tertiary-container);
+    color: var(--mat-sys-on-tertiary-container);
+  }
+}
+
+/* Setting item border */
+.setting-item {
+  border-color: var(--mat-sys-outline-variant) !important;
+  
+  // Optional: Add hover effect
+  &:hover {
+    background-color: var(--mat-sys-surface-variant);
+    transition: background-color 0.2s ease;
+  }
+}
+
+/* Card borders */
+.border-bottom {
+  border-bottom-color: var(--mat-sys-outline-variant) !important;
+}
+
+.border-top {
+  border-top-color: var(--mat-sys-outline-variant) !important;
+}
+
+.border {
+  border-color: var(--mat-sys-outline-variant) !important;
+}

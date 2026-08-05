@@ -1,0 +1,47 @@
+<a
+    routerLink="/group/{{ getInstance().id }}" 
+    routerLinkActive="active" 
+    ariaCurrentWhenActive="page"
+    id="{{ getInstance().id }}" 
+    class="group-list-item">
+    
+    <!-- Primary Content Section -->
+    <div class="primary-content">
+        <!-- Primary: Group Title -->
+        <div class="group-title" 
+             [title]="getInstance().annotation.title || 'Untitled Group'">
+            {{ getInstance().annotation.title || 'Untitled Group' }}
+        </div>
+        
+        <!-- Secondary: Preset Info -->
+        <div class="group-preset">
+            {{ preset() }}
+        </div>
+    </div>
+    
+    <!-- Metadata Section -->
+    <div class="metadata-section">
+        <!-- Secondary: Stopwatch Count -->
+        <div class="stopwatch-count">
+            <span class="count-number">{{ getInstance().members.length }}</span>
+            <span class="count-label">{{ getInstance().members.length === 1 ? 'stopwatch' : 'stopwatches' }}</span>
+        </div>
+        
+        <!-- Tertiary: Creation Time -->
+        <div class="creation-time">
+            {{ relativeTime(getInstance().metadata.creation.timestamp) }}
+        </div>
+    </div>
+    
+    <!-- Action Section -->
+    <div class="action-section">
+        <button 
+            mat-icon-button 
+            aria-label="Delete group"
+            class="delete-button"
+            (click)="delete($event)"
+            [title]="'Delete group: ' + (getInstance().annotation.title || 'Untitled Group')">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
+</a>

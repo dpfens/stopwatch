@@ -1,0 +1,245 @@
+// Loading State
+.loading-state {
+  padding: 3rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+}
+
+.loading-cards {
+  display: flex;
+  gap: 1.5rem;
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.loading-card {
+  width: 220px;
+  height: 140px;
+  background: var(--mat-sys-surface-container);
+  transition: transform 0.3s ease;
+  
+  &.loading-card-1 {
+    transform: rotate(-8deg) translateY(-10px);
+    animation: pulse1 2s ease-in-out infinite;
+  }
+  
+  &.loading-card-2 {
+    transform: rotate(3deg) translateY(5px);
+    animation: pulse2 2s ease-in-out infinite 0.3s;
+  }
+  
+  &.loading-card-3 {
+    transform: rotate(-4deg) translateY(8px);
+    animation: pulse3 2s ease-in-out infinite 0.6s;
+  }
+}
+
+@keyframes pulse1 {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes pulse2 {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes pulse3 {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.9; }
+}
+
+.skeleton-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.skeleton-line {
+  height: 12px;
+  background: var(--mat-sys-on-surface);
+  opacity: 0.12;
+  border-radius: 4px;
+  
+  &.short {
+    width: 60%;
+  }
+  
+  &.medium {
+    width: 80%;
+  }
+}
+
+.loading-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+  width: 100%;
+  max-width: 300px;
+}
+
+.loading-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--mat-sys-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transform: rotate(-1deg);
+}
+
+.progress-accent {
+  width: 100%;
+  transform: rotate(2deg);
+}
+
+// Empty State
+.empty-state {
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  min-height: 60vh;
+  justify-content: center;
+}
+
+.empty-geometry {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-card {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--mat-sys-surface-container-high);
+  
+  &.card-1 {
+    width: 180px;
+    height: 180px;
+    transform: rotate(-23deg);
+    left: 10%;
+    top: 5%;
+    background: var(--mat-sys-primary-container);
+    z-index: 1;
+    
+    .empty-icon {
+      font-size: 4rem;
+      width: 4rem;
+      height: 4rem;
+      color: var(--mat-sys-on-primary-container);
+      transform: rotate(23deg);
+    }
+  }
+  
+  &.card-2 {
+    width: 140px;
+    height: 200px;
+    transform: rotate(17deg);
+    right: 8%;
+    top: 20%;
+    background: var(--mat-sys-secondary-container);
+    z-index: 2;
+    
+    .empty-stripe {
+      width: 4px;
+      height: 100%;
+      background: var(--mat-sys-on-secondary-container);
+      transform: rotate(-17deg);
+      opacity: 0.6;
+    }
+  }
+  
+  &.card-3 {
+    width: 160px;
+    height: 160px;
+    transform: rotate(-7deg);
+    left: 25%;
+    bottom: 8%;
+    background: var(--mat-sys-tertiary-container);
+    z-index: 3;
+    
+    .empty-number {
+      font-size: 6rem;
+      font-weight: 300;
+      color: var(--mat-sys-on-tertiary-container);
+      transform: rotate(7deg);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+}
+
+.empty-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  max-width: 400px;
+  transform: rotate(-1.5deg);
+}
+
+.empty-title {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  color: var(--mat-sys-on-surface);
+}
+
+.empty-description {
+  font-size: 1.25rem;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 4rem;
+  line-height: 1.6;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.create-button {
+  margin-top: 0.5rem;
+  transform: rotate(2deg);
+  font-weight: 500;
+  padding: 0.5rem 2rem;
+  
+  mat-icon {
+    margin-right: 0.5rem;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .loading-cards {
+    max-width: 100%;
+  }
+  
+  .loading-card {
+    width: 180px;
+    height: 120px;
+  }
+  
+  .empty-geometry {
+    width: 280px;
+    height: 280px;
+    transform: scale(0.9);
+  }
+  
+  .empty-state {
+    padding: 2rem 1rem;
+  }
+}

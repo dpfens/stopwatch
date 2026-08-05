@@ -1,0 +1,439 @@
+<mat-card class="example-card" appearance="outlined">
+  <div class="d-flex mx-3 mt-3">
+    <div class="flex-grow-1">
+        <mat-card-title>{{ getInstance().annotation.title || 'Untitled' }}</mat-card-title>
+        <mat-card-subtitle class="fw-light">{{ preset() }}</mat-card-subtitle>
+    </div>
+    <div>
+      @if(isEditting()) {
+        <button matIconButton (click)="isEditting.set(false)" aria-label="Cancel editing">
+            <mat-icon>close</mat-icon>
+        </button>
+      } @else {
+        <button matIconButton (click)="clone()" aria-label="Clone group">
+            <mat-icon>content_copy</mat-icon>
+        </button>
+        <button matIconButton (click)="isEditting.set(true)" aria-label="Edit group">
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button matIconButton aria-label="Delete group" (click)="delete($event)">
+            <mat-icon>delete</mat-icon>
+        </button>
+      } 
+    </div>
+  </div>
+
+  @if (isEditting()) {
+    <form [formGroup]="formGroup" class="container-fluid" novalidate>
+        <div class="row">
+            <div class="col-12 col-lg-6 col-xl-8">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-lg-8 col-xl-4 d-flex flex-column">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Title</mat-label>
+                            <input 
+                              matInput 
+                              placeholder="Ex. Pizza" 
+                              [formControl]="titleControl"
+                              required />
+                            @if (titleControl.hasError('required') && titleControl.touched) {
+                              <mat-error>Title is required</mat-error>
+                            }
+                            @if (titleControl.hasError('minlength') && titleControl.touched) {
+                              <mat-error>Title must be at least 1 character</mat-error>
+                            }
+                        </mat-form-field>
+
+                        <mat-form-field class="mt-3">
+                            <mat-label>Description</mat-label>
+                            <textarea 
+                              matInput 
+                              [formControl]="descriptionControl"
+                              rows="3">
+                            </textarea>
+                            <mat-hint>Description of the group</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 col-sm-6 col-lg-8 col-xl-4 d-flex flex-column">
+                                <mat-form-field>
+                                    <mat-label>Preset</mat-label>
+                                    <mat-select [formControl]="presetControl">
+                                        @for(option of groupPresetOptions; track option.value) {
+                                            <mat-option [value]="option.value" [matTooltip]="option.description" matTooltipPosition="right">
+                                                {{ option.display }}
+                                            </mat-option>
+                                        }
+                                    </mat-select>
+                                    @if (!traitsMatchPreset()) {
+                                      <mat-hint class="text-warning">
+                                        <mat-icon class="small-icon">info</mat-icon>
+                                        Custom settings - doesn't match any preset
+                                      </mat-hint>
+                                    } @else {
+                                      <mat-hint>Current: {{ getCurrentPresetDisplay() }}</mat-hint>
+                                    }
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-sm-6 col-lg-8 col-xl-4">
+                                <mat-form-field class="mt-3">
+                                    <mat-label>Timing Behavior</mat-label>
+                                    <mat-select [formControl]="timingControl">
+                                        @for(option of groupTimingOptions; track option.value) {
+                                            <mat-option [value]="option.value" [matTooltip]="option.description" matTooltipPosition="right">
+                                                {{ option.display }}
+                                            </mat-option>
+                                        }
+                                    </mat-select>
+                                    <mat-hint>How timers coordinate with each other</mat-hint>
+                                </mat-form-field>
+                                <mat-form-field class="mt-3">
+                                    <mat-label>Evaluation Methods</mat-label>
+                                    <mat-select [formControl]="evaluationControl" multiple>
+                                        @for(option of groupEvaluationBehaviorOptions; track option.value) {
+                                            <mat-option [value]="option.value" [matTooltip]="option.description" matTooltipPosition="right">
+                                                {{ option.display }}
+                                            </mat-option>
+                                        }
+                                    </mat-select>
+                                    <mat-hint>How timer results are analyzed</mat-hint>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Panel -->
+            <div class="col-12 col-lg-6 col-xl-4 mt-3 mt-lg-0">
+                <div class="info-panel">
+                    <h6 class="info-panel-title">
+                        <mat-icon>info</mat-icon>
+                        Configuration Details
+                    </h6>
+                    
+                    <!-- Preset Information -->
+                    <div class="info-section">
+                        <div class="info-section-header">
+                            <mat-icon class="section-icon">tune</mat-icon>
+                            <strong>{{ getCurrentPresetDisplay() }} Preset</strong>
+                        </div>
+                        @if (getCurrentPresetDescription()) {
+                            <p class="info-description">{{ getCurrentPresetDescription() }}</p>
+                            
+                            @if (getCurrentPresetUseCases().length > 0) {
+                                <div class="use-cases">
+                                    <small class="use-cases-title">Common use cases:</small>
+                                    <ul class="use-cases-list">
+                                        @for(useCase of getCurrentPresetUseCases(); track useCase) {
+                                            <li>{{ useCase }}</li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        }
+                    </div>
+
+                    <!-- Timing Information -->
+                    @if (getCurrentTimingDescription()) {
+                        <div class="info-section">
+                            <div class="info-section-header">
+                                <mat-icon class="section-icon">schedule</mat-icon>
+                                <strong>Timing: {{ getTimingOption(timingControl.value)?.display }}</strong>
+                            </div>
+                            <p class="info-description">{{ getCurrentTimingDescription() }}</p>
+                        </div>
+                    }
+
+                    <!-- Evaluation Information -->
+                    @if (getCurrentEvaluationDescriptions().length > 0) {
+                        <div class="info-section">
+                            <div class="info-section-header">
+                                <mat-icon class="section-icon">analytics</mat-icon>
+                                <strong>Evaluation Methods</strong>
+                            </div>
+                            @for(evalInfo of getCurrentEvaluationDescriptions(); track evalInfo.display) {
+                                <div class="evaluation-item">
+                                    <div class="evaluation-title">{{ evalInfo.display }}</div>
+                                    <p class="info-description">{{ evalInfo.description }}</p>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    <!-- Preset Matching Status -->
+                    @if (!traitsMatchPreset()) {
+                        <div class="info-section warning-section">
+                            <div class="info-section-header">
+                                <mat-icon class="section-icon text-warning">warning</mat-icon>
+                                <strong>Custom Configuration</strong>
+                            </div>
+                            <p class="info-description">
+                                Your current timing and evaluation settings don't match any preset. 
+                                This is fine - you can use custom configurations or adjust settings to match a preset.
+                            </p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 mb-2 d-flex gap-2">
+            <button 
+              mat-flat-button 
+              color="primary"
+              (click)="isEditting.set(false)" 
+              [disabled]="formGroup.invalid"
+              aria-label="Save changes">
+                <mat-icon>save</mat-icon>
+                <span>Save</span>
+            </button>
+            
+            <button 
+              mat-button 
+              (click)="resetForm()"
+              [disabled]="!hasUnsavedChanges()"
+              aria-label="Reset form">
+                <mat-icon>refresh</mat-icon>
+                <span>Reset</span>
+            </button>
+        </div>
+
+        @if (formGroup.invalid && formGroup.touched) {
+          <div class="alert alert-warning mt-2">
+            <mat-icon>warning</mat-icon>
+            Please fix the form errors before saving.
+          </div>
+        }
+    </form>
+  } @else {
+    @if(hasCumulative() || hasComparative() || hasProportional() || hasTrending()) {
+        <div class="eval-row">
+
+            @if(hasCumulative()) {
+            <div class="cumulative-strip">
+                <span class="cumulative-strip__label">cumulative</span>
+                <simple-timer
+                [getDuration]="cumulativeTotalCalc"
+                [isRunning]="canStopAny()"
+                [includeMs]="cumulativeTotalCalc() < MILLISECOND_THRESHOLD"
+                class="cumulative-strip__time">
+                </simple-timer>
+                <span class="cumulative-strip__meta">{{ getInstance().members.length }} stopwatches</span>
+
+                @let aggregatedStats = aggregateStats();
+                @if(aggregatedStats.sampleSize >= 2) {
+                <div class="cumulative-strip__stats">
+                    @if(aggregatedStats.totalUnits > 0) {
+                    <span>{{ aggregatedStats.totalUnits }} units</span>
+                    }
+                    @if(aggregatedStats.mean !== null) {
+                    <span [matTooltip]="'Median: ' + (aggregatedStats.median | number:'1.1-1') + ' ms/unit'">
+                        avg {{ aggregatedStats.mean | number:'1.0-0' }} ms/unit
+                    </span>
+                    }
+                    @if(aggregatedStats.stdDev !== null) {
+                    <span matTooltip="Pace consistency (lower = more consistent)">
+                        σ {{ aggregatedStats.stdDev | number:'1.0-0' }}
+                    </span>
+                    }
+                </div>
+                }
+            </div>
+            }
+
+            @if(hasComparative() || hasProportional() || hasTrending()) {
+            <div class="leaderboard" #evaluationPanel>
+                <div class="leaderboard__header">
+                    @if(hasComparative()) {
+                        <mat-icon class="small-icon">emoji_events</mat-icon>
+                        <span class="leaderboard__title">Rankings</span>
+                    }
+                    @if(hasComparative() || hasProportional()) {
+                        <mat-icon class="small-icon">pie_chart</mat-icon>
+                        <span class="leaderboard__title">Time Allocation</span>
+                    }
+                    @if(hasTrending() && !hasComparative() && !hasProportional()) {
+                        <mat-icon class="small-icon">trending_up</mat-icon>
+                        <span class="leaderboard__title">Pace Trend</span>
+                    }
+                </div>
+
+                @let trends = trendById();
+                @for(entry of rankedWithGaps(); track entry.sw.id; let i = $index) {
+                    <div class="leaderboard__row">
+                        @if(hasComparative()) {
+                        <span class="leaderboard__rank">{{ i + 1 }}</span>
+                        <span class="leaderboard__name" [class.leaderboard__name--leader]="i === 0">
+                            {{ entry.sw.annotation.title || 'Untitled' }}
+                        </span>
+                        <simple-timer
+                            [getDuration]="entry.controller.getElapsedTime.bind(entry.controller)"
+                            [isRunning]="entry.controller.isRunning()"
+                            [includeMs]="false"
+                            class="leaderboard__time">
+                        </simple-timer>
+                        @if(i > 0) {
+                            <span class="leaderboard__gap">+{{ entry.gapToLeader | number:'1.0-0' }}ms</span>
+                        } @else {
+                            <span class="leaderboard__gap"></span>
+                        }
+                        } @else {
+                        <span class="leaderboard__name">{{ entry.sw.annotation.title || 'Untitled' }}</span>
+                        }
+
+                        @if(hasProportional()) {
+                        <mat-progress-bar
+                            [value]="entry.pct"
+                            mode="determinate"
+                            color="primary"
+                            style="width: 80px; flex-shrink: 0;">
+                        </mat-progress-bar>
+                        <span class="leaderboard__pct">{{ entry.pct | number:'1.1-1' }}%</span>
+                        }
+
+                        @if(hasTrending()) {
+                            @let trend = trends.get(entry.sw.id);
+                            @if(trend && trend.signal !== null) {
+                                <div class="trend-signal-bar" [title]="trend.signal | number:'1.2-2'">
+                                <div class="trend-signal-fill"
+                                    [ngStyle]="getTrendFillStyle(trend.signal)"
+                                    [class.bg-green]="trend.signal > 0.05"
+                                    [class.bg-red]="trend.signal < -0.05">
+                                </div>
+                                <div class="trend-center-line"></div>
+                                </div>
+                                <mat-icon class="small-icon trend-arrow"
+                                [class.text-green]="trend.signal > 0.05"
+                                [class.text-red]="trend.signal < -0.05"
+                                [class.text-muted]="Math.abs(trend.signal) <= 0.05">
+                                {{ trend.signal > 0.05 ? 'arrow_upward' : trend.signal < -0.05 ? 'arrow_downward' : 'remove' }}
+                                </mat-icon>
+                            } @else if(trend) {
+                                <span class="leaderboard__needs-data">needs 3+ events</span>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+            }
+
+        </div>
+        }
+
+    @if (getInstance().members.length) {
+        <mat-card-content class="mt-5 mb-3">
+            @if(isTimingBehavior(['parallel', 'synchronized', 'sequential'])) {
+                <div class="text-center">
+                    <mat-button-toggle-group
+                        class="mb-3 control-buttons"
+                        name="bulk-action"
+                        aria-label="Group Action"
+                        [hideSingleSelectionIndicator]="true"
+                        >
+                        @if (isTimingBehavior('sequential')) {
+                            @if(canStartAny()) {
+                                <mat-button-toggle (click)="startNext()" aria-label="Start Next">
+                                    <mat-icon>next_plan</mat-icon>
+                                    Next
+                                </mat-button-toggle>
+                            }
+                        }
+                        @if(!isTimingBehavior('sequential')) {
+                            @if(canStartAny()) {
+                                <mat-button-toggle (click)="startAll()" aria-label="Start All">
+                                    <mat-icon>play_arrow</mat-icon>
+                                    Start
+                                </mat-button-toggle>
+                            }
+                            @if(canResumeAny()) {
+                                <mat-button-toggle (click)="resumeAll()" aria-label="Resume All">
+                                    <mat-icon>play_circle_outline</mat-icon>
+                                    Resume
+                                </mat-button-toggle>
+                            }
+                        }
+                        
+                        @if(canStopAny()) {
+                            <mat-button-toggle (click)="stopAll()" aria-label="Stop All">
+                                <mat-icon>stop</mat-icon>
+                                Stop
+                            </mat-button-toggle>
+                        }
+                        @if(canResetAny()) {
+                            <mat-button-toggle (click)="resetAll()" aria-label="Reset All">
+                                <mat-icon>restart_alt</mat-icon>
+                                Reset
+                            </mat-button-toggle>
+                        }
+                        @if (isTimingBehavior(['parallel', 'synchronized'])) {
+                            @if(canLapAny()) {
+                                <mat-button-toggle (click)="lapAll()" aria-label="Lap All">
+                                    <mat-icon>track_changes</mat-icon>
+                                    Lap
+                                </mat-button-toggle>
+                            }
+                            @if (canSplitAny()) {
+                                <mat-button-toggle (click)="splitAll()" aria-label="Split All">
+                                    <mat-icon>call_split</mat-icon>
+                                    Split
+                                </mat-button-toggle>
+                            }
+                        }
+                    </mat-button-toggle-group>
+
+
+                </div>
+            }
+
+            <stopwatch-collection-view [instances]="getInstance().members" [showControls]="false" gridClasses="col-12 col-lg-6 col-xl-4"></stopwatch-collection-view>
+            
+        </mat-card-content>
+    } @else {
+        <div class="empty-state">
+            <div class="empty-geometry">
+                <mat-card class="empty-card card-1">
+                <mat-card-content>
+                    <mat-icon class="empty-icon">timer_off</mat-icon>
+                </mat-card-content>
+                </mat-card>
+                <mat-card class="empty-card card-2">
+                <mat-card-content>
+                    <div class="empty-stripe"></div>
+                </mat-card-content>
+                </mat-card>
+                <mat-card class="empty-card card-3">
+                <mat-card-content>
+                    <span class="empty-number">0</span>
+                </mat-card-content>
+                </mat-card>
+            </div>
+            
+            <div class="empty-content">
+                <h2 class="empty-title">No stopwatches yet</h2>
+                <p class="empty-description">Create a stopwatch for this group to start tracking time</p>
+                <button mat-raised-button color="primary" class="create-button" (click)="createNew()">
+                    <mat-icon>add</mat-icon>
+                    Create Stopwatch
+                </button>
+            </div>
+        </div>
+    }
+  }
+  
+  <mat-card-footer class="example-card-footer">
+    @if (isEditting() && hasUnsavedChanges()) {
+      <small class="text-muted">
+        <mat-icon>info</mat-icon>
+        Changes are automatically saved as you type
+      </small>
+    }
+  </mat-card-footer>
+</mat-card>

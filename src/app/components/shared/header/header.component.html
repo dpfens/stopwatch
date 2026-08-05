@@ -1,0 +1,63 @@
+<mat-toolbar>
+  @if(hasMenu()) {
+    <button (click)="executeMenuToggle()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+  }
+  <span [style.cursor]="'pointer'" routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page">Epochron</span>
+  
+  <!-- Stopwatches -->
+  <a mat-icon-button routerLink="/stopwatch" routerLinkActive="active" ariaCurrentWhenActive="page" 
+     class="d-sm-none" aria-label="Stopwatches">
+    <mat-icon>timer</mat-icon>
+  </a>
+  <a mat-button routerLink="/stopwatch" routerLinkActive="active" ariaCurrentWhenActive="page" 
+     class="d-none d-sm-inline-flex">
+    <mat-icon>timer</mat-icon>
+    Stopwatches
+  </a>
+  
+  <!-- Groups -->
+  <a mat-icon-button routerLink="/group" routerLinkActive="active" ariaCurrentWhenActive="page" 
+     class="d-sm-none" aria-label="Groups">
+    <mat-icon>groups</mat-icon>
+  </a>
+  <a mat-button routerLink="/group" routerLinkActive="active" ariaCurrentWhenActive="page" 
+     class="d-none d-sm-inline-flex">
+    <mat-icon>groups</mat-icon>
+    Groups
+  </a>
+  
+  <!-- Settings -->
+  <a mat-icon-button routerLink="/settings" routerLinkActive="active" ariaCurrentWhenActive="page" 
+     class="d-sm-none" aria-label="Settings">
+    <mat-icon>settings</mat-icon>
+  </a>
+  <a mat-button routerLink="/settings" routerLinkActive="active" ariaCurrentWhenActive="page" 
+     class="d-none d-sm-inline-flex">
+    <mat-icon>settings</mat-icon>
+    Settings
+  </a>
+  
+  <!-- About -->
+  <a mat-icon-button routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page" 
+     class="d-sm-none" aria-label="About">
+    <mat-icon>info</mat-icon>
+  </a>
+  <a mat-button routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page" 
+     class="d-none d-sm-inline-flex">
+    About
+  </a>
+  
+  <span class="flex-fill"></span>
+  @if(hasCreate()) {
+    <button mat-icon-button (click)="createNew()" aria-label="Add">
+      <mat-icon>add</mat-icon>
+    </button>
+  }
+  @if(canShare()) {
+    <button mat-icon-button (click)="executeShare()" aria-label="Share to social media">
+      <mat-icon>share</mat-icon>
+    </button>
+  }
+</mat-toolbar>

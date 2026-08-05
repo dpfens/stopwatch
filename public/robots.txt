@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /stopwatch
+Disallow: /group
+Disallow: /settings
+
+Sitemap: https://stopwatch.dougfenstermacher.com/sitemap.xml

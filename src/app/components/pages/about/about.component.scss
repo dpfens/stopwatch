@@ -1,0 +1,1170 @@
+// about.component.scss - Radical Bauhaus + Swiss Design
+:host {
+  display: block;
+  overflow-x: hidden;
+}
+
+.about-container {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: var(--mat-sys-on-surface);
+  background: var(--mat-sys-surface);
+  min-height: 100vh;
+}
+
+// Hero Section - Asymmetric Title Block
+.hero-section {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  background: var(--mat-sys-surface-container-lowest);
+  padding: 4rem 2rem;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 4rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+  align-items: center;
+}
+
+.title-block-rotated {
+  position: relative;
+  background: var(--mat-sys-primary);
+  padding: 4rem 3rem;
+  transform: rotate(-2deg);
+  
+  .section-number {
+    font-size: 8rem;
+    font-weight: 300;
+    color: var(--mat-sys-on-primary);
+    font-family: 'Roboto Mono', monospace;
+    line-height: 1;
+    margin-bottom: 1rem;
+    opacity: 0.4;
+    transform: rotate(2deg);
+  }
+  
+  .massive-title {
+    font-size: clamp(4rem, 10vw, 8rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.06em;
+    line-height: 0.8;
+    color: var(--mat-sys-on-primary);
+    margin: 0;
+    transform: rotate(2deg);
+  }
+}
+
+.hero-statement {
+  .statement-inner {
+    background: var(--mat-sys-surface-container-high);
+    padding: 3rem;
+    border-left: 8px solid var(--mat-sys-secondary);
+    transform: skewY(-1deg);
+    
+    > * {
+      transform: skewY(1deg);
+    }
+  }
+  
+  .geometric-accent {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    
+    .red-bar {
+      width: 80px;
+      height: 6px;
+      background: var(--mat-sys-secondary);
+    }
+    
+    .black-square {
+      width: 40px;
+      height: 40px;
+      background: var(--mat-sys-on-surface);
+    }
+  }
+  
+  .lead-text {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--mat-sys-on-surface);
+    margin: 0;
+  }
+}
+
+// Origin Story Section - Diagonal Layout
+.origin-section {
+  padding: 6rem 0;
+  background: var(--mat-sys-surface);
+}
+
+.origin-grid {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 3rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section-label-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--mat-sys-primary-container);
+  padding: 2rem 0;
+  
+  span {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    color: var(--mat-sys-on-primary-container);
+    text-transform: uppercase;
+  }
+}
+
+.story-content {
+  .story-header-diagonal {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 3rem;
+    background: var(--mat-sys-secondary-container);
+    border-left: 6px solid var(--mat-sys-secondary);
+    margin-bottom: 3rem;
+    transform: skewY(-1deg);
+    
+    > * {
+      transform: skewY(1deg);
+    }
+    
+    .story-icon {
+      font-size: 4rem;
+      width: 4rem;
+      height: 4rem;
+      color: var(--mat-sys-secondary);
+    }
+    
+    h2 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      color: var(--mat-sys-on-secondary-container);
+      margin: 0;
+    }
+  }
+}
+
+.story-text-blocks {
+  display: grid;
+  gap: 2rem;
+}
+
+.text-block {
+  padding: 2rem;
+  background: var(--mat-sys-surface-container-low);
+  border: 1px solid var(--mat-sys-outline-variant);
+  
+  &.primary {
+    background: var(--mat-sys-primary-container);
+    border-left: 8px solid var(--mat-sys-primary);
+    
+    .opening-statement {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--mat-sys-on-primary-container);
+      margin: 0;
+      line-height: 1.5;
+    }
+  }
+  
+  &.secondary {
+    border-left: 6px solid var(--mat-sys-secondary);
+  }
+  
+  &.tertiary {
+    background: var(--mat-sys-surface-container-highest);
+    border: none;
+    padding: 0;
+  }
+  
+  &.quaternary {
+    border-left: 6px solid var(--mat-sys-tertiary);
+  }
+  
+  &.rotated-left {
+    transform: skewY(-0.5deg);
+    margin-left: 2rem;
+    
+    p {
+      transform: skewY(0.5deg);
+    }
+  }
+  
+  &.rotated-right {
+    transform: skewY(0.5deg);
+    margin-right: 2rem;
+    
+    p {
+      transform: skewY(-0.5deg);
+    }
+  }
+  
+  &.asymmetric {
+    background: var(--mat-sys-tertiary-container);
+    border-left: 8px solid var(--mat-sys-tertiary);
+    margin-left: 4rem;
+  }
+  
+  &.conclusion {
+    background: var(--mat-sys-surface-container-highest);
+    border-left: 8px solid var(--mat-sys-on-surface);
+    padding: 3rem;
+    
+    .conclusion-inner {
+      p {
+        margin-bottom: 1.5rem;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+      
+      .final-statement {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--mat-sys-primary);
+        padding: 1.5rem;
+        background: var(--mat-sys-primary-container);
+        border-left: 4px solid var(--mat-sys-primary);
+        margin-top: 2rem;
+      }
+    }
+  }
+  
+  p {
+    margin: 0 0 1rem 0;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--mat-sys-on-surface);
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.quote-block {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  background: var(--mat-sys-surface-container-low);
+  
+  .quote-bar {
+    width: 8px;
+    background: var(--mat-sys-primary);
+    flex-shrink: 0;
+  }
+  
+  p {
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-style: italic;
+    color: var(--mat-sys-on-surface);
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+// Technical Section - Accordion Asymmetry
+.technical-section {
+  padding: 6rem 0;
+  background: var(--mat-sys-surface-container-lowest);
+}
+
+.technical-header {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 3rem;
+  max-width: 1600px;
+  margin: 0 auto 4rem;
+  padding: 0 2rem;
+  align-items: center;
+}
+
+.section-number-large {
+  font-size: 12rem;
+  font-weight: 300;
+  color: var(--mat-sys-outline);
+  font-family: 'Roboto Mono', monospace;
+  line-height: 1;
+  text-align: center;
+}
+
+.section-title-diagonal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  
+  .title-stroke {
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+    color: var(--mat-sys-outline);
+    line-height: 0.9;
+  }
+  
+  .title-fill {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+    color: var(--mat-sys-primary);
+    margin-left: 3rem;
+    line-height: 0.9;
+  }
+}
+
+.technical-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.technical-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  
+  ::ng-deep .mat-expansion-panel {
+    background: transparent;
+    box-shadow: none;
+    
+    &::before {
+      display: none;
+    }
+  }
+  
+  // ── Structural base ──────────────────────────────────────────
+  .panel-asymmetric {
+    background: var(--mat-sys-surface-container-low);
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: 0;
+    border-left-width: 8px;        // reserve the space; color set below
+    border-left-style: solid;
+
+    ::ng-deep .mat-expansion-panel-header {
+      padding: 2rem;
+      height: auto;
+      border-radius: 0;
+      
+      &:hover {
+        background: var(--mat-sys-surface-container-high);
+      }
+    }
+
+    // ── Color tokens ──────────────────────────────────────────
+    &.primary {
+      border-left-color: var(--mat-sys-primary);
+
+      .panel-icon-block {
+        background: var(--mat-sys-primary);
+        mat-icon { color: var(--mat-sys-on-primary); }
+      }
+    }
+
+    &.secondary {
+      border-left-color: var(--mat-sys-secondary);
+
+      .panel-icon-block {
+        background: var(--mat-sys-secondary);
+        mat-icon { color: var(--mat-sys-on-secondary); }
+      }
+    }
+
+    &.tertiary {
+      border-left-color: var(--mat-sys-tertiary);
+
+      .panel-icon-block {
+        background: var(--mat-sys-tertiary);
+        mat-icon { color: var(--mat-sys-on-tertiary); }
+      }
+    }
+
+    &.error {
+      border-left-color: var(--mat-sys-error);
+
+      .panel-icon-block {
+        background: var(--mat-sys-error);
+        mat-icon { color: var(--mat-sys-on-error); }
+      }
+    }
+  }
+  
+  .panel-title-custom {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    
+    .panel-icon-block {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      
+      mat-icon {
+        font-size: 3rem;
+        width: 3rem;
+        height: 3rem;
+      }
+    }
+    
+    .panel-text-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      
+      .panel-label {
+        font-size: 0.875rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--mat-sys-on-surface-variant);
+      }
+      
+      .panel-name {
+        font-size: 2rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+        color: var(--mat-sys-on-surface);
+      }
+    }
+  }
+  
+  .panel-content-asymmetric {
+    padding: 2rem 3rem 3rem;
+    
+    .content-section {
+      margin-bottom: 2rem;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+      
+      &.problem {
+        padding: 2rem;
+        background: var(--mat-sys-surface-container-highest);
+        border-left: 4px solid var(--mat-sys-error);
+        
+        h3 {
+          color: var(--mat-sys-error);
+        }
+      }
+      
+      &.solution {
+        padding: 2rem;
+        background: var(--mat-sys-tertiary-container);
+        border-left: 4px solid var(--mat-sys-tertiary);
+        
+        h3 {
+          color: var(--mat-sys-tertiary);
+        }
+      }
+      
+      h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin: 0 0 1.5rem 0;
+        letter-spacing: -0.02em;
+      }
+      
+      p {
+        margin: 0 0 1rem 0;
+        font-size: 1.125rem;
+        line-height: 1.7;
+        color: var(--mat-sys-on-surface);
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+      
+      ol {
+        margin: 1rem 0 0 0;
+        padding-left: 2rem;
+        
+        li {
+          margin-bottom: 0.75rem;
+          font-size: 1.125rem;
+          line-height: 1.6;
+          color: var(--mat-sys-on-surface);
+          
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+    
+    .solution-highlight {
+      position: relative;
+      padding: 2rem;
+      padding-left: 3rem;
+      
+      .highlight-bar {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 6px;
+        background: var(--mat-sys-tertiary);
+      }
+      
+      p {
+        margin: 0;
+        font-size: 1.25rem;
+        line-height: 1.6;
+        
+        strong {
+          color: var(--mat-sys-tertiary);
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}
+
+// Philosophy Section - Asymmetric Cards
+.philosophy-section {
+  padding: 6rem 0;
+  background: var(--mat-sys-surface);
+}
+
+.philosophy-grid {
+  display: grid;
+  grid-template-columns: 100px repeat(2, 1fr);
+  gap: 3rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  align-items: start;
+}
+
+.section-number-rotated {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 8rem;
+  font-weight: 300;
+  color: var(--mat-sys-outline);
+  font-family: 'Roboto Mono', monospace;
+  text-align: center;
+  padding: 2rem 0;
+  background: var(--mat-sys-surface-container-low);
+}
+
+.philosophy-card {
+  background: var(--mat-sys-surface-container-low);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 0;
+  
+  &.point {
+    border-left: 8px solid var(--mat-sys-primary);
+    transform: rotate(-1deg);
+    
+    .header-shape {
+      background: var(--mat-sys-primary);
+    }
+    
+    mat-icon {
+      background: var(--mat-sys-primary-container);
+      color: var(--mat-sys-primary);
+    }
+  }
+  
+  &.privacy {
+    border-left: 8px solid var(--mat-sys-secondary);
+    transform: rotate(1deg);
+    margin-top: 3rem;
+    
+    .header-shape {
+      background: var(--mat-sys-secondary);
+    }
+    
+    mat-icon {
+      background: var(--mat-sys-secondary-container);
+      color: var(--mat-sys-secondary);
+    }
+  }
+  
+  .card-header-geometric {
+    position: relative;
+    margin: -1px -1px 0 -1px;
+    
+    .header-shape {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100px;
+      height: 100px;
+      transform: rotate(45deg);
+      opacity: 0.1;
+    }
+    
+    mat-card-header {
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+      
+      mat-icon {
+        font-size: 3rem;
+        width: 3rem;
+        height: 3rem;
+        padding: 1rem;
+        border-radius: 0;
+        margin-right: 1rem;
+      }
+      
+      mat-card-title {
+        font-size: 2rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+      }
+    }
+  }
+  
+  mat-card-content {
+    padding: 2rem;
+    
+    .lead-paragraph {
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      color: var(--mat-sys-on-surface);
+    }
+    
+    p {
+      font-size: 1.125rem;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      color: var(--mat-sys-on-surface-variant);
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+    
+    .highlight-box {
+      position: relative;
+      margin-top: 2rem;
+      padding: 1.5rem;
+      padding-left: 2.5rem;
+      background: var(--mat-sys-surface-container-highest);
+      
+      .box-accent {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 6px;
+        background: var(--mat-sys-primary);
+      }
+      
+      p {
+        margin: 0;
+        font-size: 1.125rem;
+        line-height: 1.6;
+        color: var(--mat-sys-on-surface);
+        
+        strong {
+          font-weight: 700;
+          color: var(--mat-sys-primary);
+        }
+      }
+    }
+  }
+}
+
+// FAQ Section - Industrial Grid
+.faq-section {
+  padding: 6rem 0;
+  background: var(--mat-sys-surface-container-lowest);
+}
+
+.faq-header {
+  display: flex;
+  gap: 4rem;
+  align-items: center;
+  max-width: 1600px;
+  margin: 0 auto 4rem;
+  padding: 0 2rem;
+}
+
+.section-title-stacked {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  
+  span {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+    line-height: 0.85;
+    color: var(--mat-sys-on-surface);
+    
+    &.title-line-2 {
+      margin-left: 2rem;
+      color: var(--mat-sys-primary);
+    }
+    
+    &.title-line-3 {
+      margin-left: 4rem;
+      color: var(--mat-sys-secondary);
+    }
+  }
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+  gap: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.faq-item {
+  display: flex;
+  gap: 0;
+  background: var(--mat-sys-surface-container-low);
+  border: 1px solid var(--mat-sys-outline-variant);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateX(1rem);
+    border-color: var(--mat-sys-primary);
+  }
+  
+  &.primary {
+    border-left: 6px solid var(--mat-sys-primary);
+  }
+  
+  &.secondary {
+    border-left: 6px solid var(--mat-sys-secondary);
+  }
+  
+  &.tertiary {
+    border-left: 6px solid var(--mat-sys-tertiary);
+  }
+  
+  &.error {
+    border-left: 6px solid var(--mat-sys-error);
+  }
+  
+  &.surface {
+    border-left: 6px solid var(--mat-sys-on-surface);
+  }
+}
+
+.faq-label-rotated {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  background: var(--mat-sys-surface-container-highest);
+  padding: 1.5rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  span {
+    font-size: 0.875rem;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+.faq-content {
+  padding: 2rem;
+  flex: 1;
+  
+  h3 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    color: var(--mat-sys-on-surface);
+    line-height: 1.3;
+  }
+  
+  div, p, ul, li {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--mat-sys-on-surface-variant);
+    margin: 0;
+  }
+}
+
+// Roadmap Section - Diagonal Timeline
+.roadmap-section {
+  padding: 6rem 0;
+  background: var(--mat-sys-surface);
+}
+
+.roadmap-header-asymmetric {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 3rem;
+  max-width: 1600px;
+  margin: 0 auto 4rem;
+  padding: 0 2rem;
+  align-items: center;
+}
+
+.section-number-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--mat-sys-tertiary-container);
+  padding: 2rem;
+  
+  span {
+    font-size: 6rem;
+    font-weight: 300;
+    color: var(--mat-sys-tertiary);
+    font-family: 'Roboto Mono', monospace;
+    line-height: 0.8;
+  }
+}
+
+.roadmap-title-block {
+  .roadmap-subtitle {
+    font-size: 1.25rem;
+    color: var(--mat-sys-on-surface-variant);
+    font-style: italic;
+    margin-top: 1rem;
+  }
+}
+
+.roadmap-placeholder {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: var(--mat-sys-surface-container-low);
+  border: 2px dashed var(--mat-sys-outline-variant);
+}
+
+.placeholder-geometric {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  
+  .geo-circle {
+    width: 100px;
+    height: 100px;
+    border: 6px solid var(--mat-sys-outline);
+    border-radius: 50%;
+  }
+  
+  .geo-bar {
+    width: 150px;
+    height: 8px;
+    background: var(--mat-sys-primary);
+  }
+}
+
+.placeholder-text {
+  font-size: 1.25rem;
+  color: var(--mat-sys-on-surface-variant);
+  font-style: italic;
+  margin: 0;
+}
+
+// Feedback Section - Bold CTA
+.feedback-section {
+  padding: 6rem 0;
+  background: var(--mat-sys-surface-container-lowest);
+}
+
+.feedback-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 4rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  align-items: center;
+}
+
+.feedback-content {
+  .section-number-massive {
+    font-size: 15rem;
+    font-weight: 300;
+    color: var(--mat-sys-outline);
+    font-family: 'Roboto Mono', monospace;
+    line-height: 1;
+    margin-bottom: 2rem;
+    opacity: 0.3;
+  }
+  
+  .feedback-title {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+    color: var(--mat-sys-on-surface);
+    margin-bottom: 1.5rem;
+    line-height: 0.9;
+  }
+  
+  .feedback-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--mat-sys-on-surface);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+  
+  .feedback-subtext {
+    font-size: 1.125rem;
+    color: var(--mat-sys-on-surface-variant);
+    margin: 0;
+    line-height: 1.6;
+  }
+}
+
+.feedback-geometric {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  background: var(--mat-sys-surface-container-low);
+}
+
+.geometric-stack {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  
+  .stack-square {
+    position: absolute;
+    
+    &.red {
+      width: 150px;
+      height: 150px;
+      background: var(--mat-sys-primary);
+      top: 0;
+      left: 0;
+      transform: rotate(-15deg);
+    }
+    
+    &.black {
+      width: 100px;
+      height: 100px;
+      background: var(--mat-sys-on-surface);
+      bottom: 0;
+      right: 0;
+      transform: rotate(25deg);
+    }
+  }
+  
+  .stack-circle {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border: 8px solid var(--mat-sys-secondary);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+// Responsive Design
+@media (max-width: 1400px) {
+  .hero-grid {
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+  }
+  
+  .philosophy-grid {
+    grid-template-columns: 80px repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .hero-grid,
+  .origin-grid,
+  .technical-header,
+  .philosophy-grid,
+  .faq-header,
+  .roadmap-header-asymmetric,
+  .feedback-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .title-block-rotated {
+    transform: none;
+    
+    .section-number,
+    .massive-title {
+      transform: none;
+    }
+  }
+  
+  .section-label-vertical,
+  .section-number-rotated,
+  .section-number-vertical {
+    writing-mode: horizontal-tb;
+    text-orientation: initial;
+    padding: 2rem;
+  }
+  
+  .philosophy-card {
+    transform: none;
+    margin-top: 0;
+  }
+  
+  .technical-accordion .panel-asymmetric {
+    transform: none;
+  }
+  
+  .text-block {
+    &.rotated-left,
+    &.rotated-right {
+      transform: none;
+      margin: 0;
+      
+      p {
+        transform: none;
+      }
+    }
+    
+    &.asymmetric {
+      margin-left: 0;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .about-container {
+    padding: 0;
+  }
+  
+  .hero-section,
+  .origin-section,
+  .technical-section,
+  .philosophy-section,
+  .faq-section,
+  .roadmap-section,
+  .feedback-section {
+    padding: 3rem 0;
+  }
+  
+  .hero-grid,
+  .origin-grid,
+  .technical-header,
+  .technical-content,
+  .philosophy-grid,
+  .faq-header,
+  .faq-grid,
+  .roadmap-header-asymmetric,
+  .roadmap-placeholder,
+  .feedback-grid {
+    padding: 0;
+  }
+  
+  .faq-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .faq-item {
+    flex-direction: column;
+    
+    &:hover {
+      transform: none;
+    }
+  }
+  
+  .faq-label-rotated {
+    writing-mode: horizontal-tb;
+    text-orientation: initial;
+    padding: 1rem;
+  }
+  
+  .section-number-large,
+  .section-number-massive {
+    font-size: 6rem;
+  }
+  
+  .geometric-decoration,
+  .feedback-geometric {
+    display: none;
+  }
+}
+
+@media (max-width: 540px) {
+  .technical-accordion {
+    .panel-content-asymmetric {
+      padding: 0;
+
+      .solution-highlight {
+        padding: 0;
+      }
+    }
+  }
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  .title-block-rotated,
+  .philosophy-card,
+  .text-block,
+  .faq-item {
+    transform: none !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .text-block,
+  .philosophy-card,
+  .faq-item {
+    border-width: 2px;
+  }
+  
+  .text-block.primary,
+  .philosophy-card {
+    border-left-width: 10px;
+  }
+}

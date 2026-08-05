@@ -1,0 +1,154 @@
+<div class="not-found-container">
+  <!-- Main Error Display - Centered, Bold, Minimal -->
+  <div class="error-display">
+    <div class="error-grid">
+      <!-- Error Code Block -->
+      <div class="code-section">
+        <div class="code-number">404</div>
+        <div class="code-label">PAGE NOT FOUND</div>
+      </div>
+      
+      <!-- Geometric Illustration - SVG -->
+      <div class="illustration-section">
+        <svg viewBox="0 0 400 400" class="error-illustration" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background elements -->
+          <g class="illustration-bg">
+            <!-- Disconnected timer circles -->
+            <circle cx="120" cy="120" r="50" class="timer-outline timer-1"/>
+            <circle cx="280" cy="200" r="60" class="timer-outline timer-2"/>
+            <circle cx="180" cy="300" r="45" class="timer-outline timer-3"/>
+            
+            <!-- Broken connection lines -->
+            <line x1="170" y1="120" x2="200" y2="120" class="connection-line broken"/>
+            <line x1="220" y1="200" x2="240" y2="200" class="connection-line broken"/>
+            <line x1="200" y1="260" x2="180" y2="280" class="connection-line broken"/>
+            
+            <!-- Geometric accents -->
+            <rect x="50" y="50" width="30" height="30" class="accent-square" transform="rotate(-15 65 65)"/>
+            <rect x="320" y="280" width="40" height="40" class="accent-square-alt" transform="rotate(25 340 300)"/>
+          </g>
+          
+          <!-- Foreground elements -->
+          <g class="illustration-fg">
+            <!-- Timer hands (disconnected) -->
+            <line x1="120" y1="120" x2="120" y2="85" class="timer-hand"/>
+            <line x1="280" y1="200" x2="310" y2="180" class="timer-hand"/>
+            <line x1="180" y1="300" x2="195" y2="270" class="timer-hand"/>
+            
+            <!-- Center dots -->
+            <circle cx="120" cy="120" r="4" class="timer-center"/>
+            <circle cx="280" cy="200" r="4" class="timer-center"/>
+            <circle cx="180" cy="300" r="4" class="timer-center"/>
+            
+            <!-- Question mark as central element -->
+            <text x="200" y="130" class="question-mark">?</text>
+          </g>
+        </svg>
+      </div>
+      
+      <!-- Message Section -->
+      <div class="message-section">
+        <div class="message-primary">
+          <p>The page you're looking for doesn't exist, or the URL is incorrect.</p>
+        </div>
+        
+        <div class="message-secondary">
+          <p>This could mean the page was moved, deleted, or never existed in the first place. Either way, there's nothing here.</p>
+        </div>
+        
+        <!-- Redirect Notice -->
+         @if(!redirectCancelled()) {
+          <div class="redirect-notice">
+            <div class="redirect-bar"></div>
+            <div class="redirect-content">
+              <p class="redirect-text">
+                Redirecting you back in <span class="countdown">{{ countdown() }}</span> seconds
+              </p>
+              <button matButton="outlined" class="cancel-redirect" (click)="cancelRedirect()">
+                Stay on this page
+              </button>
+            </div>
+          </div>
+         }
+      </div>
+    </div>
+
+    @if(!redirectCancelled()) {
+      <!-- Optional: Manual escape -->
+      <div class="manual-action">
+        <button matButton="elevated" color="primary" class="go-back-button" (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+          Go Back Now
+        </button>
+      </div>
+    }
+
+    <!-- Contextual Help - Shows after redirect is cancelled -->
+    @if (redirectCancelled()) {
+      <!-- User has data - show their content -->
+      @if (hasAnyData()) {
+        <div class="contextual-section has-data">
+          <div class="section-header">
+            <h2>Your Content</h2>
+            <p class="section-subtitle">You have timers and groups already created</p>
+          </div>
+          
+          <div class="content-grid">
+            @if (hasStopwatches()) {
+              <mat-card class="content-card stopwatches">
+                <mat-card-content>
+                  <div class="card-icon">
+                    <mat-icon>timer</mat-icon>
+                  </div>
+                  <div class="card-info">
+                    <h3>{{ stopwatchCount() }} Stopwatch{{ stopwatchCount() === 1 ? '' : 'es' }}</h3>
+                    <p>View and manage your timers</p>
+                  </div>
+                  <button matButton="elevated" color="primary" routerLink="/stopwatch">
+                    View Stopwatches
+                  </button>
+                </mat-card-content>
+              </mat-card>
+            }
+            
+            @if (hasGroups()) {
+              <mat-card class="content-card groups">
+                <mat-card-content>
+                  <div class="card-icon">
+                    <mat-icon>group_work</mat-icon>
+                  </div>
+                  <div class="card-info">
+                    <h3>{{ groupCount() }} Group{{ groupCount() === 1 ? '' : 's' }}</h3>
+                    <p>Manage your timer groups</p>
+                  </div>
+                  <button matButton="elevated" color="primary" routerLink="/group">
+                    View Groups
+                  </button>
+                </mat-card-content>
+              </mat-card>
+            }
+          </div>
+        </div>
+      } @else {
+        <!-- User has no data - show intro -->
+        <div class="contextual-section no-data">
+          <div class="intro-block">
+            <div class="intro-bar"></div>
+            <div class="intro-content">
+              <h2>Multi-Stopwatch App</h2>
+              <p>This is a timing application for running multiple stopwatches simultaneously. Track different people, record splits, organize timers into groups, and manage timing data without needing internet access.</p>
+              <div class="intro-actions">
+                <button matButton="elevated" color="primary" routerLink="/">
+                  Go to Home Page
+                </button>
+                <button matButton routerLink="/about">
+                  Learn More
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    }
+  </div>
+</div>

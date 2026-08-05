@@ -1,0 +1,15 @@
+@if(loading()) {
+
+}
+@else {
+    <div class="row g-4">
+    @for (instance of instances; track instance.id) {
+        <group-grid-detail-view class="col-3" 
+        [instance]="instance"
+        (deleteEmitter)="handleDelete($event)"
+        ></group-grid-detail-view>
+    } @empty {
+        <span>No groups found.</span>
+    }
+    </div>
+}

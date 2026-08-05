@@ -1,0 +1,264 @@
+<div class="about-container">
+  <!-- Hero Section - Asymmetric Title Block -->
+  <section class="hero-section">
+    <div class="hero-grid">
+      <div class="title-block-rotated">
+        <div class="section-number">01</div>
+        <h1 class="massive-title text-uppercase">About</h1>
+      </div>
+      <div class="hero-statement">
+        <div class="statement-inner">
+          <div class="geometric-accent">
+            <div class="red-bar"></div>
+            <div class="black-square"></div>
+          </div>
+          <p class="lead-text">Professional timing made simple, reliable, and accessible to everyone.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why This Exists - Diagonal Story -->
+  <section class="origin-section">
+    <div class="origin-grid">
+      <div class="section-label-vertical sticky-top">
+          <span class="text-uppercase">Origin</span>
+          <span class="text-uppercase">Story</span>
+      </div>
+      
+      <div class="story-content">
+        <div class="story-header-diagonal">
+          <mat-icon class="story-icon">lightbulb</mat-icon>
+          <h2>Why This Exists</h2>
+        </div>
+        
+        <div class="story-text-blocks">
+          <div class="text-block primary">
+            <p class="opening-statement">A few years back, I went to a track meet to watch my old college team compete. I tried timing some runners with my phone's stopwatch, wanting to see how the team had progressed since I was on it.</p>
+          </div>
+          
+          <div class="text-block secondary rotated-left">
+            <p>I was trying to time 3 multiple people and ended up spending the entire time focused on how to make my mess of a timer work instead of actually watching the race and taking split on the side. I lost track of whose splits were whose and what each split was supposed to indicate/record (ex. I took a split when they passed/were passed key people, or when they fell, as well as their laps and 200m splits). At the end, I was never really sure of whose splits were whose and felt like I wasted my time and effort. I did it for a couple other races with similarly poor results. I looked at other people at the meet, and they seemed to simply introduce more people, and have each person time a single person/relay.</p>
+          </div>
+          
+          <div class="text-block tertiary">
+            <div class="quote-block">
+              <div class="quote-bar"></div>
+              <p>The experience stuck with me. Handling multiple timers gracefully seemed like something some timing company or even a couple junior developers would have solved it already.  More importantly, I'd only tried timing a couple races out of an entire meet. </p>
+            </div>
+          </div>
+          
+          <div class="text-block quaternary rotated-right">
+            <p>Coaches and athletes deal with this constantly while trying to focus on what actually matters which is supporting their team, cheering at the right moments, giving real-time feedback. It seemed ridiculous that such a basic need was forcing people to choose between getting useful data and being present for their athletes. It was also frustrating that companies are out there building extravagant tools requiring very complex code, and yet solutions to my problem are still common. So while I was watching TV I'd idly sketch out some ideas of what one might look like.</p>
+          </div>
+          
+          <div class="text-block primary asymmetric">
+            <p>But, then COVID-19 lockdown happened about 10 months later and I had a lot of time on my hands. So I decided to try building my own. I built it in ~3 weeks, working on it while I watched TV after work. It had no polish whatsoever, but it worked. I posted it to Reddit, and got some really helpful objective and functional feedback. Within a couple weeks I had about a couple hundred weekly users. I thought they would all eventually forget about it, but the numbers slowly creeped up, despite me not posting more about it.</p>
+          </div>
+          
+          <div class="text-block conclusion">
+            <div class="conclusion-inner">
+              <p>I would use it periodically myself when I needed it. But I thought it was interesting that apparently other folks do too. This kept me thinking about it every few weeks. I would think of how I could have done a better job.</p>
+              <p>Over the course of a few months I came up with features it could use until I had a nice laundry list of new features to add that seemed worthwhile. Then I figured out how I would need to build it so I could continue adding stuff to it in the future. This is important because I wanted it to be local-first. Since with local-first apps you can't restructure the data on your own between upgrades, I knew I had to get the fundamentals of it exactly right ahead of time. Once I had that, I knew I was ready to build version 2.</p>
+              <p class="final-statement">This is that Version 2. Same fundamental idea as the first, but rebuilt to be more reliable, easier to use, and easier for me to work on.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Version 2 Technical Details - Accordion with Asymmetry -->
+  <section class="technical-section">
+    <div class="technical-header">
+      <div class="section-number-large">02</div>
+      <h2 class="section-title-diagonal">
+        <span class="title-stroke text-uppercase">Version 2</span>
+        <span class="title-fill text-uppercase">Technical Details</span>
+      </h2>
+    </div>
+    
+    <div class="technical-content">
+      <mat-accordion multi class="technical-accordion">
+        <!-- Actually Upgradeable -->
+        <mat-expansion-panel class="panel-asymmetric primary">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="panel-title-custom">
+              <div class="panel-icon-block">
+                <mat-icon>upgrade</mat-icon>
+              </div>
+              <div class="panel-text-block">
+                <span class="panel-label text-uppercase">Architecture</span>
+                <span class="panel-name">Actually Upgradeable</span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          
+          <div class="panel-content-asymmetric">
+            <div class="content-section problem">
+              <h3>The Problem with V1</h3>
+              <p>In version 1, I was using an early version of VueJS which did not have services for inter-communication across an application. This made cross-communication between different parts/page of the application very difficult.</p>
+            </div>
+            
+            <div class="content-section solution">
+              <h3>The Solution</h3>
+              <div class="solution-highlight">
+                <p><strong>Angular 20.</strong> I decided to build the second version with Angular v20, which has very robust support for intercommunication through services, has dependency injection to manage memory/dependencies better, and has signals to manage the state of the user interface easier.</p>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Event-Driven Data Model -->
+        <mat-expansion-panel class="panel-asymmetric secondary">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="panel-title-custom">
+              <div class="panel-icon-block">
+                <mat-icon>timeline</mat-icon>
+              </div>
+              <div class="panel-text-block">
+                <span class="panel-label text-uppercase">Data</span>
+                <span class="panel-name">Event-Driven Data Model</span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="panel-content-asymmetric">
+            <div class="content-section problem">
+              <h3>The Problem with V1's Data Model</h3>
+              <p>V1 stored stopwatch state as a snapshot that got continuously overwritten. History was collapsed into a single running total, and what actually happened along the way was discarded. This made the data model fragile in ways that directly limited what the app could do.</p>
+            </div>
+
+            <div class="content-section solution">
+              <h3>What V2 Makes Possible</h3>
+              <div class="solution-highlight">
+                <p>By recording every action as a discrete timestamped event and deriving state from that history, a lot of things that were hard or impossible become straightforward:</p>
+              </div>
+              <ol>
+                <li>Adding, removing, or editing a split is a clean operation with no risk of silently corrupting the rest of your data.</li>
+                <li>Adding a new kind of marker fits into the same structure without touching anything else.</li>
+              </ol>
+            </div>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Smart Analytics -->
+        <mat-expansion-panel class="panel-asymmetric tertiary">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="panel-title-custom">
+              <div class="panel-icon-block">
+                <mat-icon>analytics</mat-icon>
+              </div>
+              <div class="panel-text-block">
+                <span class="panel-label text-uppercase">Analytics</span>
+                <span class="panel-name">Smart Analytics</span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="panel-content-asymmetric">
+            <div class="content-section problem">
+              <h3>The Problem</h3>
+              <p>During a race, the people running stopwatches want to focus on the race, not on manually crunching numbers after the fact. But even with good split data in hand, knowing what's likely coming next is just as valuable as knowing what already happened; and mentally projecting future splits while simultaneously timing, coaching, and watching is simply too much to ask of anyone. If you're busy predicting, you're not acting.</p>
+            </div>
+
+            <div class="content-section solution">
+              <h3>A Data-Driven Approach</h3>
+              <div class="solution-highlight">
+                <p>Rather than applying a single fixed formula, the analytics layer runs multiple strategies simultaneously and weighs their confidence against each other to surface the most credible results. Currently that's fifteen strategies, covering approaches like detecting rhythmic patterns in your split gaps, inferring your activity type from pace signatures, recognizing athletes' natural tendency toward round numbers and familiar lap fractions, and identifying the underlying distance unit your session is structured around.</p>
+              </div>
+              <p>For now that's focused on predicting upcoming splits. The goal is to free you up to actually do something about what's coming (e.g. give feedback, make a call, be present, etc) rather than spending that time doing the math yourself. The architecture is in place to go well beyond that over time (trend detection, anomaly flagging, benchmark comparison, etc.) without needing to change how the underlying data is collected or stored.</p>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </section>
+
+  <!-- The Point & Privacy - Asymmetric Dual Block -->
+  <section class="philosophy-section">
+    <div class="philosophy-grid">
+      <div class="section-number-rotated">03</div>
+      
+      <mat-card class="philosophy-card point">
+        <div class="card-header-geometric">
+          <div class="header-shape"></div>
+          <mat-card-header>
+            <mat-icon>star</mat-icon>
+            <mat-card-title>The Point</mat-card-title>
+          </mat-card-header>
+        </div>
+        <mat-card-content>
+          <p class="lead-paragraph">Good tools are built to be used. Existing solutions provided simple tools at professional pricing. This one provides a borderline professional tool at no cost.</p>
+          <div class="highlight-box">
+            <div class="box-accent"></div>
+            <p><strong>Result:</strong> This does more than most expensive stopwatches, costs nothing, and your data stays yours.</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      
+      <mat-card class="philosophy-card privacy">
+        <div class="card-header-geometric">
+          <div class="header-shape"></div>
+          <mat-card-header>
+            <mat-icon>security</mat-icon>
+            <mat-card-title>Privacy</mat-card-title>
+          </mat-card-header>
+        </div>
+        <mat-card-content>
+          <p class="lead-paragraph">It's completely private because there's no reason to have to store your stopwatch data on a server somewhere. And I don't have to run/pay for a server.</p>
+          <p>Privacy was actually a by-product of my original desire to have a stopwatch that didn't need internet access and for it to be free. A lot of track/cross country meets are in areas with poor cell reception, so I wanted mine to work reliably. It also helped that the tooling for front-end only web applications was hitting maturity at the time.</p>
+          <div class="highlight-box">
+            <div class="box-accent"></div>
+            <p><strong>Reality:</strong> I can see how many people created a stopwatch, or created splits. I can't tell anything about you, your stopwatch or your split.</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+
+  <!-- FAQ Section - Industrial Grid -->
+  <section class="faq-section">
+  <div class="faq-header">
+    <div class="section-number-large">04</div>
+    <h2 class="section-title-stacked">
+      <span class="title-line-1 text-uppercase">Frequently</span>
+      <span class="title-line-2 text-uppercase">Asked</span>
+      <span class="title-line-3 text-uppercase">Questions</span>
+    </h2>
+  </div>
+  
+  <div class="faq-grid">
+    @for(faq of faqs; track $index) {
+      <div class="faq-item" [ngClass]="faq.cssClass">
+        <div class="faq-label-rotated">
+          <span class="text-uppercase">{{ faq.category }}</span>
+        </div>
+        <div class="faq-content">
+          <h3>{{ faq.question }}</h3>
+          <div [innerHTML]="faq.answer"></div>
+        </div>
+      </div>
+    }
+  </div>
+</section>
+
+  <!-- Feedback Section - Bold CTA -->
+  <section class="feedback-section">
+    <div class="feedback-grid">
+      <div class="feedback-content">
+        <div class="section-number-massive">05</div>
+        <h2 class="feedback-title text-uppercase">Feedback</h2>
+        <p class="feedback-text">Have suggestions? Found a bug? Want a feature?</p>
+        <p class="feedback-subtext">Contact info, bug reporting, and feature requests available on <a style="color: var(--mat-sys-primary)" [href]="repositoryURL">GitHub</a>.</p>
+      </div>
+      <div class="feedback-geometric">
+        <div class="geometric-stack">
+          <div class="stack-square red"></div>
+          <div class="stack-square black"></div>
+          <div class="stack-circle"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,186 @@
+// Group List Detail View - Material Design 3 System Colors
+.group-list-item {
+  display: flex;
+  padding: 12px 16px;
+  min-height: 72px;
+  text-decoration: none;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  border-left: 3px solid transparent;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  transition: all 0.15s ease-in-out;
+  
+  &:hover {
+    background-color: var(--mat-sys-surface-container-highest);
+    text-decoration: none;
+    
+    .delete-button {
+      opacity: 1;
+    }
+  }
+  
+  &.active {
+    background-color: var(--mat-sys-secondary-container);
+    border-left-color: var(--mat-sys-secondary);
+    
+    .group-title {
+      color: var(--mat-sys-on-secondary-container);
+      font-weight: 700;
+    }
+    
+    .group-preset,
+    .stopwatch-count,
+    .creation-time {
+      color: var(--mat-sys-on-secondary-container);
+    }
+  }
+  
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: -2px;
+  }
+}
+
+// Primary Content Section
+.primary-content {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+// Typography hierarchy
+.group-title {
+  color: var(--mat-sys-on-surface);
+  line-height: 1.3;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  
+  .group-list-item:not(.active) & {
+    font-weight: 500;
+  }
+  
+  .group-list-item.active & {
+    font-weight: 700;
+  }
+}
+
+.group-preset {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.875rem;
+  line-height: 1.2;
+  font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Metadata Section
+.metadata-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  margin-left: 12px;
+  min-width: 0;
+}
+
+.stopwatch-count {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.875rem;
+  line-height: 1.2;
+  font-weight: 500;
+  white-space: nowrap;
+  margin-bottom: 4px;
+  
+  .count-number {
+    font-weight: 700;
+    color: var(--mat-sys-primary);
+  }
+  
+  .count-label {
+    margin-left: 4px;
+    color: var(--mat-sys-on-surface-variant);
+  }
+  
+  .group-list-item.active & {
+    .count-number {
+      color: var(--mat-sys-on-secondary-container);
+    }
+  }
+}
+
+.creation-time {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  font-weight: 400;
+  white-space: nowrap;
+  opacity: 0.8;
+}
+
+// Action Section
+.action-section {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.delete-button {
+  opacity: 0.6;
+  transition: opacity 0.15s ease-in-out;
+  color: var(--mat-sys-on-surface-variant);
+  
+  &:hover {
+    opacity: 1;
+    background-color: var(--mat-sys-error-container);
+    color: var(--mat-sys-on-error-container);
+  }
+  
+  mat-icon {
+    font-size: 1.125rem;
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .group-list-item {
+    padding: 12px;
+    min-height: 64px;
+    
+    .creation-time {
+      display: none;
+    }
+    
+    .stopwatch-count {
+      font-size: 0.8125rem;
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .group-list-item {
+    border-bottom-width: 2px;
+    border-left-width: 4px;
+    
+    &.active {
+      border-left-width: 4px;
+    }
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .group-list-item {
+    transition: none;
+  }
+  
+  .delete-button {
+    transition: none;
+  }
+}

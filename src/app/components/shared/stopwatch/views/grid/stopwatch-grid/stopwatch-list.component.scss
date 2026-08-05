@@ -1,0 +1,231 @@
+// Loading State - Asymmetric Swiss-inspired layout
+.asymmetric-loading {
+    position: relative;
+    min-height: 400px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    gap: 1rem;
+    padding: 2rem;
+}
+
+.loading-block-1 {
+    grid-column: 1 / 6;
+    grid-row: 2 / 5;
+    transform: rotate(-3deg);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.loading-block-2 {
+    grid-column: 7 / 13;
+    grid-row: 4 / 7;
+    transform: rotate(2deg);
+    animation: pulse 2s ease-in-out infinite 0.3s;
+}
+
+.loading-block-3 {
+    grid-column: 3 / 5;
+    grid-row: 6 / 8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.skeleton-card {
+    background: var(--mat-sys-surface-container);
+    border: 2px solid var(--mat-sys-outline-variant);
+    height: 100%;
+}
+
+.skeleton-line {
+    height: 16px;
+    background: var(--mat-sys-on-surface);
+    opacity: 0.1;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    animation: shimmer 1.5s ease-in-out infinite;
+    
+    &.short {
+        width: 60%;
+    }
+}
+
+.floating-spinner {
+    ::ng-deep .mat-mdc-progress-spinner circle {
+        stroke: var(--mat-sys-primary);
+    }
+}
+
+// Empty State - Deconstructed asymmetric layout
+.empty-state-asymmetric {
+    position: relative;
+    min-height: 500px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 1.5rem;
+    padding: 3rem 2rem;
+}
+
+.empty-block-1 {
+    grid-column: 1 / 4;
+    grid-row: 1 / 4;
+    transform: rotate(-8deg);
+    z-index: 1;
+    
+    mat-card {
+        background: var(--mat-sys-surface-container-high);
+        border: 3px solid var(--mat-sys-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        
+        mat-card-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
+
+.empty-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: var(--mat-sys-on-surface);
+    opacity: 0.3;
+}
+
+.empty-block-2 {
+    grid-column: 4 / 10;
+    grid-row: 3 / 8;
+    transform: rotate(1.5deg);
+    z-index: 2;
+    
+    .action-card {
+        background: var(--mat-sys-surface-container);
+        border-left: 8px solid var(--mat-sys-tertiary);
+        height: 100%;
+        display: flex;
+        align-items: center;
+        
+        mat-card-content {
+            width: 100%;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--mat-sys-on-surface);
+            margin: 0 0 0.5rem 0;
+            letter-spacing: -0.02em;
+        }
+        
+        p {
+            color: var(--mat-sys-on-surface-variant);
+            margin: 0 0 2rem 0;
+            font-size: 1.1rem;
+        }
+        
+        button {
+            font-weight: 600;
+            padding: 0 2rem;
+            
+            mat-icon {
+                margin-right: 0.5rem;
+            }
+        }
+    }
+}
+
+.empty-block-3 {
+    grid-column: 10 / 13;
+    grid-row: 7 / 11;
+    transform: rotate(12deg);
+    z-index: 0;
+}
+
+.geometric-accent {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        var(--mat-sys-secondary-container) 0%,
+        var(--mat-sys-tertiary-container) 100%
+    );
+    opacity: 0.4;
+    clip-path: polygon(0 0, 100% 20%, 100% 100%, 20% 100%);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        opacity: 0.1;
+    }
+    50% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 0.1;
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .asymmetric-loading,
+    .empty-state-asymmetric {
+        grid-template-columns: 1fr;
+        min-height: 300px;
+        padding: 1rem;
+    }
+    
+    .loading-block-1,
+    .loading-block-2 {
+        grid-column: 1;
+        transform: rotate(0);
+    }
+    
+    .loading-block-1 {
+        grid-row: 1 / 3;
+    }
+    
+    .loading-block-2 {
+        grid-row: 3 / 5;
+    }
+    
+    .loading-block-3 {
+        grid-column: 1;
+        grid-row: 5 / 6;
+    }
+    
+    .empty-block-1,
+    .empty-block-2,
+    .empty-block-3 {
+        grid-column: 1;
+        transform: rotate(0);
+    }
+    
+    .empty-block-1 {
+        grid-row: 1 / 3;
+    }
+    
+    .empty-block-2 {
+        grid-row: 3 / 7;
+    }
+    
+    .empty-block-3 {
+        grid-row: 7 / 9;
+    }
+}

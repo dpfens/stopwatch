@@ -1,0 +1,290 @@
+<div class="container-fluid py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8 col-xl-6">
+      
+      <!-- Page Header -->
+      <div class="d-flex align-items-center mb-4">
+        <mat-icon class="me-3 mat-primary-icon fs-2">settings</mat-icon>
+        <div>
+          <h1 class="mb-1">Settings</h1>
+          <p class="mat-muted-text mb-0">Customize your application preferences</p>
+        </div>
+      </div>
+
+      <!-- Error Alert -->
+      @if (!isLoading() && error()) {
+        <div class="mat-error-alert d-flex align-items-center mb-4" role="alert">
+          <mat-icon class="me-2">error</mat-icon>
+          <div class="flex-grow-1">
+            {{ error() }}
+          </div>
+          <button type="button" 
+                  mat-stroked-button 
+                  color="warn" 
+                  class="btn-sm ms-2" 
+                  (click)="clearError()">
+            Dismiss
+          </button>
+        </div>
+      }
+
+      <!-- Main Settings Card -->
+      <mat-card class="shadow-sm">
+        <mat-card-header class="border-bottom pb-3 mb-4">
+          <mat-card-title class="d-flex align-items-center">
+            <mat-icon class="me-2">tune</mat-icon>
+            Application Preferences
+          </mat-card-title>
+          <mat-card-subtitle>
+            Configure your personal settings and preferences
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <!-- Loading Spinner -->
+          @if (isLoading()) {
+            <div class="d-flex justify-content-center py-5">
+              <mat-spinner diameter="40" color="primary"></mat-spinner>
+            </div>
+          } @else {
+            
+            <form [formGroup]="settingsForm" (ngSubmit)="saveSettings()" novalidate>
+              
+              <!-- Settings List -->
+              @for (config of settingsConfig; track config.id) {
+                <div class="setting-item mb-4 p-3 border rounded">
+                  
+                  <!-- Setting Header -->
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="flex-grow-1">
+                      <h6 class="mb-1 fw-semibold">
+                        {{ config.label }}
+                        @if (hasUserCustomization(config.id)) {
+                          <mat-icon class="ms-1 mat-primary-icon" style="font-size: 16px; width: 16px; height: 16px;">
+                            person
+                          </mat-icon>
+                        }
+                      </h6>
+                      @if (config.description) {
+                        <small class="mat-muted-text">{{ config.description }}</small>
+                      }
+                    </div>
+                    
+                    <!-- Scope Indicators -->
+                    <div class="d-flex gap-1 ms-3">
+                      @for (scope of config.supportedScopes; track scope) {
+                        <mat-chip-set>
+                          <mat-chip [class]="'scope-chip scope-' + scope">
+                            <mat-icon matChipAvatar>{{ scopeConfig[scope].icon }}</mat-icon>
+                            {{ scopeConfig[scope].label }}
+                          </mat-chip>
+                        </mat-chip-set>
+                      }
+                    </div>
+                  </div>
+
+                  <!-- Form Controls -->
+                  <div class="row align-items-end">
+                    <div class="col-md-8">
+                      
+                      <!-- Text Input -->
+                      @if (config.type === 'text') {
+                        <mat-form-field appearance="outline" class="w-100">
+                          <mat-label>{{ config.label }}</mat-label>
+                          <input matInput 
+                                 [formControlName]="config.id"
+                                 [placeholder]="'Enter ' + config.label.toLowerCase()">
+                          @if (settingsForm.get(config.id)?.errors?.['required']) {
+                            <mat-error>This field is required</mat-error>
+                          }
+                        </mat-form-field>
+                      }
+
+                      <!-- Number Input -->
+                      @if (config.type === 'number') {
+                        <mat-form-field appearance="outline" class="w-100">
+                          <mat-label>{{ config.label }}</mat-label>
+                          <input matInput 
+                                 type="number"
+                                 [formControlName]="config.id"
+                                 [min]="config.min"
+                                 [max]="config.max"
+                                 [step]="config.step"
+                                 [placeholder]="'Enter ' + config.label.toLowerCase()">
+                          @if (settingsForm.get(config.id)?.errors?.['required']) {
+                            <mat-error>This field is required</mat-error>
+                          }
+                          @if (settingsForm.get(config.id)?.errors?.['min']) {
+                            <mat-error>Minimum value is {{ config.min }}</mat-error>
+                          }
+                          @if (settingsForm.get(config.id)?.errors?.['max']) {
+                            <mat-error>Maximum value is {{ config.max }}</mat-error>
+                          }
+                        </mat-form-field>
+                      }
+
+                      <!-- Select Input -->
+                      @if (config.type === 'select' && config.options) {
+                        <mat-form-field appearance="outline" class="w-100">
+                          <mat-label>{{ config.label }}</mat-label>
+                          <mat-select [formControlName]="config.id">
+                            
+                            <!-- Handle SelectOptGroup array -->
+                            @for (optGroup of config.options; track optGroup.display) {
+                              @if (optGroup.options) {
+                                <mat-optgroup [label]="optGroup.display">
+                                  @for (option of optGroup.options; track option.value) {
+                                    <mat-option [value]="option.value">
+                                      <div>
+                                        <div>{{ option.display }}</div>
+                                        @if (option.description) {
+                                          <small class="mat-muted-text">{{ option.description }}</small>
+                                        }
+                                      </div>
+                                    </mat-option>
+                                  }
+                                </mat-optgroup>
+                              }
+                            }
+                            
+                            <!-- Handle simple SelectOption array -->
+                            <!-- This would be for when config.options is SelectOption[] instead of SelectOptGroup[] -->
+                            
+                          </mat-select>
+                          @if (settingsForm.get(config.id)?.errors?.['required']) {
+                            <mat-error>Please select an option</mat-error>
+                          }
+                        </mat-form-field>
+                      }
+
+                      <!-- Boolean Input -->
+                      @if (config.type === 'boolean') {
+                        <div class="d-flex align-items-center py-2">
+                          <mat-slide-toggle 
+                            [formControlName]="config.id" 
+                            color="primary" 
+                            class="me-3">
+                            {{ config.label }}
+                          </mat-slide-toggle>
+                          @if (config.description) {
+                            <small class="mat-muted-text ms-2">{{ config.description }}</small>
+                          }
+                        </div>
+                      }
+
+                    </div>
+
+                    <!-- Reset Button -->
+                    <div class="col-md-4">
+                      <div class="d-flex justify-content-end">
+                        @if (hasUserCustomization(config.id)) {
+                          <button type="button" 
+                                  mat-stroked-button
+                                  color="primary"
+                                  (click)="resetSetting(config.id)"
+                                  [disabled]="isSaving()">
+                            <mat-icon>refresh</mat-icon>
+                            Reset
+                          </button>
+                        }
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              }
+
+            </form>
+          }
+        </mat-card-content>
+
+        <!-- Action Buttons -->
+        @if (!isLoading()) {
+          <mat-card-actions class="border-top pt-3 d-flex justify-content-between">
+            <div>
+              @if (hasUnsavedChanges()) {
+                <mat-chip class="mat-warning-chip d-flex align-items-center">
+                  <mat-icon class="me-1">edit</mat-icon>
+                  Unsaved changes
+                </mat-chip>
+              } @else {
+                <mat-chip class="mat-success-chip d-flex align-items-center">
+                  <mat-icon class="me-1">check</mat-icon>
+                  All changes saved
+                </mat-chip>
+              }
+            </div>
+
+            <div class="d-flex gap-2">
+              <button type="button"
+                      mat-stroked-button
+                      (click)="resetForm()"
+                      [disabled]="isSaving() || !hasUnsavedChanges()">
+                <mat-icon>undo</mat-icon>
+                Reset Form
+              </button>
+
+              <button type="button"
+                      mat-flat-button
+                      color="primary"
+                      (click)="saveSettings()"
+                      [disabled]="isSaving() || !settingsForm.valid || !hasUnsavedChanges()">
+                @if (isSaving()) {
+                  <mat-spinner diameter="16" color="primary"></mat-spinner>
+                  Saving...
+                } @else {
+                  <mat-icon>save</mat-icon>
+                  Save Settings
+                }
+              </button>
+            </div>
+          </mat-card-actions>
+        }
+
+      </mat-card>
+
+      <!-- Settings Info Card -->
+      <mat-card class="mt-4 shadow-sm">
+        <mat-card-header>
+          <mat-card-title class="d-flex align-items-center">
+            <mat-icon class="me-2">info</mat-icon>
+            About Settings Scopes
+          </mat-card-title>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="row">
+            @for (scopeEntry of Object.entries(scopeConfig); track scopeEntry[0]) {
+              <div class="col-md-4 mb-3">
+                <div class="d-flex align-items-start">
+                  <mat-icon 
+                    [style.color]="'var(' + scopeEntry[1].color + ')'"
+                    class="me-2">
+                    {{ scopeEntry[1].icon }}
+                  </mat-icon>
+                  <div>
+                    <h6 class="mb-1">{{ scopeEntry[1].label }}</h6>
+                    <small class="mat-muted-text">
+                      @switch (scopeEntry[0]) {
+                        @case ('user') {
+                          Your personal preferences that apply to all your stopwatches
+                        }
+                        @case ('group') {
+                          Shared settings for team or group stopwatches
+                        }
+                        @case ('global') {
+                          Application-wide defaults used as fallbacks
+                        }
+                      }
+                    </small>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+  </div>
+</div>

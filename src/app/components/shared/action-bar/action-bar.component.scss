@@ -1,0 +1,421 @@
+// Global Action Bar - Material Design 3 System Colors
+.global-action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100000;
+  background: var(--mat-sys-surface-container);
+  border-top: 1px solid var(--mat-sys-outline-variant);
+  box-shadow: 
+    0 -2px 8px rgba(0, 0, 0, 0.1),
+    0 -1px 3px rgba(0, 0, 0, 0.05);
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.visible {
+    transform: translateY(0);
+  }
+
+  &.processing {
+    .action-toolbar {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+  }
+}
+
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  height: 2px;
+
+  ::ng-deep .mat-mdc-progress-bar-buffer {
+    background: var(--mat-sys-surface-variant);
+  }
+}
+
+.action-toolbar {
+  min-height: 72px;
+  padding: 12px 16px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+// Selection Info Section
+.selection-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--mat-sys-on-surface);
+  min-width: 180px;
+
+  mat-icon {
+    color: var(--mat-sys-primary);
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .selection-count {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--mat-sys-primary);
+  }
+
+  .clear-selection {
+    min-width: auto;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      color: var(--mat-sys-on-surface-variant);
+    }
+
+    &:hover mat-icon {
+      color: var(--mat-sys-on-surface);
+    }
+  }
+}
+
+// Action Buttons Section
+.action-buttons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.action-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  white-space: nowrap;
+  
+  &:not(:last-child) {
+    padding-right: 20px;
+    border-right: 1px solid var(--mat-sys-outline-variant);
+  }
+
+  button {
+    min-width: auto;
+    height: 40px;
+    padding: 0 12px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    
+    mat-icon {
+      margin-right: 6px;
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+
+    .action-count {
+      font-size: 0.75rem;
+      margin-left: 4px;
+      opacity: 0.8;
+      font-weight: 400;
+    }
+  }
+
+  // Control group - primary actions
+  &.control-group {
+    .start-button {
+      background: var(--mat-sys-primary);
+      color: var(--mat-sys-on-primary);
+
+      &:hover {
+        background: var(--mat-sys-primary);
+        filter: brightness(1.1);
+      }
+    }
+
+    .stop-button {
+      background: var(--mat-sys-error);
+      color: var(--mat-sys-on-error);
+
+      &:hover {
+        background: var(--mat-sys-error);
+        filter: brightness(1.1);
+      }
+    }
+
+    .resume-button {
+      background: var(--mat-sys-secondary);
+      color: var(--mat-sys-on-secondary);
+
+      &:hover {
+        background: var(--mat-sys-secondary);
+        filter: brightness(1.1);
+      }
+    }
+  }
+
+  // Event group - outlined buttons with primary color
+  &.event-group button {
+    border: 1px solid var(--mat-sys-outline);
+    background: transparent;
+    color: var(--mat-sys-primary);
+
+    &:hover {
+      background: var(--mat-sys-primary-container);
+      color: var(--mat-sys-on-primary-container);
+      border-color: var(--mat-sys-primary);
+    }
+  }
+
+  // Management group - tertiary actions
+  &.management-group {
+    .reset-button {
+      color: var(--mat-sys-error);
+      border: 1px solid var(--mat-sys-outline);
+      background: transparent;
+
+      &:hover {
+        background: var(--mat-sys-error-container);
+        color: var(--mat-sys-on-error-container);
+        border-color: var(--mat-sys-error);
+      }
+    }
+
+    .delete-button {
+      color: var(--mat-sys-error);
+      border: 1px solid var(--mat-sys-outline);
+      background: transparent;
+
+      &:hover {
+        background: var(--mat-sys-error-container);
+        color: var(--mat-sys-on-error-container);
+        border-color: var(--mat-sys-error);
+      }
+    }
+
+    .fork-button {
+      color: var(--mat-sys-tertiary);
+      border: 1px solid var(--mat-sys-outline);
+      background: transparent;
+
+      &:hover {
+        background: var(--mat-sys-tertiary-container);
+        color: var(--mat-sys-on-tertiary-container);
+        border-color: var(--mat-sys-tertiary);
+      }
+    }
+  }
+}
+
+// Quick Actions (FAB for mobile)
+.quick-actions {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  min-width: 56px;
+  justify-content: flex-end;
+
+  .primary-action {
+    width: 48px;
+    height: 48px;
+
+    &.start-fab {
+      background: var(--mat-sys-primary);
+      color: var(--mat-sys-on-primary);
+
+      &:hover {
+        background: var(--mat-sys-primary);
+        filter: brightness(1.1);
+      }
+    }
+
+    &.stop-fab {
+      background: var(--mat-sys-error);
+      color: var(--mat-sys-on-error);
+
+      &:hover {
+        background: var(--mat-sys-error);
+        filter: brightness(1.1);
+      }
+    }
+
+    &.resume-fab {
+      background: var(--mat-sys-secondary);
+      color: var(--mat-sys-on-secondary);
+
+      &:hover {
+        background: var(--mat-sys-secondary);
+        filter: brightness(1.1);
+      }
+    }
+
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .action-toolbar {
+    padding: 8px 12px;
+    min-height: 64px;
+    gap: 12px;
+  }
+
+  .selection-info {
+    min-width: 140px;
+    gap: 8px;
+
+    .selection-count {
+      font-size: 0.8rem;
+    }
+  }
+
+  .action-buttons {
+    gap: 12px;
+  }
+
+  .action-group {
+    gap: 6px;
+    
+    &:not(:last-child) {
+      padding-right: 12px;
+    }
+
+    button {
+      height: 36px;
+      padding: 0 8px;
+      font-size: 0.8rem;
+
+      mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        margin-right: 4px;
+      }
+    }
+
+    button span:not(.action-count) {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .action-toolbar {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .selection-info {
+    min-width: 120px;
+  }
+
+  .event-group,
+  .management-group .fork-button,
+  .management-group .reset-button {
+    display: none;
+  }
+
+  .quick-actions {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .action-toolbar {
+    min-height: 56px;
+    padding: 6px 8px;
+  }
+
+  .action-group:not(.control-group):not(.management-group) {
+    display: none;
+  }
+
+  .management-group button:not(.delete-button) {
+    display: none;
+  }
+
+  .selection-info {
+    min-width: 100px;
+    gap: 6px;
+
+    .selection-count {
+      font-size: 0.75rem;
+    }
+  }
+
+  .quick-actions .primary-action {
+    width: 44px;
+    height: 44px;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+// Dark theme enhancements
+@media (prefers-color-scheme: dark) {
+  .global-action-bar {
+    box-shadow: 
+      0 -2px 8px rgba(0, 0, 0, 0.3),
+      0 -1px 3px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .action-group:not(:last-child) {
+    border-right-width: 2px;
+  }
+
+  .global-action-bar {
+    border-top-width: 2px;
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .global-action-bar {
+    transition: none;
+  }
+}
+
+// Focus management
+.action-toolbar button:focus-visible {
+  outline: 2px solid var(--mat-sys-primary);
+  outline-offset: 2px;
+  z-index: 1;
+}
+
+// Loading state for buttons
+.processing button {
+  cursor: wait;
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
