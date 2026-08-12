@@ -122,7 +122,6 @@ export class BaseStopwatchDetailViewComponent implements OnInit, AfterViewInit, 
     const actualEvents = controller.getEvents()
       .filter(e => !['stop', 'resume'].includes(e.type));
     const lastActualEvent = actualEvents[actualEvents.length - 1];
-    const lastActualLap = actualLapEvents[actualLapEvents.length - 1];
 
     const forecastedSplits: VisibleSplit[] = [];
 
@@ -618,25 +617,26 @@ export class BaseStopwatchDetailViewComponent implements OnInit, AfterViewInit, 
     const state = this.controller().getState();
     const eligibleSplits = state.sequence.filter(event => !['stop', 'resume'].includes(event.type));
     const visibleSplits: VisibleSplit[] = [];
+    let lapAnchorId = eligibleSplits[0]?.id;   // start event, then each lap
     let previousLapDuration: number | undefined;
-    
-    for(let i = 1; i < eligibleSplits.length; i++) {
-      const rawSplitDuration = this.controller().getElapsedTimeBetweenEvents(eligibleSplits[i - 1].id, eligibleSplits[i].id);
-      const splitDuration = this.timeService.toDurationObject(rawSplitDuration);
+
+    for (let i = 1; i < eligibleSplits.length; i++) {
       const event = eligibleSplits[i];
-      
-      // Calculate difference only for laps (compared to previous lap)
+      const isLap = event.type === 'lap';
+      // laps measure from the previous lap; everything else from the previous event
+      const anchorId = isLap ? lapAnchorId : eligibleSplits[i - 1].id;
+      const rawSplitDuration = this.controller().getElapsedTimeBetweenEvents(anchorId, event.id);
       let difference: number | undefined;
-      if (event.type === 'lap') {
+      if (isLap) {
         if (previousLapDuration !== undefined) {
           difference = rawSplitDuration - previousLapDuration;
         }
         previousLapDuration = rawSplitDuration;
+        lapAnchorId = event.id;
       }
-      
       visibleSplits.push({
-        duration: splitDuration, 
-        event, 
+        duration: this.timeService.toDurationObject(rawSplitDuration),
+        event,
         unit: event.unit,
         difference
       });
