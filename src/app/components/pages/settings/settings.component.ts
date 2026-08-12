@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, signal, computed, inject, AfterViewInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 
@@ -42,7 +42,6 @@ interface SettingConfiguration {
   selector: 'app-settings',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatCardModule,
     MatFormFieldModule,
@@ -55,7 +54,7 @@ interface SettingConfiguration {
     MatDividerModule,
     MatChipsModule,
     MatSlideToggleModule
-  ],
+],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss'
 })

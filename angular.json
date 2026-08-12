@@ -34,7 +34,7 @@
               },
               {
                 "glob": "**/*",
-                "input": "/public/fonts",
+                "input": "public/fonts",
                 "output": "/assets/fonts"
               }
             ],

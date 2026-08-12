@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, signal, computed, inject } from '@angular/core';
-import { Location, CommonModule } from '@angular/common';
+import { Location } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,12 +11,11 @@ import { GroupService } from '../../../services/group/group.service';
   selector: 'not-found',
   standalone: true,
   imports: [
-    CommonModule,
-    MatIconModule, 
-    MatButtonModule, 
+    MatIconModule,
+    MatButtonModule,
     MatCardModule,
     RouterLink
-  ],
+],
   templateUrl: './not-found.component.html',
   styleUrls: ['./not-found.component.scss']
 })
