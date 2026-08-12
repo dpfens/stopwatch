@@ -1,4 +1,4 @@
-import { Injectable, ElementRef, signal, computed, effect, inject, DestroyRef, Directive, EventEmitter, Output, Input } from '@angular/core';
+import { Injectable, ElementRef, signal, computed, effect, inject, DestroyRef, Directive, EventEmitter, Output, Input, Signal } from '@angular/core';
 
 // Using native Web API types
 type IntersectionObserverCallback = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => void;
@@ -36,20 +36,25 @@ export class IntersectionService {
   // Map to track which observer is watching which element
   private readonly elementObserverMap = new Map<Element, IntersectionObserver>();
   
-  // Get visibility signal for a specific element
-  visibility(element: Element) {
-    return computed(() => {
-      const map = this.visibilityMap();
-      return map.get(element) || null;
-    });
+  private readonly visibilitySignals = new Map<Element, Signal<ElementVisibility | null>>();
+  private readonly visibleSignals = new Map<Element, Signal<boolean>>();
+
+  visibility(element: Element): Signal<ElementVisibility | null> {
+    let sig = this.visibilitySignals.get(element);
+    if (!sig) {
+      sig = computed(() => this.visibilityMap().get(element) ?? null);
+      this.visibilitySignals.set(element, sig);
+    }
+    return sig;
   }
-  
-  // Check if element is visible
-  isVisible(element: Element) {
-    return computed(() => {
-      const vis = this.visibility(element)();
-      return vis?.isIntersecting ?? false;
-    });
+
+  isVisible(element: Element): Signal<boolean> {
+    let sig = this.visibleSignals.get(element);
+    if (!sig) {
+      sig = computed(() => this.visibility(element)()?.isIntersecting ?? false);
+      this.visibleSignals.set(element, sig);
+    }
+    return sig;
   }
   
   // Get intersection ratio for element
@@ -105,6 +110,8 @@ export class IntersectionService {
     if (observer) {
       observer.unobserve(element);
       this.elementObserverMap.delete(element);
+      this.visibilitySignals.delete(element);
+      this.visibleSignals.delete(element);
       
       // Remove from visibility map
       this.visibilityMap.update(map => {

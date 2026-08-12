@@ -1,6 +1,9 @@
-import { Component, input, computed, effect, inject, signal, ElementRef, NgZone } from '@angular/core';
+import { Component, input, computed, effect, inject, signal, ElementRef, NgZone, ChangeDetectionStrategy } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
 import { BrowserStateService } from '../../../services/utility/browser/browser-page.service';
+import { IntersectionService, ObserverOptions } from '../../../services/utility/browser/intersection-observer.service';
+
+const TIMER_OBSERVER_OPTIONS: ObserverOptions = { threshold: 0, rootMargin: '50% 0px' };
 
 @Component({
   selector: 'simple-timer',
@@ -12,7 +15,7 @@ export class SimpleTimerComponent {
   private readonly timeService = inject(TimeService);
   private readonly browserState = inject(BrowserStateService);
   private readonly elementRef = inject(ElementRef);
-  private readonly ngZone = inject(NgZone);
+  private readonly intersection = inject(IntersectionService);
 
   getDuration = input.required<() => number>();
   isRunning = input<boolean>(false);
@@ -22,9 +25,11 @@ export class SimpleTimerComponent {
   private currentDuration = signal(0);
   private intervalId?: number;
   private animationFrameId?: number;
-  private shouldBeRunning = signal(false);
-  private isIntersecting = signal(false);
-  private intersectionObserver?: IntersectionObserver;
+  private readonly isIntersecting = this.intersection.isVisible(this.elementRef.nativeElement);
+
+
+  private static nextId = 0;
+  private readonly instanceId = SimpleTimerComponent.nextId++;
   
   // Display the formatted time
   displayTime = computed(() => {
@@ -43,16 +48,11 @@ export class SimpleTimerComponent {
   });
 
   private canRun = computed(() =>
-    this.shouldBeRunning() &&
     this.browserState.visibility.isVisible() &&
     this.isIntersecting()
   );
 
 constructor() {
-  effect(() => {
-    this.shouldBeRunning.set(this.isRunning());
-  });
-
   effect(() => {
     this.includeMs(); // restart the loop if precision mode changes
     if (this.canRun()) {
@@ -66,12 +66,12 @@ constructor() {
 
   ngAfterViewInit(): void {
     this.updateDuration();
-    this.setupIntersectionObserver();
+    this.intersection.observe(this.elementRef.nativeElement, TIMER_OBSERVER_OPTIONS);
   }
 
   private startTimer(): void {
     this.stopTimer();
-
+    this.updateDuration();
     if (this.includeMs()) {
       const animate = () => {
         if (!this.canRun()) {
@@ -91,23 +91,6 @@ constructor() {
         this.updateDuration();
       }, 100);
     }
-  }
-
-  private setupIntersectionObserver(): void {
-    // Create observer with root margin to start slightly before element enters viewport
-    this.intersectionObserver = new IntersectionObserver(
-      (entries) => {
-        this.ngZone.run(() => {
-          entries.forEach((entry) => this.isIntersecting.set(entry.isIntersecting));
-        });
-      },
-      {
-        threshold: 0, // Trigger as soon as any part is visible
-        rootMargin: '50px' // Start observing 50px before entering viewport
-      }
-    );
-
-    this.intersectionObserver.observe(this.elementRef.nativeElement);
   }
 
   private stopTimer(): void {
@@ -143,11 +126,6 @@ constructor() {
 
   ngOnDestroy(): void {
     this.stopTimer();
-    
-    // Clean up intersection observer
-    if (this.intersectionObserver) {
-      this.intersectionObserver.disconnect();
-      this.intersectionObserver = undefined;
-    }
+    this.intersection.unobserve(this.elementRef.nativeElement);
   }
 }

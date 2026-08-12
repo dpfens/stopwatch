@@ -13,6 +13,7 @@ import { ApplicationAnalyticsService } from '../../../../services/analytics/appl
 import SplitPredictor from '../../../../analysis/split-prediction';
 import { ConfidenceInterval, PredictionResult, TimeCastingStrategy } from '../../../../models/sequence/analysis/strategy';
 import { createEnsembleStrategy } from '../../../../analysis';
+import { CachedStopwatchStateController } from '../../../../controllers/stopwatch/cached-stopwatch-state-controller';
 
 // Define strongly-typed form interface
 interface StopwatchSettingsForm {
@@ -39,9 +40,10 @@ export class BaseStopwatchDetailViewComponent implements OnInit, AfterViewInit, 
   protected readonly analyticService = inject(ApplicationAnalyticsService);
 
   id = input.required<UniqueIdentifier>();
-  instance = computed(() => 
-    this.service.instances().find(inst => inst.id === this.id())
-  );
+  instance = computed(() => {
+    console.log('finding instance');
+    return this.service.instances().find(inst => inst.id === this.id())
+});
   selectionMode = input(false);
 
   showControls = input(true);
@@ -53,12 +55,14 @@ export class BaseStopwatchDetailViewComponent implements OnInit, AfterViewInit, 
   private elapsedTimeForFilter = signal(0);
   private filterCheckInterval?: number;
 
-  getInstance(): ContextualStopwatchEntity {
+  private readonly instanceOrThrow = computed(() => {
     const inst = this.instance();
-    if (!inst) {
-      throw new Error(`Stopwatch ${this.id()} not found`);
-    }
+    if (!inst) throw new Error(`Stopwatch ${this.id()} not found`);
     return inst;
+  });
+
+  getInstance(): ContextualStopwatchEntity {
+    return this.instanceOrThrow();
   }
 
   groups = this.groupService.instances;
@@ -223,7 +227,7 @@ export class BaseStopwatchDetailViewComponent implements OnInit, AfterViewInit, 
     
     // Create new controller if not cached
     if (!this._controllerCache) {
-      this._controllerCache = new StopwatchStateController(instance.state);
+      this._controllerCache = new CachedStopwatchStateController(instance.state);
     }
     
     return this._controllerCache;
@@ -292,21 +296,22 @@ export class BaseStopwatchDetailViewComponent implements OnInit, AfterViewInit, 
     });
 
     // Effect to update elapsed time signal while running
-    effect(() => {
-      const isRunning = this.controller().isRunning();
-      
-      if (isRunning) {
-        this.filterCheckInterval = window.setInterval(() => {
-          this.elapsedTimeForFilter.set(this.controller().getElapsedTime());
-        }, 500); // Check every 500ms
-      } else {
-        if (this.filterCheckInterval) {
-          clearInterval(this.filterCheckInterval);
-          this.filterCheckInterval = undefined;
-        }
-        // Update once when stopped
-        this.elapsedTimeForFilter.set(this.controller().getElapsedTime());
+    effect((onCleanup) => {
+      const controller = this.controller();
+
+      if (!controller.isRunning()) {
+        this.elapsedTimeForFilter.set(controller.getElapsedTime());
+        return;
       }
+
+      // Nothing to filter — don't burn a timer
+      if (this.computedEvents().length === 0) return;
+
+      const id = window.setInterval(() => {
+        this.elapsedTimeForFilter.set(this.controller().getElapsedTime());
+      }, 500);
+
+      onCleanup(() => clearInterval(id));
     });
   }
 
