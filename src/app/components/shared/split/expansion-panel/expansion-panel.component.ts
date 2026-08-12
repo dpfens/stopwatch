@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, OnInit, Output, signal, OnDestroy, computed } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output, signal, OnDestroy, computed, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -33,6 +33,7 @@ interface SplitFormData {
     MatIconModule
   ],
   templateUrl: './expansion-panel.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './expansion-panel.component.scss'
 })
 export class SplitExpansionPanelComponent extends BaseSplitComponent implements OnInit, OnDestroy {

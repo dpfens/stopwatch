@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { BaseStopwatchDetailViewComponent } from '../../base-stopwatch-detail-view';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatIconModule} from '@angular/material/icon';
@@ -26,6 +26,7 @@ import { RouterModule } from '@angular/router';
     RouterModule
 ],
   templateUrl: './stopwatch-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './stopwatch-detail.component.scss'
 })
 export class StopwatchGridDetailViewComponent extends BaseStopwatchDetailViewComponent {

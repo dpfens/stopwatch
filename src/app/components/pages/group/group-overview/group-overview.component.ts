@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { GroupService } from '../../../../services/group/group.service';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatCardModule } from '@angular/material/card';
@@ -91,6 +91,7 @@ interface ComplexityLevel {
     StopwatchCollectionViewComponent
 ],
   templateUrl: './group-overview.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './group-overview.component.scss'
 })
 export class GroupOverviewComponent {

@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { StopwatchService } from '../../../../services/stopwatch/stopwatch.service';
 import { HeaderActionService } from '../../../../services/action/header-action.service';
 import { GLOBAL } from '../../../../utilities/constants';
@@ -15,6 +15,7 @@ import { ApplicationAnalyticsService } from '../../../../services/analytics/appl
   standalone: true,
   imports: [ StopwatchCollectionViewComponent, MatCardModule, MatProgressBarModule, MatIconModule, MatButtonModule],
   templateUrl: './stopwatch-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './stopwatch-list.component.scss'
 })
 export class StopwatchListComponent implements OnInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { BaseGroupDetailViewComponent } from '../../base-group-detail-view';
 import {MatListModule} from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
@@ -12,6 +12,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     MatListModule, MatButtonModule, MatIcon
   ],
   templateUrl: './group-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './group-detail.component.scss'
 })
 export class GroupListDetailViewComponent extends BaseGroupDetailViewComponent {

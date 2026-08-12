@@ -1,10 +1,11 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { GroupService } from '../../../../services/group/group.service';
 import { StopwatchGroup } from '../../../../models/sequence/interfaces';
 
 
 @Component({
   selector: 'base-group-list-view',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: ''
 })
 export class BaseGroupListViewComponent {

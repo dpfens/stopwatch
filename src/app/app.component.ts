@@ -1,4 +1,4 @@
-import {ApplicationRef, Component, computed, DOCUMENT, effect, inject, PLATFORM_ID, Renderer2} from '@angular/core';
+import {ApplicationRef, Component, computed, DOCUMENT, effect, inject, PLATFORM_ID, Renderer2, ChangeDetectionStrategy} from '@angular/core';
 import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import { HeaderComponent } from './components/shared/header/header.component';
 import { SettingsService } from './services/settings/settings.service';
@@ -16,6 +16,7 @@ import { CanonicalService } from './services/canonical/canonical.service';
   selector: 'app-root',
   imports: [RouterOutlet, HeaderComponent],
   templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app.component.scss'
 })
 export class AppComponent {

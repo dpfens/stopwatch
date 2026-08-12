@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { BaseGroupDetailViewComponent } from '../../base-group-detail-view';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatIconModule} from '@angular/material/icon';
@@ -12,6 +12,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
   selector: 'group-grid-detail-view',
   imports: [MatCardModule, MatButtonToggleModule, MatButtonModule, MatMenuModule, MatIconModule, MatChipsModule, MatExpansionModule,],
   templateUrl: './group-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './group-detail.component.scss'
 })
 export class GroupGridDetailViewComponent extends BaseGroupDetailViewComponent {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, signal, computed, inject, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, computed, inject, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
@@ -56,6 +56,7 @@ interface SettingConfiguration {
     MatSlideToggleModule
 ],
   templateUrl: './settings.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './settings.component.scss'
 })
 export class SettingsComponent implements AfterViewInit, OnDestroy {

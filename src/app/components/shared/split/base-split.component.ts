@@ -1,4 +1,4 @@
-import { Component, inject, Input, signal } from '@angular/core';
+import { Component, inject, Input, signal, ChangeDetectionStrategy } from '@angular/core';
 import { VisibleSplit } from '../../../models/sequence/interfaces';
 import { SelectableSplitTypes } from '../../../utilities/constants';
 import { TimeService } from '../../../services/time/time.service';
@@ -6,6 +6,7 @@ import { TimeService } from '../../../services/time/time.service';
 
 @Component({
   selector: 'base-split-view',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 export class BaseSplitComponent {

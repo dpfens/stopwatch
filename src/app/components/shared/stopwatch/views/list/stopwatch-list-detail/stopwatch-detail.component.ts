@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { BaseStopwatchDetailViewComponent } from '../../base-stopwatch-detail-view';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
@@ -22,6 +22,7 @@ import { RouterModule } from '@angular/router';
     FormsModule, ReactiveFormsModule, MatSelectModule, MatFormFieldModule, MatInputModule,
     MatListModule, MatCheckboxModule, SimpleTimerComponent, RouterModule],
   templateUrl: './stopwatch-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './stopwatch-detail.component.scss'
 })
 export class StopwatchListDetailViewComponent extends BaseStopwatchDetailViewComponent {

@@ -1,4 +1,4 @@
-import { Component, inject, input, signal, computed } from '@angular/core';
+import { Component, inject, input, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -31,6 +31,7 @@ export type ViewMode = 'list' | 'grid';
     StopwatchListGridViewComponent
   ],
   templateUrl: './stopwatch-collection.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './stopwatch-collection.component.scss'
 })
 export class StopwatchCollectionViewComponent {

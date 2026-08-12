@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { Component, OnInit, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
 import { BaseGroupDetailViewComponent } from '../base-group-detail-view';
@@ -47,6 +47,7 @@ interface GroupForm {
     SimpleTimerComponent
 ],
   templateUrl: './full.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './full.component.scss'
 })
 export class FullGroupDetailComponent extends BaseGroupDetailViewComponent implements OnInit {

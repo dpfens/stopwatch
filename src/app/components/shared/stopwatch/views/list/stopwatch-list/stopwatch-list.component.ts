@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { BaseStopwatchListViewComponent } from '../../base-stopwatch-list-view';
 import { StopwatchListDetailViewComponent } from '../stopwatch-list-detail/stopwatch-detail.component';
 import { GlobalActionBarComponent } from "../../../../action-bar/action-bar.component";
@@ -15,6 +15,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatCardModule, MatIconModule, MatButtonModule,
     MatCheckboxModule, MatFormFieldModule, MatProgressSpinnerModule],
   templateUrl: './stopwatch-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './stopwatch-list.component.scss'
 })
 export class StopwatchListViewComponent extends BaseStopwatchListViewComponent {

@@ -9,6 +9,7 @@ const TIMER_OBSERVER_OPTIONS: ObserverOptions = { threshold: 0, rootMargin: '50%
   selector: 'simple-timer',
   standalone: true,
   template: `{{ displayTime() }}`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: []
 })
 export class SimpleTimerComponent {

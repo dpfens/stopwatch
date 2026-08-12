@@ -1,4 +1,4 @@
-import { Component, inject, computed, signal } from '@angular/core';
+import { Component, inject, computed, signal, ChangeDetectionStrategy } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,6 +22,7 @@ import { ApplicationAnalyticsService } from '../../../services/analytics/applica
     MatTooltipModule
   ],
   styleUrl: 'action-bar.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: 'action-bar.component.html'
 })
 export class GlobalActionBarComponent {

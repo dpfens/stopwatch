@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, computed, inject, signal, WritableSignal, DestroyRef, input, effect, OnInit, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, computed, inject, signal, WritableSignal, DestroyRef, input, effect, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ContextualStopwatchEntity, IStopwatchStateController, SelectOptGroup, StopwatchEvent, StopwatchState, UniqueIdentifier, VisibleSplit } from '../../../../models/sequence/interfaces';
 import { StopwatchService } from '../../../../services/stopwatch/stopwatch.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -27,6 +27,7 @@ interface StopwatchSettingsForm {
 @Component({
   selector: 'base-stopwatch-detail-view',
   imports: [FormsModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: ''
 })
 export class BaseStopwatchDetailViewComponent implements OnInit, AfterViewInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
@@ -14,6 +14,7 @@ import { StopwatchSelectionService } from '../../../../services/stopwatch/stopwa
   standalone: true,
   imports: [FullGroupDetailComponent],
   templateUrl: './group-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './group-detail.component.scss'
 })
 export class GroupDetailComponent implements OnInit {

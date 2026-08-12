@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, computed, inject, input, PLATFORM_ID, Signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, inject, input, PLATFORM_ID, Signal, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContextualStopwatchEntity, GroupEvaluationBehavior, GroupTimingBehavior, GroupTraitPreset, IStopwatchStateController, StopwatchGroup, UniqueIdentifier } from '../../../../models/sequence/interfaces';
 import { GroupPresets, ONE_MINUTE, PresetConfig, Time } from '../../../../utilities/constants';
@@ -34,6 +34,7 @@ interface StopwatchTrendData {
 
 @Component({
   selector: 'base-group-detail-view',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: ''
 })
 export class BaseGroupDetailViewComponent implements AfterViewInit {

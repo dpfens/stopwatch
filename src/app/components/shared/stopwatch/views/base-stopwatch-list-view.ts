@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { StopwatchService } from '../../../../services/stopwatch/stopwatch.service';
 import { ContextualStopwatchEntity } from '../../../../models/sequence/interfaces';
 import { StopwatchSelectionService } from '../../../../services/stopwatch/stopwatch-selection/stopwatch-selection.service';
@@ -6,6 +6,7 @@ import { StopwatchSelectionService } from '../../../../services/stopwatch/stopwa
 
 @Component({
   selector: 'base-stopwatch-list-view',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: ''
 })
 export class BaseStopwatchListViewComponent {
