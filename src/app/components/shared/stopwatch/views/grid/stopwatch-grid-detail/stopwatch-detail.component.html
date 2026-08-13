@@ -243,7 +243,7 @@
 
         @if(visibleSplits().length) {
             <mat-list>
-                @for(split of visibleSplits(); track $index) {
+                @for(split of visibleSplits(); track split.event.id) {
                     <split-expansion-panel
                         [instance]="split"
                         (updateEmitter)="handleSplitUpdate($event)"
@@ -256,7 +256,7 @@
             @if (computedSplits().length > 0) {
                 Forecasts
                 <mat-list>
-                    @for(split of computedSplits(); track $index) {
+                    @for(split of computedSplits(); track split.event.id) {
                         <split-expansion-panel
                             [instance]="split"
                             [class.disabled-in-selection]="selectionMode() || hasAnySelection()">    

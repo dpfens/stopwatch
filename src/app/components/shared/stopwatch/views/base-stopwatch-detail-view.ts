@@ -41,10 +41,7 @@ export class BaseStopwatchDetailViewComponent implements OnInit, AfterViewInit, 
   protected readonly analyticService = inject(ApplicationAnalyticsService);
 
   id = input.required<UniqueIdentifier>();
-  instance = computed(() => {
-    console.log('finding instance');
-    return this.service.instances().find(inst => inst.id === this.id())
-});
+  instance = computed(() =>  this.service.instances().find(inst => inst.id === this.id()));
   selectionMode = input(false);
 
   showControls = input(true);
