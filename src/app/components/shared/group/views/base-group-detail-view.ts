@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, computed, inject, input, PLATFORM_ID, Signal, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { AfterViewInit, Component, computed, inject, input, PLATFORM_ID, Signal, ViewChild, ChangeDetectionStrategy, effect, viewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContextualStopwatchEntity, GroupEvaluationBehavior, GroupTimingBehavior, GroupTraitPreset, IStopwatchStateController, StopwatchGroup, UniqueIdentifier } from '../../../../models/sequence/interfaces';
 import { GroupPresets, ONE_MINUTE, PresetConfig, Time } from '../../../../utilities/constants';
@@ -37,7 +37,7 @@ interface StopwatchTrendData {
   changeDetection: ChangeDetectionStrategy.Eager,
   template: ''
 })
-export class BaseGroupDetailViewComponent implements AfterViewInit {
+export class BaseGroupDetailViewComponent {
   private readonly platformId = inject(PLATFORM_ID);
   protected readonly destroyRef = inject(DestroyRef);
   protected readonly service = inject(GroupService);
@@ -55,7 +55,7 @@ export class BaseGroupDetailViewComponent implements AfterViewInit {
   );
 
   MILLISECOND_THRESHOLD = ONE_MINUTE;
-  @ViewChild('evaluationPanel') aggregateRef!: ElementRef;
+  protected readonly aggregateRef = viewChild<ElementRef>('evaluationPanel');
 
   getInstance(): StopwatchGroup {
       const inst = this.instance();
@@ -104,8 +104,21 @@ export class BaseGroupDetailViewComponent implements AfterViewInit {
   /** Emits `true` when the watched element enters the viewport, `false` when it leaves. */
   private readonly visible$     = new Subject<boolean>();
 
-  ngAfterViewInit() {
-    this.observeVisibility(this.aggregateRef.nativeElement);
+  constructor() {
+    // Reactively (re)attach the IntersectionObserver whenever `#evaluationPanel`
+    // mounts. Unlike a `ngAfterViewInit`-only approach, this also picks up the
+    // element the *first* time it appears even if it's behind a conditional
+    // (`@if`/`*ngIf`) that's false during the component's initial render, and
+    // it re-attaches if the element is torn down and recreated later.
+    effect((onCleanup) => {
+      const ref = this.aggregateRef();
+      if (!ref) return;
+ 
+      const cleanup = this.observeVisibility(ref.nativeElement);
+      onCleanup(cleanup);
+    });
+ 
+    this.destroyRef.onDestroy(() => this.visible$.complete());
   }
 
   /**
@@ -116,21 +129,17 @@ export class BaseGroupDetailViewComponent implements AfterViewInit {
    *     this.observeVisibility(this.aggregateRef.nativeElement);
    *   }
    */
-  protected observeVisibility(el: Element): void {
-    if (!isPlatformBrowser(this.platformId)) return;
-
+  protected observeVisibility(el: Element): () => void {
+    if (!isPlatformBrowser(this.platformId)) return () => {};
+ 
     const observer = new IntersectionObserver(
       ([entry]) => this.visible$.next(entry.isIntersecting),
       { threshold: 0 }   // fires as soon as any pixel enters/leaves
     );
-
+ 
     observer.observe(el);
-
-    // Clean up when the component is destroyed so we never leak the observer.
-    this.destroyRef.onDestroy(() => {
-      observer.disconnect();
-      this.visible$.complete();
-    });
+ 
+    return () => observer.disconnect();
   }
 
   readonly hasCumulative    = computed(() => this.hasEvaluationBehavior('cumulative'));

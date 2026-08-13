@@ -1,5 +1,6 @@
-import { ApplicationConfig, inject, provideAppInitializer, provideZoneChangeDetection, isDevMode } from '@angular/core';
+import { ApplicationConfig, inject, provideAppInitializer, provideZonelessChangeDetection, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
+
 
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay, withNoIncrementalHydration } from '@angular/platform-browser';
@@ -11,19 +12,18 @@ import { credentialsInterceptor } from './interceptors/credentials.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideZonelessChangeDetection(),
     provideRouter(routes),
     provideClientHydration(withEventReplay(), withNoIncrementalHydration()),
     provideAppInitializer(() => {
       const gaService = inject(GoogleAnalyticsService);
-      gaService.initialize('G-J0ZMYBT112'); // Your GA4 measurement ID
+      gaService.initialize('G-J0ZMYBT112');
     }),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    provideHttpClient(withXhr(), 
-      withInterceptors([credentialsInterceptor])
+    provideHttpClient(withInterceptors([credentialsInterceptor])
     ),
   ]
 };
