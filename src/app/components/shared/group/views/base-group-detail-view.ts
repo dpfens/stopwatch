@@ -34,7 +34,7 @@ interface StopwatchTrendData {
 
 @Component({
   selector: 'base-group-detail-view',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: ''
 })
 export class BaseGroupDetailViewComponent {

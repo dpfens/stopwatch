@@ -47,7 +47,7 @@ interface GroupForm {
     SimpleTimerComponent
 ],
   templateUrl: './full.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './full.component.scss'
 })
 export class FullGroupDetailComponent extends BaseGroupDetailViewComponent implements OnInit {

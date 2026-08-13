@@ -6,7 +6,7 @@ import { StopwatchSelectionService } from '../../../../services/stopwatch/stopwa
 
 @Component({
   selector: 'base-stopwatch-list-view',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: ''
 })
 export class BaseStopwatchListViewComponent {

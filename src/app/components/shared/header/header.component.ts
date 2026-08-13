@@ -20,7 +20,7 @@ import { GoogleAnalyticsService } from '../../../services/analytics/google-analy
     FormsModule, ReactiveFormsModule
   ],
   templateUrl: './header.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {

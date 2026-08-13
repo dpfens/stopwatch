@@ -6,7 +6,7 @@ import { GroupGridDetailViewComponent } from "../group-list-detail/group-detail.
   selector: 'group-grid-view',
   imports: [GroupGridDetailViewComponent],
   templateUrl: './group-list.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './group-list.component.scss'
 })
 export class GroupGridViewComponent extends BaseGroupListViewComponent {

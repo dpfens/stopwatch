@@ -26,7 +26,7 @@ import { RouterModule } from '@angular/router';
     RouterModule
 ],
   templateUrl: './stopwatch-detail.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './stopwatch-detail.component.scss'
 })
 export class StopwatchGridDetailViewComponent extends BaseStopwatchDetailViewComponent {

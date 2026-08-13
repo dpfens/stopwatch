@@ -6,7 +6,7 @@ import { TimeService } from '../../../services/time/time.service';
 
 @Component({
   selector: 'base-split-view',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: '',
 })
 export class BaseSplitComponent {

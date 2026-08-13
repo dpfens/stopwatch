@@ -22,7 +22,7 @@ import { RouterModule } from '@angular/router';
     FormsModule, ReactiveFormsModule, MatSelectModule, MatFormFieldModule, MatInputModule,
     MatListModule, MatCheckboxModule, SimpleTimerComponent, RouterModule],
   templateUrl: './stopwatch-detail.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './stopwatch-detail.component.scss'
 })
 export class StopwatchListDetailViewComponent extends BaseStopwatchDetailViewComponent {

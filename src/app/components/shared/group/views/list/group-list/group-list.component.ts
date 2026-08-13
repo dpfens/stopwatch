@@ -8,7 +8,7 @@ import {MatListModule} from '@angular/material/list';
   selector: 'group-list-view',
   imports: [GroupListDetailViewComponent, MatListModule],
   templateUrl: './group-list.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './group-list.component.scss'
 })
 export class GroupListViewComponent extends BaseGroupListViewComponent {

@@ -16,7 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatCheckboxModule, MatFormFieldModule, MatProgressSpinnerModule
   ],
   templateUrl: './stopwatch-list.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './stopwatch-list.component.scss'
 })
 export class StopwatchListGridViewComponent extends BaseStopwatchListViewComponent {

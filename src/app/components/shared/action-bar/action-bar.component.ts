@@ -22,7 +22,7 @@ import { ApplicationAnalyticsService } from '../../../services/analytics/applica
     MatTooltipModule
   ],
   styleUrl: 'action-bar.component.scss',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'action-bar.component.html'
 })
 export class GlobalActionBarComponent {

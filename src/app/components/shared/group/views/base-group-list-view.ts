@@ -5,7 +5,7 @@ import { StopwatchGroup } from '../../../../models/sequence/interfaces';
 
 @Component({
   selector: 'base-group-list-view',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: ''
 })
 export class BaseGroupListViewComponent {

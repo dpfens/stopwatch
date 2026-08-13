@@ -27,7 +27,7 @@ interface StopwatchSettingsForm {
 @Component({
   selector: 'base-stopwatch-detail-view',
   imports: [FormsModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: ''
 })
 export class BaseStopwatchDetailViewComponent implements OnInit, AfterViewInit, OnDestroy {

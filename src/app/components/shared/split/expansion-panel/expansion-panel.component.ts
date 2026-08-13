@@ -33,7 +33,7 @@ interface SplitFormData {
     MatIconModule
   ],
   templateUrl: './expansion-panel.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './expansion-panel.component.scss'
 })
 export class SplitExpansionPanelComponent extends BaseSplitComponent implements OnInit, OnDestroy {

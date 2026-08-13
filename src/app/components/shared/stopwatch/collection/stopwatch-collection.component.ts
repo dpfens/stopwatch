@@ -31,7 +31,7 @@ export type ViewMode = 'list' | 'grid';
     StopwatchListGridViewComponent
   ],
   templateUrl: './stopwatch-collection.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './stopwatch-collection.component.scss'
 })
 export class StopwatchCollectionViewComponent {

@@ -12,7 +12,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     MatListModule, MatButtonModule, MatIcon
   ],
   templateUrl: './group-detail.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './group-detail.component.scss'
 })
 export class GroupListDetailViewComponent extends BaseGroupDetailViewComponent {
