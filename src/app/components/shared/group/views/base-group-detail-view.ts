@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, computed, inject, input, PLATFORM_ID, Signal, ViewChild, ChangeDetectionStrategy, effect, viewChild } from '@angular/core';
+import { Component, computed, inject, input, PLATFORM_ID, Signal, ChangeDetectionStrategy, effect, viewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContextualStopwatchEntity, GroupEvaluationBehavior, GroupTimingBehavior, GroupTraitPreset, IStopwatchStateController, StopwatchGroup, UniqueIdentifier } from '../../../../models/sequence/interfaces';
 import { GroupPresets, ONE_MINUTE, PresetConfig, Time } from '../../../../utilities/constants';

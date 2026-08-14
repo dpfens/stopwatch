@@ -35,7 +35,7 @@
                               matInput 
                               placeholder="Ex. Pizza" 
                               [formControl]="titleControl"
-                              required />
+                              />
                             @if (titleControl.hasError('required') && titleControl.touched) {
                               <mat-error>Title is required</mat-error>
                             }

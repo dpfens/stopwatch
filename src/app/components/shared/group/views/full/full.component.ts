@@ -58,7 +58,7 @@ export class FullGroupDetailComponent extends BaseGroupDetailViewComponent imple
   
   // Strongly typed FormGroup
   formGroup: FormGroup<GroupForm> = this.fb.group({
-    title: this.fb.control('', [Validators.required, Validators.minLength(1)]),
+    title: this.fb.control(''),
     description: this.fb.control(''),
     traitPreset: this.fb.control<GroupTraitPreset>('normal'),
     traitTiming: this.fb.control<GroupTimingBehavior>('independent'),
