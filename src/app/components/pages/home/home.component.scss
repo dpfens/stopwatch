@@ -241,7 +241,7 @@
   background: var(--mat-sys-surface-container-lowest);
   
   .context-grid {
-    display: grid;
+    display: flex;
     grid-template-columns: 100px 1fr;
     gap: 3rem;
     max-width: 1200px;
@@ -316,15 +316,6 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
-    .section-number {
-      font-size: 4rem;
-      font-weight: 300;
-      color: var(--mat-sys-secondary);
-      font-family: 'Roboto Mono', monospace;
-      line-height: 1;
-      margin-bottom: 1rem;
-    }
     
     .section-title {
       font-size: 2.5rem;
@@ -445,15 +436,6 @@
     flex-direction: column;
     justify-content: center;
     
-    .section-number {
-      font-size: 4rem;
-      font-weight: 300;
-      color: var(--mat-sys-error);
-      font-family: 'Roboto Mono', monospace;
-      line-height: 1;
-      margin-bottom: 1rem;
-    }
-    
     h2 {
       font-size: 2.25rem;
       font-weight: 900;
@@ -525,15 +507,6 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
-    .section-number {
-      font-size: 4rem;
-      font-weight: 300;
-      color: var(--mat-sys-tertiary);
-      font-family: 'Roboto Mono', monospace;
-      line-height: 1;
-      margin-bottom: 1rem;
-    }
     
     h2 {
       font-size: 2rem;
@@ -621,14 +594,6 @@
   }
   
   .final-statement {
-    .section-number {
-      font-size: 6rem;
-      font-weight: 300;
-      color: var(--mat-sys-outline);
-      font-family: 'Roboto Mono', monospace;
-      line-height: 1;
-      margin-bottom: 1rem;
-    }
     
     h2 {
       font-size: 3rem;

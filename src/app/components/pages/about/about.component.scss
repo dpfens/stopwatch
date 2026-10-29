@@ -37,17 +37,6 @@
   padding: 4rem 3rem;
   transform: rotate(-2deg);
   
-  .section-number {
-    font-size: 8rem;
-    font-weight: 300;
-    color: var(--mat-sys-on-primary);
-    font-family: 'Roboto Mono', monospace;
-    line-height: 1;
-    margin-bottom: 1rem;
-    opacity: 0.4;
-    transform: rotate(2deg);
-  }
-  
   .massive-title {
     font-size: clamp(4rem, 10vw, 8rem);
     font-weight: 900;
@@ -304,15 +293,6 @@
   align-items: center;
 }
 
-.section-number-large {
-  font-size: 12rem;
-  font-weight: 300;
-  color: var(--mat-sys-outline);
-  font-family: 'Roboto Mono', monospace;
-  line-height: 1;
-  text-align: center;
-}
-
 .section-title-diagonal {
   display: flex;
   flex-direction: column;
@@ -566,18 +546,6 @@
   margin: 0 auto;
   padding: 0 2rem;
   align-items: start;
-}
-
-.section-number-rotated {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  font-size: 8rem;
-  font-weight: 300;
-  color: var(--mat-sys-outline);
-  font-family: 'Roboto Mono', monospace;
-  text-align: center;
-  padding: 2rem 0;
-  background: var(--mat-sys-surface-container-low);
 }
 
 .philosophy-card {
@@ -841,23 +809,6 @@
   align-items: center;
 }
 
-.section-number-vertical {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: var(--mat-sys-tertiary-container);
-  padding: 2rem;
-  
-  span {
-    font-size: 6rem;
-    font-weight: 300;
-    color: var(--mat-sys-tertiary);
-    font-family: 'Roboto Mono', monospace;
-    line-height: 0.8;
-  }
-}
-
 .roadmap-title-block {
   .roadmap-subtitle {
     font-size: 1.25rem;
@@ -921,15 +872,6 @@
 }
 
 .feedback-content {
-  .section-number-massive {
-    font-size: 15rem;
-    font-weight: 300;
-    color: var(--mat-sys-outline);
-    font-family: 'Roboto Mono', monospace;
-    line-height: 1;
-    margin-bottom: 2rem;
-    opacity: 0.3;
-  }
   
   .feedback-title {
     font-size: clamp(3rem, 8vw, 6rem);
@@ -1032,15 +974,12 @@
   .title-block-rotated {
     transform: none;
     
-    .section-number,
     .massive-title {
       transform: none;
     }
   }
   
-  .section-label-vertical,
-  .section-number-rotated,
-  .section-number-vertical {
+  .section-label-vertical {
     writing-mode: horizontal-tb;
     text-orientation: initial;
     padding: 2rem;
@@ -1116,11 +1055,6 @@
     writing-mode: horizontal-tb;
     text-orientation: initial;
     padding: 1rem;
-  }
-  
-  .section-number-large,
-  .section-number-massive {
-    font-size: 6rem;
   }
   
   .geometric-decoration,
